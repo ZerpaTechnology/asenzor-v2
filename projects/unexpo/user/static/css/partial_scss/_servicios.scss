@@ -1,0 +1,20 @@
+
+#servicios{
+	margin-top:50px;
+	padding-bottom:60px;
+}
+
+.servicios{
+	margin-top:40px;
+	&__title{
+		font-weight:600;
+		color:darken(#000,5);
+		text-transform:uppercase;
+	}
+
+	&__description{
+		font-weight:300;
+		margin-top:20px;
+		font-size:1em;
+	}
+}

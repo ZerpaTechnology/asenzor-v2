@@ -1,0 +1,50 @@
+pendientes al terminar la funcionalidad de shortcodes:
+*hacer soporte para web component con javascript y una sintaxis mas sencilla(podria hacerce un pequeño fmk con brython)
+
+*hacer pagina 404 y generador de tiquets de errores para el modo desarrollador
+
+nota:
+para instalar librerias dentro del interprete usar:
+import pip
+pip.main(["install",paquete])
+esto retorna 0 al finalizar
+
+AsenZor
+
+Es un framework escrito en python el cual pretende exponer las bondades de python para la web en el nuevo enfoque de las WebApps
+
+para configurar el fmk en los servidores hay que para:
+
+XAMPP:
+	colocar la carpeta del fmk en la carpeta opt/lampp/htdocs y crear un acceso directo a la carpeta cgi-bin de
+	la carpeta controles del fmk
+	
+	incluir un .htaccess con este codigo en la carpeta webpyzer:
+	
+
+APACHE:
+
+	colocar la carpeta del fm en la carpeta /var/www/html
+
+	agregar al final del archivo /etc/apache2/apache2.conf:
+
+	<Directory /var/www/html/webpyzer/controles>
+		    Options ExecCGI
+		    SetHandler cgi-script
+	</Directory>
+
+	<Directory /var/www/html/webpyzer>
+		    Options +ExecCGI
+		    AddHandler cgi-script .py
+	</Directory>
+
+	ejecutar comando: 
+
+	sudo a2enmod cgi
+	sudo service apache2 restart
+
+nota: Estar pendientes de que firefox te muestra las paginas desde cache, hacer limpieza del historial
+cada ves que actualicemos
+
+nota: conceder permisos a los archivos y carpetas para que el interprete no solo los ejecute sino tambien los puede importar
+

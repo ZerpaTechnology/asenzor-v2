@@ -1,0 +1,3 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+print """<div id="contacto">  <style>  #contacto textarea{    font-size:13px;    width:100%;  }      #email{      display:block;      width:100%;      background-color:white;      color:black;    }  </style>  <div class="bg-ubuntu_blue white pad-05">    Formulario de contacto  </div>  <div class="bg-white pad-05">    <p>Lo sentimos en estos momentos no estamos en linea. Deja un mensaje    y nos pondremos en contacto contigo.</p>  </div>  <div>    <input placeholder="Introduce tu direccion de correo" id="email" name="email" type="email">    <textarea name="mensaje" id="mensaje" cols="30" rows="10" placeholder="Introduce tu mensaje" style="min-height:300px"></textarea>  </div>  <button id="enviar">Enviar</button>    </div>"""

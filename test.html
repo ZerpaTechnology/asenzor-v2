@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<script type="text/javascript" src="static/js/brython/brython.js"></script>
+ <script type="text/javascript" src="static/js/brython/brython_stdlib.js"></script>
+ <script type="text/python3" src="static/brython/decode.by"></script>
+ <script type="text/python3" src="static/brython/nuclear.by"></script>
+</head>
+<body onload="brython(1)">
+<div class="botonera">
+	<button id="insertar">insertar</button>
+	<input>
+</div>
+<script type="text/python3">
+from browser import window,alert
+s=window.s
+def insertar(evt):
+	alert("hola")
+	s(".botonera").widget(-1,"<button id='agregar'>agregar</button>")
+s("#insertar").bind("click",insertar)
+</script>
+</body>
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+	{{incluir(data,"head")}}
+</head>
+<body>
+{{incluir(data,"widget-navbar")}}
+<div class="container">
+<div class="row">
+<div class="col-md-12 pad-1 height-35">
+{{if "errores_link" in data and type(data["errores"]):}}
+
+
+<a href="{{print data['errores_link']}}">Ver Errores</a>
+
+{{else:}}
+
+{{print data["errores"]}}		
+
+{{pass}}
+</div>
+	
+</div>
+
+</div>
+
+
+{{incluir(data,"footer")}}
+</body>
+</html>

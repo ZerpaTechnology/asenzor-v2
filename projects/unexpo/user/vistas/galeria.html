@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <title></title>
+ <link rel="stylesheet" type="text/css" href="{{=data['base_url']}}static/css/ff.css">
+ 
+ <link rel="stylesheet" type="text/css" href="{{=data['base_url']}}static/css/color.css">
+ <link rel="stylesheet" type="text/css" href="{{=data['base_url']}}static/css/bootstrap/css/bootstrap.min.css">
+ <link rel="stylesheet" href="{{=data['base_url']}}static/css/swiper.min.css">
+ <script type="text/javascript" src="{{=data['base_url']}}static/js/jquery-3.1.0.js"></script>
+
+ <script type="text/javascript" src="{{=config.base_url}}static/js/brython/brython.js"></script>
+ <script type="text/javascript" src="{{=config.base_url}}static/js/brython/brython_stdlib.js"></script>
+ <link rel="icon" type="image/png" href="{{=data['base_url']}}static/imgs/Logo.jpg" />
+ <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+ <link rel="stylesheet" href="{{=data['base_url']}}static/css/estilo.css"/>
+ <title>JDYM - Galeria</title>
+</head>
+<body  onload="brython(1)">
+<div class="b-r12 bg-flor_purple width-100p z-index5" id="nav-main">
+
+<nav class="navbar navbar-toggleable-md navbar-inverse bg-inverse font-s15" style="background-color:#9dec31 !important;">
+
+      <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <a class="navbar-brand height-4" ><img src="{{print data['base_url']}}../admin/static/archivos/Imagenes/Logo.jpg" class="height-4 hidden " id="logo-bar"></a>
+
+      <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+        <ul class="navbar-nav mr-auto" >
+          <li class="nav-item">
+            <a class="nav-link" href="{{=urlBuilder(config,settings.app,'index')}}#home" style="color:white !important"><b>Inicio </b></a>
+          </li>
+          <li class="nav-item">
+            
+             <a class="dropdown-toggle nav-link" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true"><b>Galeria</b> <span class="caret"></span></a>
+            <ul class="dropdown-menu" style="background-color:#B2FF7F !important; ">
+             <li><a class="nav-link" href="#arreglos_ramos" style="color:rgb(180,180,180) !important"><b>Arreglos y ramos</b></a></li>
+             <li><a class="nav-link" href="#plantas_ornamentales" style="color:rgb(180,180,180) !important"><b>Plantas ornamentales</b></a></li>
+             <li><a class="nav-link" href="#festejos" style="color:rgb(180,180,180) !important"><b>festejos</b></a></li>
+             <li><a class="nav-link" href="#bodas_bautizos" style="color:rgb(180,180,180) !important"><b>bodas y bautizos</b></a></li>
+             <li><a class="nav-link" href="#hoteles_banquetes" style="color:rgb(180,180,180) !important"><b>hoteles y banquetes</b></a></li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{=urlBuilder(config,settings.app,'index')}}#somos" style="color:white !important"><b>¿Quienes somos?</b></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{=urlBuilder(config,settings.app,'index')}}#contacto" style="color:white !important"><b>Contacto</b></a>
+          </li>
+          
+        </ul>
+        <!--
+        <form class="form-inline my-2 my-md-0">
+          <input class="form-control mr-sm-2" placeholder="Buscar" type="text">
+          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
+        </form>
+        -->
+      </div>
+    </nav>
+ 
+</div>
+<div class="container-fluid"> 
+<div class="row" id="arreglos_ramos">
+ <div class="col-md-12 height-50" style="background-image: url({{print data['base_url']}}../admin/static/archivos/Imagenes/arreglos_y_ramos.png); background-position: center; background-attachment: fixed; background-repeat: no-repeat;  background-size: cover;">
+ <img src="{{print data['base_url']}}../admin/static/archivos/Imagenes/titulo1.png" class="height-8 marg-1 height-6-xs">
+  <div style="background-color:rgba(255,255,255,0.5);border-radius: 12px;width: 90%;margin:0 auto; overflow-x: scroll;">
+  <div style="width:{{print 170*len(data['galeria'][0][1][0][1:])/2 if len(data['galeria'][0][1][0][1:])%2==0 else (170*len(data['galeria'][0][1][0][1:])/2)+150}};height: 340px; margin:0 auto;" class="galeria-1">
+  {{for k,imagen in enumerate(data["galeria"][0][1][0][1:]):}}
+
+  <button style="background-image: url(\'{{print data['base_url']}}../admin/static/archivos/Imagenes/{{print data['opciones'][0][1][imagen['value']]}}\'); height: 150px; width: 150px; background-size: 100% 100%;margin: 10px">
+   
+  </button>
+  {{pass}}
+  
+  </div>
+  </div>
+ </div>
+</div>
+<div class="row" id="plantas_ornamentales">
+ <div class="col-md-12 height-50" style="background-image: url({{print data['base_url']}}../admin/static/archivos/Imagenes/plantas_ornamentales.png); background-position: center; background-attachment: fixed; background-repeat: no-repeat;  background-size: cover;">
+ <img src="{{print data['base_url']}}../admin/static/archivos/Imagenes/titulo2.png" class="height-8 marg-1 height-6-xs">
+  <div style="background-color:rgba(255,255,255,0.5);border-radius: 12px;width: 90%;margin:0 auto; overflow-x: scroll;">
+  <div style="width:{{print 170*len(data['galeria'][0][1][0][1:])/2 if len(data['galeria'][0][1][0][1:])%2==0 else (170*len(data['galeria'][0][1][0][1:])/2)+150}};height: 340px; margin:0 auto;" class="galeria-1">
+  {{for k,imagen in enumerate(data["galeria"][1][1][0][1:]):}}
+
+  <button style="background-image: url(\'{{print data['base_url']}}../admin/static/archivos/Imagenes/{{print data['opciones'][0][1][imagen['value']]}}\'); height: 150px; width: 150px; background-size: 100% 100%;margin: 10px">
+   
+  </button>
+  {{pass}}
+  
+  </div>
+  </div>
+ </div>
+</div>
+<div class="row" id="festejos">
+ <div class="col-md-12 height-50" style="background-image: url({{print data['base_url']}}../admin/static/archivos/Imagenes/festejos.png); background-position: center; background-attachment: fixed; background-repeat: no-repeat;  background-size: cover;">
+ <img src="{{print data['base_url']}}../admin/static/archivos/Imagenes/titulo3.png" class="height-8 marg-1 height-6-xs">
+  <div style="background-color:rgba(255,255,255,0.5);border-radius: 12px;width: 90%;margin:0 auto; overflow-x: scroll;">
+  <div style="width:{{print 170*len(data['galeria'][0][1][0][1:])/2 if len(data['galeria'][0][1][0][1:])%2==0 else (170*len(data['galeria'][0][1][0][1:])/2)+150}};height: 340px; margin:0 auto;" class="galeria-1">
+  {{for k,imagen in enumerate(data["galeria"][2][1][0][1:]):}}
+
+  <button style="background-image: url(\'{{print data['base_url']}}../admin/static/archivos/Imagenes/{{print data['opciones'][0][1][imagen['value']]}}\'); height: 150px; width: 150px; background-size: 100% 100%;margin: 10px">
+   
+  </button>
+  {{pass}}
+  
+  </div>
+  </div>
+ </div>
+</div>
+
+<div class="row" id="bodas_bautizos">
+ <div class="col-md-12 height-50" style="background-image: url({{print data['base_url']}}../admin/static/archivos/Imagenes/bodas_y_bautizos.png); background-position: center; background-attachment: fixed; background-repeat: no-repeat;  background-size: cover;">
+ <img src="{{print data['base_url']}}../admin/static/archivos/Imagenes/titulo4.png" class="height-8 marg-1 height-6-xs">
+  <div style="background-color:rgba(255,255,255,0.5);border-radius: 12px;width: 90%;margin:0 auto; overflow-x: scroll;">
+  <div style="width:{{print 170*len(data['galeria'][0][1][0][1:])/2 if len(data['galeria'][0][1][0][1:])%2==0 else (170*len(data['galeria'][0][1][0][1:])/2)+150}};height: 340px; margin:0 auto;" class="galeria-1">
+  {{for k,imagen in enumerate(data["galeria"][3][1][0][1:]):}}
+
+  <button style="background-image: url(\'{{print data['base_url']}}../admin/static/archivos/Imagenes/{{print data['opciones'][0][1][imagen['value']]}}\'); height: 150px; width: 150px; background-size: 100% 100%;margin: 10px">
+   
+  </button>
+  {{pass}}
+  
+  </div>
+  </div>
+ </div>
+</div>
+<div class="row" id="hoteles_banquetes">
+ <div class="col-md-12 height-50" style="background-image: url({{=data['base_url']}}../admin/static/archivos/Imagenes/hoteles_y_banquetes.png); background-position: center; background-attachment: fixed; background-repeat: no-repeat;  background-size: cover;">
+ <img src="{{=data['base_url']}}../admin/static/archivos/Imagenes/titulo5.png" class="height-8 marg-1 height-6-xs">
+  <div style="background-color:rgba(255,255,255,0.5);border-radius: 12px;width: 90%;margin:0 auto; overflow-x: scroll;">
+  <div style="width:{{=170*len(data['galeria'][0][1][0][1:])/2 if len(data['galeria'][0][1][0][1:])%2==0 else (170*len(data['galeria'][0][1][0][1:])/2)+150}};height: 340px; margin:0 auto;" class="galeria-1">
+  {{for k,imagen in enumerate(data["galeria"][4][1][0][1:]):}}
+
+  <button style="background-image: url(\'{{=data['base_url']}}../admin/static/archivos/Imagenes/{{print data['opciones'][0][1][imagen['value']]}}\'); height: 150px; width: 150px; background-size: 100% 100%;margin: 10px">
+   
+  </button>
+  {{pass}}
+  
+  </div>
+  </div>
+ </div>
+</div>
+
+<div id="fondo" class="hidden" style="background-color:rgba(0,0,0,0.8); width: 100%;height: 100%;position: fixed;top:0px;left:0px">
+ 
+</div>
+<div id="out" class="hidden" style="position: fixed;top:50px;left:5%;margin: 0 auto ;width: 90%;height: 90%;background-repeat: no-repeat;">
+ 
+</div>
+</div>
+
+
+<script type="text/python3" src="{{=config.base_url}}static/brython/fixed.by">
+</script>
+
+<script type="text/python3" src="{{=config.base_url}}static/brython/galeria.by">
+</script>
+<script type="text/javascript" src="{{=config.base_url}}static/js/jqScroll.js">
+</script>
+
+<script type="text/javascript" src="{{=data['base_url']}}static/js/swiper.min.js">
+</script>
+
+<script type="text/javascript" src="{{=data['base_url']}}static/css/bootstrap/js/bootstrap.js">
+</script>
+
+
+<script>
+    var swiper = new Swiper('.swiper-container', {
+        pagination: '.swiper-pagination',
+        paginationClickable: true,
+        nextButton: '.swiper-button-next',
+        prevButton: '.swiper-button-prev',
+        spaceBetween: 30
+    });
+    </script>
+<script type="text/python3" src="{{=config.base_url}}static/brython/galeria.by">
+</script>
+
+
+</body>
+</html>

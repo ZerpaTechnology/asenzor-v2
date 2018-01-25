@@ -1,0 +1,77 @@
+//fuentes
+@import url('https://fonts.googleapis.com/css?family=Raleway:300,400,700');
+@import url('https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700');
+
+$raleway: 'Raleway', sans-serif;
+$open:'Open Sans Condensed', sans-serif;
+
+body{
+    font-family:$raleway;
+    margin:0;
+    background:#FFFFFF;
+ }
+
+
+.clearfix{
+    &:before{
+        content:"";
+        display:table;
+    }
+}
+
+
+
+
+.w-50{
+    width:50px;
+}
+.w-30{
+    width:30px;
+}
+
+
+.p-l-20{
+    padding-left:20px;
+}
+
+.overflow-x{
+    overflow-x:hidden;
+}
+
+.m-b-0{
+    margin-bottom:0;
+}
+.m-t-10{
+    margin-top:10px;
+}
+.m-t-20{
+    margin-top:20px;
+}
+
+.m-t-30{
+    margin-top:30px;
+}
+
+.m-t-40 {
+    margin-top: 40px;
+}
+
+
+.web-main-center {
+    justify-content: center;
+    display: flex;
+    flex-wrap: wrap;
+ }
+
+.web-cross-center {
+    align-items: center;
+    align-content: center;
+    display: flex;
+    flex-wrap: wrap;
+ }
+
+.web-main-end {
+    justify-content: flex-end;
+    display: flex;
+    flex-wrap: wrap;
+}

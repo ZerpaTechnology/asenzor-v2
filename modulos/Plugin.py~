@@ -1,0 +1,294 @@
+# -*- coding: utf-8 -*-
+
+from config import config
+import os
+
+
+from modulos.controlador import Controlador
+from modulos.controlador import thumbails
+from Controladores.http.Login import Login
+
+class Plugin(Controlador):
+	"""docstring for Plugin"""
+	def __init__(self,plugin,data):
+        
+		import imp
+		Controlador.__init__(self,data)
+
+		self.login=Login(data)
+	    
+		
+		import os
+
+		from modulos.ztec.zred import  Headers,gringolizar
+		self.app=None
+		self.model={}
+		self.shortcodes={}
+	
+		import sys
+
+
+		self.plugin=plugin
+
+		self.HEADERS=Headers()
+		l=self.plugin.navegacion
+		if self.data["model"]["main"].update():
+
+			for elem in self.data["model"]["main"].obtenerFilas("AdminMenu"):
+	                    if elem in l:
+	                    	l.remove(elem)
+	    
+		for elem2 in l:                
+		        self.data["model"]["main"].db("AdminMenu").insertar(elem2[0],elem2[1],elem2[2],elem2[3])
+
+
+		self.HEADERS.set_headers({"Content-type":"text/plain\n"})
+		from modulos.ztec.intervalor.control import generar2		
+		for w in plugin.widgets:
+			if os.path.exists(config.base_root+config.plugins_folder+plugin.name+"/widgets/"+w+".html"):
+			     generar2(config.base_root+config.plugins_folder+plugin.name+"/widgets/"+w+".html",config.base_root+config.plugins_folder+plugin.name+"/widgets/"+w+".py","#!/usr/bin/python\n# -*- coding: utf-8 -*-\n")
+            elif os.path.exists(config.base_root+config.plugins_folder+plugin.name+"/widgets/"+w+"/"+w+".html"):
+                 generar2(config.base_root+config.plugins_folder+plugin.name+"/widgets/"+w+"/"+w+".html",config.base_root+config.plugins_folder+plugin.name+"/widgets/"+w+"/"+w+".py","#!/usr/bin/python\n# -*- coding: utf-8 -*-\n")
+
+
+		if self.data["app"]!=None:
+
+			import app
+			from app import app
+			self.app=app()
+			from settings import config as settings
+			from settings import routes
+
+            
+			for elem in plugin.modelos:
+				if os.path.exists(config.base_root+config.apps_folder+settings.app+"/admin/"+routes.models_folder+"plugins/"+plugin.name+"/"+elem+"_struct.py"):				
+    				
+					self.model[elem]=imp.load_source(elem+"_model",config.base_root+config.plugins_folder+plugin.name+"/modelos/"+elem+"_model.py").model(
+    					config.base_root+config.apps_folder+settings.app+"/admin/"+routes.models_folder+"plugins/"+plugin.name+"/"+elem,
+    					config.base_root+config.modelos_folder+"request/","user",ext=".py"
+    					)
+
+				else:
+					if not os.path.exists(config.base_root+config.apps_folder+settings.app+"/admin/"+routes.models_folder+"plugins/"+plugin.name+"/"):
+					   os.mkdir(config.base_root+config.apps_folder+settings.app+"/admin/"+routes.models_folder+"plugins/"+plugin.name+"/")
+
+
+					f=open(config.base_root+config.plugins_folder+plugin.name+"/modelos/"+elem+"_struct.py","r")
+					struct=f.read()
+					f.close()
+
+					f=open(config.base_root+config.apps_folder+settings.app+"/admin/"+routes.models_folder+"plugins/"+plugin.name+"/"+elem+"_struct.py","w")
+					f.write(struct)
+					f.close()				
+
+					self.model[elem]=imp.load_source(elem+"_model",config.base_root+config.plugins_folder+plugin.name+"/modelos/"+elem+"_model.py").model(
+
+					config.base_root+config.apps_folder+settings.app+"/admin/"+routes.models_folder+"plugins/"+plugin.name+"/"+elem,
+    					config.base_root+config.modelos_folder+"request/","user",ext=".py"
+    					)
+
+
+
+		for elem in plugin.shortcodes:
+				
+					self.shortcodes[elem]=imp.load_source(elem+"_model",config.base_root+config.plugins_folder+self.plugin.name+"/shortcodes/"+elem+".py").shortcode(self)
+
+					self.shortcodes[elem].ruta=self.plugin.__path__+"/widgets/"
+
+					self.shortcodes[elem].url=config.base_url+config.plugins_folder+"/".join(self.plugin.__path__.split("/")[-2:])+"/widgets/"
+					
+
+	def sc(self):
+	        """
+	        invoca los shotcodes atrabes de una url
+	        """
+	        
+	        if len(self.data["args"])>0:
+	            self.HEADERS.set_headers({"Content-type":"text/html\n"})
+	            self.HEADERS.show()
+                
+	            print self.incluir(self.data,"head",isglobal=True)
+
+	        atts=""
+	        if "sc" in self.data:
+	        	atts+=" sc='"+self.data["sc"]+"'"
+	        
+	        print self.do_shortcode("["+self.plugin.name+"-"+self.data["args"][0]+atts+"]")
+
+	def metodo_desconocido(self):
+		pass
+		
+	def desinstalar(self,data):
+		l=self.plugin.navegacion
+		if self.data["model"]["main"].request():
+			for k,elem in enumerate(self.data["model"]["main"].obtenerFilas("Plugins")):
+				if elem[0]==self.plugin.name:
+					self.data["model"]["main"].db("Plugins").modificarCampo(k,"Activo",False)
+				
+			for k,elem in enumerate(self.data["model"]["main"].obtenerFilas("AdminMenu")):
+	                    if elem in l:
+	                    	self.db("AminMenu").delFila(k)
+		self.data["model"]["main"].grabar()
+		
+
+	def action(self,data):
+		pass
+
+class Shortcode:
+    def __init__(self,pluginObj,contenedor=False):
+        
+        self.contenedor=contenedor
+        self.plugin=pluginObj
+        
+
+
+        
+        self.vista=None
+        self.widget=None
+        self.ruta=""
+        self.url=""
+        self.embebed=None
+
+    def incluir(self,data={},widget="",modulo="plugin"):
+        if data=={}:
+            data=self.plugin.data
+        plugin=self.plugin.plugin
+        
+        from modulos.ztec.zred import decode
+        from modulos.ztec.intervalor.control import generar2
+
+
+        if widget!="":
+            from config import config
+            import os
+            plugin.widget_base_url=config.base_url+config.plugins_folder+plugin.name+"/"+plugin.widgets_folder
+
+            self.widget=widget
+            
+            if modulo!="plugin":
+                
+                if modulo=="admin":
+                    from settings import config as settings
+                    from settings import routes
+
+                    self.ruta=config.base_root+config.apps_folder+settings.app+"/admin/"+routes.vistas_folder+routes.widgets_folder
+                elif modulo=="user":
+                    self.ruta=config.base_root+config.apps_folder+settings.app+"/user/"+routes.vistas_folder+routes.widgets_folder
+                elif modulo=="global":
+
+                    self.ruta=config.base_root+config.vistas_folder+config.widgets_folder
+
+                if os.path.exists(self.ruta+self.widget+".html"):
+                    generar2(self.ruta+self.widget+".html",self.ruta+self.widget+".py","# -*- coding: utf-8 -*-\n")
+                elif os.path.exists(self.ruta+self.widget+"/"+self.widget+".html"): 
+
+                    self.ruta+=self.widget
+                    plugin.widget_base_url+=self.widget+"/"
+           
+                    plugin.widget_url=plugin.widget_base_url+self.widget+".html"
+                    generar2(self.ruta+self.widget+".html",self.ruta+self.widget+".py","# -*- coding: utf-8 -*-\n")
+               
+
+        incluir=self.incluir
+
+
+
+
+
+
+        
+        
+        if data["app"]!=None:
+
+            from settings import config as settings
+            from settings import routes
+
+
+
+
+
+        if self.widget!=None:
+            import os,urllib2,urllib
+
+            from modulos.ztec.zu import filtrar_datos_planos
+            from modulos.ztec.intervalor.control import generar3
+
+            if os.path.exists(self.ruta+self.widget+".py"):
+                print "xxxxxxxxxxx"
+
+                f=open(self.ruta+self.widget+".py")
+
+
+
+                script=f.read()
+
+
+                f.close()
+                
+                doc=""
+                try:
+                    
+                    exec(script)
+
+                    return doc
+                except Exception as e:
+
+                    return str(e)
+
+
+                
+            elif self.embebed=="php" and os.path.exists(self.ruta+self.widget+".php"):
+                
+                
+                params=urllib.urlencode({"data":filtrar_datos_planos(self.plugin.data)})
+                f=urllib2.urlopen(self.url+self.widget+".php",params)
+                return f.read()
+            elif self.embebed=="rb" and os.path.exists(self.ruta+self.widget+".html.rb"):
+                
+                params=urllib.urlencode({"data":filtrar_datos_planos(self.plugin.data)})
+                generar3(self.ruta+self.widget+".html.rb",self.ruta+self.widget+".rb",formatear_rb,'#!/usr/bin/env  ruby\nputs "Content-type: text/html\\n\\n"\n')
+                
+                f=urllib2.urlopen(self.url+self.widget+".rb",params)
+                return f.read()
+            elif self.embebed=="pl" and os.path.exists(self.ruta+self.widget+".html.pl"):
+                
+                params=urllib.urlencode({"data":filtrar_datos_planos(self.plugin.data)})
+                generar3(self.ruta+self.widget+".html.pl",self.ruta+self.widget+".pl",formatear_pl,'#!/usr/bin/env  perl\nprint "Content-type: text/html\\n\\n";\n')
+                f=urllib2.urlopen(self.url+self.widget+".pl",params)
+                return f.read()
+            elif self.embebed=="sh" and os.path.exists(self.ruta+self.widget+".html.sh"):
+                params=urllib.urlencode({"data":filtrar_datos_planos(self.plugin.data)})
+                generar3(self.ruta+self.widget+".html.sh",self.ruta+self.widget+".sh",'#!/usr/bin/env  sh\necho "Content-type: text/html\\n\\n";\n')
+                f=urllib2.open(self.url+self.widget+".sh",params)
+                return f.read()
+            elif self.embebed=="asp" and os.path.exists(self.ruta+self.widget+".html.asp"):
+                """
+                Necesitara de un servidor
+                la extencion es ficticia
+                """
+                params=urllib.urlencode({"data":filtrar_datos_planos(self.plugin.data)})
+                generar3(self.ruta+self.widget+".html.sh",self.ruta+self.widget+".sh","#!/usr/bin/env  asp\n")
+                f=urllib2.open(self.url+self.widget+".sh",params)
+                return f.read()
+            elif self.embebed=="cpp" and os.path.exists(self.ruta+self.widget+".htm.cpp"):
+                """
+                Necesitara de un servidor
+                la extencion es ficticia
+                """
+                params=urllib.urlencode({"data":filtrar_datos_planos(self.plugin.data)})
+                generar3(self.ruta+self.widget+".html.cpp",self.ruta+self.widget+".cpp","#!/usr/bin/env  cpp\n")
+                f=urllib2.open(self.url+self.widget+".cpp",params)
+                return f.read()
+            elif self.embebed=="go" and os.path.exists(self.ruta+self.widget+".go"):
+                """
+                Necesitara de un servidor
+                la extencion es ficticia
+                """
+                params=urllib.urlencode({"data":filtrar_datos_planos(self.plugin.data)})
+                f=urllib3.open(self.url+self.widget+".go",params)
+                return f.read()
+
+
+    def run(self,args=None,content=None,exterior=None):
+        return ""
+

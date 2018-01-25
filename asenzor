@@ -1,0 +1,135 @@
+#!/usr/bin/python2.7
+#!C:/Python/python.exe
+import sys
+import stat
+import os
+plantilla="""
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Asenzor | Otro sitio creado con zerpatechnology</title>
+	<link rel="stylesheet" type="text/css" href="static/css/ff.css">
+	<link rel="stylesheet" type="text/css" href="static/css/flexboxgrid.css">
+	<script type="text/javascript" src="static/js/brython/brython.js"></script>
+	<script type="text/javascript" src="static/js/brython/brython_stdlib.js"></script>
+</head>
+<body>
+<header class="container height-5 bg-bluelight">
+<nav id="container main-navbar height-5 bg-blue"></nav>
+
+</header>
+<section class="container height-5 bg-ubuntu_orange">
+</section>
+<footer class="container height-5 bg-ubuntu_jet">
+</footer>
+</body>
+</html>
+"""
+from config import config
+
+if len(sys.argv)>1:
+
+	if sys.argv[1]=="nueva":
+		if len(sys.argv)>2:
+
+			if sys.argv[2]=="app":
+				import shutil
+				if len(sys.argv)>3:
+					shutil.copy(config.projects_folder+sys.argv[4])
+				else:
+					shutil.copy(config.projects_folder+default_project)
+			else:
+				app=sys.argv[2]
+				sys.path.append(config.apps_dir+"/"+app+"/admin/")
+				import settings
+
+				if sys.argv[3]=="vista":
+					if len(sys.argv)>3:
+						
+						if sys.argv[4]=="admin":
+							if len(sys.argv)>4:
+								if sys.argv[5]+".html" not in os.listdir(config.apps_dir+"/"+app+"/admin/"+settings.config.vistas_folder):
+									f=open(config.apps_dir+"/"+app+"/admin/"+settings.config.vistas_folder+sys.argv[5]+"html","w")
+									f.write(plantilla)
+									f.close()
+								else:
+									print "Ya existe un layout con este nombre"
+
+						elif sys.argv[4]=="user":  
+							if len(sys.argv)>4:
+								if sys.argv[5]+".html" not in os.listdir(config.apps_dir+"/"+app+"/user/"+settings.config.vistas_folder):
+									f=open(config.apps_dir+"/"+app+"/user/"+settings.config.vistas_folder+sys.argv[5]+"html","w")
+									f.write(plantilla)
+									f.close()
+								else:
+									print "Ya existe un layout con este nombre"
+									
+						else:
+							print "Debes usar alguno de los siguientes usuarios (admin/user)"
+	else:
+		app=sys.argv[1]
+		sys.path.append(config.apps_dir+"/"+app+"/admin/")
+		import settings.config as settings
+		if sys.argv[2]=="nueva":
+			if len(sys.argv)>2:
+				
+				
+
+				if sys.argv[3]=="vista":
+					if len(sys.argv)>3:
+						
+						if sys.argv[4]=="admin":
+							if len(sys.argv)>4:
+								if sys.argv[5]+".html" not in os.listdir(config.apps_dir+"/"+app+"/admin/"+settings.vistas_folder):
+									f=open(config.apps_dir+"/"+app+"/admin/"+settings.vistas_folder+sys.argv[5]+".html","w")
+									f.write(plantilla)
+									f.close()
+									os.chmod(config.apps_dir+"/"+app+"/admin/"+settings.vistas_folder+sys.argv[5]+".html",stat.S_IWOTH+stat.S_IROTH)
+
+								else:
+									print "Ya existe un layout con este nombre"
+
+						elif sys.argv[4]=="user":  
+							if len(sys.argv)>4:
+								
+								if sys.argv[5]+".html" not in os.listdir(config.apps_dir+"/"+app+"/user/"+settings.vistas_folder):
+									f=open(config.apps_dir+"/"+app+"/user/"+settings.vistas_folder+sys.argv[5]+".html","w")
+									f.write(plantilla)
+									f.close()
+									os.chmod(config.apps_dir+"/"+app+"/user/"+settings.vistas_folder+sys.argv[5]+".html", stat.S_IWOTH+stat.S_IROTH)
+								else:
+									print "Ya existe un layout con este nombre"
+									
+						else:
+							print "Debes usar alguno de los siguientes usuarios (admin/user)"
+
+		elif sys.argv[2]=="nuevo":
+			
+			if len(sys.argv)>2:
+				
+				if sys.argv[3]=="modelo":
+					pass
+				if sys.argv[3]=="widget":
+					print settings.widgets_folder
+					if len(sys.argv)>3:
+						if sys.argv[4]=="admin":
+							if len(sys.argv)>4:
+								if sys.argv[5]+".html" not in os.listdir(config.apps_dir+"/"+app+"/admin/"+settings.vistas_folder+settings.widgets_folder):
+									f=open(config.apps_dir+"/"+app+"/admin/"+settings.vistas_folder+settings.widgets_folder+sys.argv[5]+".html","w")
+									f.write("<div>Widget creado<div>")
+									f.close()
+									os.chmod(config.apps_dir+"/"+app+"/admin/"+settings.vistas_folder+settings.widgets_folder+sys.argv[5]+".html",stat.S_IWOTH+stat.S_IROTH)
+								else:
+									print "Ya existe un layout con este nombre"
+
+						elif sys.argv[4]=="user":  
+							if len(sys.argv)>4:
+								if sys.argv[5]+".html" not in os.listdir(config.apps_dir+"/"+app+"/user/"+settings.vistas_folder+settings.widgets_folder):
+									f=open(config.apps_dir+"/"+app+"/user/"+settings.vistas_folder+settings.widgets_folder+sys.argv[5]+".html","w")
+									f.write("<div>Widget creado <div>")
+									f.close()
+									os.chmod(config.apps_dir+"/"+app+"/user/"+settings.vistas_folder+settings.widgets_folder+sys.argv[5]+".html",stat.S_IWOTH+stat.S_IROTH)
+								else:
+									print "Ya existe un layout con este nombre"
+									
+

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+{{=incluir(data,"head")}}
+<body onload="brython(1)">
+  <!--hola-->
+{{=incluir(data,"widget-navbar")}}
+<section class="container" style="font-family: sans-serif;">
+	<div class="row">
+	<div class="col-md-8">
+	<h1>{{=data["post"][0][0]["value"]}}</h1>
+	{{=data["post"][0][1]["value"]}}
+
+	</div>
+	<aside class="col-md-4">
+	{{=incluir(data,"box-sidebar")}}
+	</aside>	
+	</div>
+	
+</section>
+{{=incluir(data,"subfooter")}}
+{{=incluir(data,"footer")}}
+
+</body>
+</html>

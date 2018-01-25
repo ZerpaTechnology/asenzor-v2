@@ -1,0 +1,1394 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+doc+='''<!DOCTYPE html>
+<html lang="en">
+<head>
+'''
+
+def xs(img):
+  return img[:img.find(".")]+"_540x540"+img[img.find("."):]
+
+doc+='''
+  <!--prueba2->
+ <meta charset="UTF-8">
+ <!--<meta http-equiv="pragma" content="no-cache">-->
+ <title>'''
+try: doc+=str(settings.app)
+except Exception, e: doc+=str(e)
+doc+='''</title>
+ <link rel="stylesheet" href="'''
+try: doc+=str(data['base_url'])
+except Exception, e: doc+=str(e)
+doc+='''static/css/owl.carousel.min.css">
+ <link rel="stylesheet" href="'''
+try: doc+=str(data['base_url'])
+except Exception, e: doc+=str(e)
+doc+='''static/css/owl.theme.default.min.css">
+ <!--<link rel="stylesheet" href="'''
+try: doc+=str(data['base_url'])
+except Exception, e: doc+=str(e)
+doc+='''static/css/rd-parallax.css">-->
+ <link rel="stylesheet" href="'''
+try: doc+=str(data['base_url'])
+except Exception, e: doc+=str(e)
+doc+='''static/css/style.css">
+ <link rel="stylesheet" href="'''
+try: doc+=str(data['base_url'])
+except Exception, e: doc+=str(e)
+doc+='''static/css/swiper.min.css">
+ <link rel="stylesheet" href="'''
+try: doc+=str(data['base_url'])
+except Exception, e: doc+=str(e)
+doc+='''static/css/magnific-popup.css">
+ <link rel="stylesheet" href="'''
+try: doc+=str(data['base_url'])
+except Exception, e: doc+=str(e)
+doc+='''static/css/_bootstrap.css">
+ <link rel="stylesheet" href="'''
+try: doc+=str(config.base_url)
+except Exception, e: doc+=str(e)
+doc+='''static/css/ff.css">
+ <link rel="stylesheet" href="'''
+try: doc+=str(data['base_url'])
+except Exception, e: doc+=str(e)
+doc+='''static/css/animate.css">
+ <link rel="icon" type="image/png" href="'''
+try: doc+=str(data['base_url'])
+except Exception, e: doc+=str(e)
+doc+='''../admin/static/archivos/Imagenes/Logo-Woodrige_min.png" />
+ <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> 
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ <script src="'''
+try: doc+=str(data['base_url'])
+except Exception, e: doc+=str(e)
+doc+='''static/js/jquery-3.2.0.min.js"></script>
+ 
+ <script src="'''
+try: doc+=str(data['base_url'])
+except Exception, e: doc+=str(e)
+doc+='''static/js/bootstrap.js"></script>
+ <script src="'''
+try: doc+=str(data['base_url'])
+except Exception, e: doc+=str(e)
+doc+='''static/js/bootstrap/collapse.js"></script>
+
+ <script src="'''
+try: doc+=str(data['base_url'])
+except Exception, e: doc+=str(e)
+doc+='''static/js/modernizr-custom.js"></script>
+ <script type="text/javascript" src="'''
+try: doc+=str(config.base_url)
+except Exception, e: doc+=str(e)
+doc+='''static/js/brython/brython.js"></script>
+ <script type="text/javascript" src="'''
+try: doc+=str(config.base_url)
+except Exception, e: doc+=str(e)
+doc+='''static/js/brython/brython_stdlib.js"></script>
+ 
+ <style type="text/css">
+   .bg-position{
+     
+   }
+   @media(min-width:1280px){
+   .height-38-xl{
+     height:380px !important;
+   }
+  }
+ .text-parallax{
+  position: fixed;
+  top: 50px;
+  text-align: center;
+   
+  transform: translate3d(0,0,-100px);
+ }
+   .text-parallax b{
+     color:rgb(200,0,0) !important;
+     
+   }
+   
+   .section-parallax{
+  transform: translate3d(0,0,100px);
+  -webkit-transform: translate3d(0,0,100px);
+  -moz-transform: translate3d(0,0,100px);
+  -ms-transform: translate3d(0,0,100px);
+  -o-transform: translate3d(0,0,100px);
+ }
+   @media (min-width: 361px){
+  .contact-pos{
+ padding-top: 30px
+ }
+
+ }
+ 
+ .font-face{
+  src:url("'''
+try: doc+=str(data["base_url"])
+except Exception, e: doc+=str(e)
+doc+='''fonts/roboto/Roboto-Medium.ttf")!important;
+  font-family: "Roboto-BoldItalic" !important;
+
+  
+ }
+ .font-roboto{
+  font-family: 'Roboto-BoldItalic' !important;
+  font-weight: bold;
+ }
+ @media (max-width:360px) {
+  .marg-t10-xs{
+   padding-top:100px;
+  }
+   .marg-l0-xs{
+   margin-left:0px !important;
+  }
+ } 
+  
+ @media (min-width:361px) and  (max-width:767px){
+  .marg-t5-sm{
+   padding-top:50px;
+  } 
+  .height-40-sm{
+   height:400px !important;
+  }
+   .pad-2x-sm{
+     padding-left:20px !important;
+     padding-right:20px !important;
+   }
+   .height-12-smx{
+     height:120px !important;
+   }
+   .height-25-smx{
+     height:250px !important;
+   }
+ }
+  
+ .font-face{
+  src:url("'''
+try: doc+=str(data["base_url"])
+except Exception, e: doc+=str(e)
+doc+='''fonts/lato") !important;
+  font-family: "Lato" !important;
+ }
+ .font-lato{
+  font-family: 'Lato' !important;
+ } 
+ .f-right{
+  
+  position: absolute;
+  
+  font-size: 50px;
+  color: blue;
+  
+  right: 5%;top: 45%;
+  right: 0;
+  z-index: 200;
+  cursor: pointer;
+   }
+   .img-other{
+     background-image: url("'''
+try: doc+=str(data['base_url'])
+except Exception, e: doc+=str(e)
+doc+='''../admin/static/archivos/Imagenes/'''
+try: doc+=str(data['opciones']['archivos'][0][1][data['page'][4][1]['value']])
+except Exception, e: doc+=str(e)
+doc+='''") !important;
+   }
+   .slider1{
+       background-image:url("'''
+try: doc+=str(data['base_url'])
+except Exception, e: doc+=str(e)
+doc+='''../admin/static/archivos/Imagenes/'''
+try: doc+=str(data['opciones']['archivos'][0][1][data['page'][0][3]['value']])
+except Exception, e: doc+=str(e)
+doc+='''");
+       background-repeat:no-repeat;
+       background-size: cover;
+     }
+   .slider2{
+       background-image:url("'''
+try: doc+=str(data['base_url'])
+except Exception, e: doc+=str(e)
+doc+='''../admin/static/archivos/Imagenes/'''
+try: doc+=str(data['opciones']['archivos'][0][1][data['page'][0][4]['value']])
+except Exception, e: doc+=str(e)
+doc+='''");
+       background-repeat:no-repeat;
+     background-size: cover;
+     }
+   .slider3{
+       background-image:url("'''
+try: doc+=str(data['base_url'])
+except Exception, e: doc+=str(e)
+doc+='''../admin/static/archivos/Imagenes/'''
+try: doc+=str(data['opciones']['archivos'][0][1][data['page'][0][5]['value']])
+except Exception, e: doc+=str(e)
+doc+='''");
+       background-repeat:no-repeat;
+     background-size: cover;
+     }
+     .img-contacto{
+     background-image: url('''
+try: doc+=str(data['base_url'])
+except Exception, e: doc+=str(e)
+doc+='''../admin/static/archivos/Imagenes/'''
+try: doc+=str(data['opciones']['archivos'][0][1][data['page'][5][1]['value']])
+except Exception, e: doc+=str(e)
+doc+=''') !important;
+   }
+   @media (max-width:426px){
+       .menu li{
+       display:block !important;
+       margin-left:10px !important;
+      
+     }
+     .slider1{
+       background-image:url('''
+try: doc+=str(data['base_url'])
+except Exception, e: doc+=str(e)
+doc+='''../admin/static/archivos/Imagenes/'''
+try: doc+=str(xs(data['opciones']['archivos'][0][1][data['page'][0][3]['value']]))
+except Exception, e: doc+=str(e)
+doc+=''');
+     }
+     .slider2{
+       background-image:url('''
+try: doc+=str(data['base_url'])
+except Exception, e: doc+=str(e)
+doc+='''../admin/static/archivos/Imagenes/'''
+try: doc+=str(xs(data['opciones']['archivos'][0][1][data['page'][0][4]['value']]))
+except Exception, e: doc+=str(e)
+doc+=''');
+     }
+     .slider3{
+       background-image:url('''
+try: doc+=str(data['base_url'])
+except Exception, e: doc+=str(e)
+doc+='''../admin/static/archivos/Imagenes/'''
+try: doc+=str(xs(data['opciones']['archivos'][0][1][data['page'][0][5]['value']]))
+except Exception, e: doc+=str(e)
+doc+=''');
+     }
+   
+    .img-other{
+     background-image: url('''
+try: doc+=str(data['base_url'])
+except Exception, e: doc+=str(e)
+doc+='''../admin/static/archivos/Imagenes/'''
+try: doc+=str(xs(data['opciones']['archivos'][0][1][data['page'][4][1]['value']]))
+except Exception, e: doc+=str(e)
+doc+=''') !important;
+   } 
+     .img-contacto{
+     background-image: url('''
+try: doc+=str(data['base_url'])
+except Exception, e: doc+=str(e)
+doc+='''../admin/static/archivos/Imagenes/'''
+try: doc+=str(xs(data['opciones']['archivos'][0][1][data['page'][5][1]['value']]))
+except Exception, e: doc+=str(e)
+doc+=''') !important;
+   }
+   }
+   @media (max-width:600px) and (max-height:360px){
+       .menu li{
+       display:block !important;
+       margin-left:10px !important;
+      
+     }
+     .baner-about3{
+       position:fixed !important;
+       top:100px !important;
+     }  
+     .baner-contact{
+       position:fixed !important;
+       top:100px !important;
+     }  
+     .slider1{
+       background-image:url("'''
+try: doc+=str(data['base_url'])
+except Exception, e: doc+=str(e)
+doc+='''../admin/static/archivos/Imagenes/'''
+try: doc+=str(xs(data['opciones']['archivos'][0][1][data['page'][0][3]['value']]))
+except Exception, e: doc+=str(e)
+doc+='''");
+      background-size:cover !important;
+     }
+     .slider2{
+       background-image:url("'''
+try: doc+=str(data['base_url'])
+except Exception, e: doc+=str(e)
+doc+='''../admin/static/archivos/Imagenes/'''
+try: doc+=str(xs(data['opciones']['archivos'][0][1][data['page'][0][4]['value']]))
+except Exception, e: doc+=str(e)
+doc+='''");
+       background-size:cover !important;
+     }
+     .slider3{
+       background-image:url("'''
+try: doc+=str(data['base_url'])
+except Exception, e: doc+=str(e)
+doc+='''../admin/static/archivos/Imagenes/'''
+try: doc+=str(xs(data['opciones']['archivos'][0][1][data['page'][0][5]['value']]))
+except Exception, e: doc+=str(e)
+doc+='''");
+       background-size:cover !important;
+     }
+     
+   } 
+   
+  
+
+ .f-left{
+  position: absolute;
+  
+  font-size: 50px;
+  color: blue;
+  top:45%;
+  left: 0;
+  cursor: pointer;
+
+  
+
+  z-index: 200;
+ }
+ .exit{
+  
+  font-size: 30px;
+  color: white;
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  cursor: pointer;
+
+
+ }
+  
+ 
+ .img-link{
+  cursor: pointer;
+ }
+.swiper-container {
+        width: 100%;
+        height: 100%;
+    }
+    .swiper-slide {
+        text-align: center;
+        font-size: 18px;
+        background: #fff;
+        /* Center slide text vertically */
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        -webkit-justify-content: center;
+        justify-content: center;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        -webkit-align-items: center;
+        align-items: center;
+    }
+   #preview{
+     max-width:1000px;
+     max-height:600px;
+   }
+  @media (max-width:360px){
+   #preview{
+     max-width:80% !important;
+     max-height:400px !important;
+   }
+   }
+   /*
+   @media (max-height:539px){
+     .baner-par{
+       top:100px !important;
+     }    
+   }
+     @media (min-height:540px){
+     .baner-par{
+       top:-10px !important;
+     }    
+   }
+   @media (min-height:560px){
+    .baner-par{
+       top:-10px !important;
+     }     
+   }
+   @media (min-height:576px){
+    .baner-par{
+       top:-10px !important;
+     }    
+     .baner-contact{
+       top:-40px !important;
+     }    
+   }
+  @media (min-height:630px){
+    .baner-par{
+       top:-40px !important;
+     }    
+     
+   }
+   @media (min-height:799px){
+    .baner-par{
+      position:fixed !important;
+       top:100px !important;
+     }    
+     
+   }
+   @media (min-height:1024px){
+   .baner-par{
+       top:-40px !important;
+     }    
+   }
+   @media (min-height:1080px){
+   .baner-par{
+       top:-40px !important;
+     }  
+   }
+   @media (min-height:1279px){
+   .baner-par{
+     position:fixed !important;
+       top:100px !important;
+     }  
+   }
+   
+   @media (min-height:1800px){
+   .baner-par{
+       top:-40px !important;
+     }  
+   }
+   */
+   .baner-par{
+     position:fixed !important;
+       top:100px !important;
+     }  
+   
+   
+   
+   .div-plano{
+   width:48%; 
+   position:relative;
+   }
+   @media (min-width:800px){
+     .div-plano{
+   width:49.8%; 
+   }
+   }
+   #more-info1{
+     position:absolute;
+     top:150px !important;
+   }
+@media (max-width:540px){
+   .width-30-xs{
+       width:300px !important;
+     }  
+   }
+ </style>
+
+
+</head>
+<body id="page-top" class="font-roboto" onload="brython()">
+ 
+ 
+ <div id="home" class="wrap">
+
+  <!-- menu-->
+
+   <nav id="nav-main" class=" navbar navbar-default content-menu section-parallax" style="margin-bottom: 0px;z-index: 300;width: 100%;background-color:rgba(50,50,50,0.5) !important;border:none;border-radius: 0px;">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand pad-1" href="#home"><img class="height-4" src="'''
+try: doc+=str(data['base_url'])
+except Exception, e: doc+=str(e)
+doc+='''../admin/static/archivos/Imagenes/'''
+try: doc+=str(data['opciones']['archivos'][0][1][data['page'][0][2]['value']])
+except Exception, e: doc+=str(e)
+doc+='''"></a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse font-roboto" id="bs-example-navbar-collapse-1">
+         <ul class="menu nav navbar-nav navbar-right" style="text-align: left;padding-left: 0px">
+     <li><a href="#home" class="white font-s19  pad-05-sm" >'''
+try: doc+=str(data['page'][0][1]['value'])
+except Exception, e: doc+=str(e)
+doc+='''</a></li>
+     <li><a href="#about" class="white font-s19  pad-05-sm">'''
+try: doc+=str(data['page'][1][0]['value'])
+except Exception, e: doc+=str(e)
+doc+='''</a></li>
+     <li><a href="#gallery" class="white font-s19 pad-05-sm">'''
+try: doc+=str(data['page'][3][0]['value'])
+except Exception, e: doc+=str(e)
+doc+='''</a></li>
+     <li><a href="#floorapartments" class="white font-s19 pad-05-sm">'''
+try: doc+=str(data['page'][2][0]['value'])
+except Exception, e: doc+=str(e)
+doc+='''</a></li>
+     
+     <li><a href="#other" class="white font-s19 pad-05-sm">'''
+try: doc+=str(data['page'][4][0]['value'])
+except Exception, e: doc+=str(e)
+doc+='''</a></li>
+     <li><a href="#contacto" class="white font-s19  pad-05-sm">'''
+try: doc+=str(data['page'][5][0]['value'])
+except Exception, e: doc+=str(e)
+doc+='''</a></li>
+    </ul> 
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+
+  <!-- end menu height-75 height-40-xs height-40-sm  -->
+  <header class="z-index20  section-parallax" >
+   <!-- carousel -->
+    <div class="owl-carousel carousel-principal owl-theme" style="background-color:rgb(20,20,20);">
+     <div class="item ">
+      <div class=" slider1" style="background-position: center center;width: 100%;background-repeat:no-repeat"></div>
+      
+     </div>
+     <div class="item">
+      <div class="slider2" style="background-position: center center ;width: 100%; background-repeat:no-repeat"></div>
+      
+     </div>
+      
+     <div class="item">
+     <div class="slider3" style="background-position: center center;width: 100%; background-repeat:no-repeat"></div>
+     </div>
+
+    </div>
+   <!-- end carousel -->
+   <a href="#about" class="icon-circle-down"></a>
+  </header>
+   <script>
+     function render(){
+     $(".slider1")[0].style.height=window.innerHeight+"px";
+     $(".slider2")[0].style.height=window.innerHeight+"px";
+     $(".slider3")[0].style.height=window.innerHeight+"px";
+    /*
+     if (window.innerWidth>=600 && window.innerWidth>window.innerHeight){
+       $(".slider1")[0].style.backgroundSize="100% auto";
+       $(".slider2")[0].style.backgroundSize="100% auto";
+       $(".slider3")[0].style.backgroundSize="100% auto;"  
+     }
+    else if(window.innerWidth>=380 && window.innerWidth<window.innerHeight){
+            $(".slider1")[0].style.backgroundSize="auto 100%";
+             $(".slider2")[0].style.backgroundSize="auto 100%";
+             $(".slider3")[0].style.backgroundSize="auto 100%" 
+            }
+      */ 
+     }
+     render();
+     
+     window.addEventListener("orientationchange",function(){
+     render();
+       },true);
+   </script>
+  
+  <!-- section about us-->
+   <!-- parallax about-->
+    
+   <!--end  parallax about-->
+<section class="bg-position bg-ubuntu_jet height-10" style="background-image:url('''
+try: doc+=str(data['base_url'])
+except Exception, e: doc+=str(e)
+doc+='''../admin/static/archivos/Imagenes/'''
+try: doc+=str(data['opciones']['archivos'][0][1][data['page'][0][6]['value']])
+except Exception, e: doc+=str(e)
+doc+='''); background-attachment: fixed;background-position: 0px -20px">
+<div class="text-parallax">
+  <span class="font-s40 hidden"><b >'''
+try: doc+=str(data['page'][1][0]['value'])
+except Exception, e: doc+=str(e)
+doc+='''</b></span>
+ </div>
+</section>
+  <!--
+   <section id="about-parallax" class="rd-parallax rd-parallax-overlay">
+     <div class="rd-parallax-inner" data-speed="0.3" data-type="html" data-fade="true"></div>
+     <div class="rd-parallax-layer" data-spedd="0.6" data-type="media" data-url="'''
+try: doc+=str(data['base_url'])
+except Exception, e: doc+=str(e)
+doc+='''../admin/static/archivos/Imagenes/'''
+try: doc+=str(data['opciones']['archivos'][0][1][data['page'][0][6]['value']])
+except Exception, e: doc+=str(e)
+doc+='''" style="width:100%;background-position:0px -45px"></div>
+     <div data-speed="0.2" data-type="html" class="rd-parallax-layer parallax-padding">
+      <div class="container">
+       <div class="row height-5">
+        <div class="col-lg-12">
+         <span class="white text-center baner-about baner-about3 baner-par font-s40">'''
+try: doc+=str(data['page'][1][0]['value'])
+except Exception, e: doc+=str(e)
+doc+='''</span>
+        </div>
+       </div>
+      </div>
+     </div>
+    </section>
+-->
+   <section id="about"  class="bg-white z-index100 section-parallax ">
+    <div class="container font-lato">
+     <div class="row">
+      <div class="col-lg-4">
+       '''
+try: doc+=str(data['page'][1][1]['value'])
+except Exception, e: doc+=str(e)
+doc+='''
+      </div>
+      <div class="col-lg-8 text-justify">
+       '''
+try: doc+=str(data['page'][1][2]['value'])
+except Exception, e: doc+=str(e)
+doc+='''
+      
+      </div>
+     </div>
+    </div>   
+   </section>
+ 
+  <!-- gallery -->
+   <!-- parallax gallery-->
+    <section  class="bg-position bg-ubuntu_jet height-10" style="background-image:url('''
+try: doc+=str(data['base_url'])
+except Exception, e: doc+=str(e)
+doc+='''../admin/static/archivos/Imagenes/'''
+try: doc+=str(data['opciones']['archivos'][0][1][data['page'][0][6]['value']])
+except Exception, e: doc+=str(e)
+doc+='''); background-attachment: fixed;background-position: 0px -20px">
+<div class="text-parallax">
+  <span class=" font-s40 hidden"><b>'''
+try: doc+=str(data['page'][3][0]['value'])
+except Exception, e: doc+=str(e)
+doc+='''</b></span>
+ </div>
+</section>
+  <!--
+    <section id="about-parallax" class="rd-parallax rd-parallax-overlay height-10">
+     <div class="rd-parallax-inner" data-speed="0.3" data-type="html" data-fade="true"></div>
+     <div class="rd-parallax-layer" data-spedd="0.6" data-type="media" data-url="'''
+try: doc+=str(data['base_url'])
+except Exception, e: doc+=str(e)
+doc+='''../admin/static/archivos/Imagenes/'''
+try: doc+=str(data['opciones']['archivos'][0][1][data['page'][0][6]['value']])
+except Exception, e: doc+=str(e)
+doc+='''" style="width:100%;background-position:0px -45px"></div>
+     <div data-speed="0.2" data-type="html" class="rd-parallax-layer parallax-padding">
+      <div class="container">
+       <div class="row height-4">
+        <div class="col-lg-12">
+         <span class=" text-center white baner-gallery baner-par font-s40">'''
+try: doc+=str(data['page'][3][0]['value'])
+except Exception, e: doc+=str(e)
+doc+='''</span>
+        </div>
+       </div>
+      </div>
+     </div>
+    </section>
+    -->
+   <!--end  parallax gallery-->
+   <div id="gallery" class="container-fluid bg-ubuntu_jet height-58">
+     <div class="row">
+    <div class="col-md-5">
+    <iframe width="100%" src="'''
+try: doc+=str(data['page'][3][1]['value'])
+except Exception, e: doc+=str(e)
+doc+='''" frameborder="0" allowfullscreen class="height-48 height-30-sm height-24-xs"></iframe> 
+    </div>
+    <div class="col-md-7">
+     <div  id="galeria" class="galeria owl-carousel carousel-principal owl-theme owl-loaded owl-drag height-58 height-20-xs height-25-smx height-30-sm bg-ubuntu_jet">
+    <div>
+    <span class="img-link" href="'''
+try: doc+=str(data['base_url'])
+except Exception, e: doc+=str(e)
+doc+='''../admin/static/archivos/Imagenes/'''
+try: doc+=str(data['opciones']['archivos'][0][1][data['page'][3][2]['value']])
+except Exception, e: doc+=str(e)
+doc+='''"><img src="'''
+try: doc+=str(data['base_url'])
+except Exception, e: doc+=str(e)
+doc+='''../admin/static/archivos/Imagenes/'''
+try: doc+=str(data['min'](data['opciones']['archivos'][0][1][data['page'][3][2]['value']]))
+except Exception, e: doc+=str(e)
+doc+='''" style="width:33.33%;" alt="" class="height-24 height-15-sm height-10-xs height-12-smx pad-05"></span>
+    <span class="img-link" href="'''
+try: doc+=str(data['base_url'])
+except Exception, e: doc+=str(e)
+doc+='''../admin/static/archivos/Imagenes/'''
+try: doc+=str(data['opciones']['archivos'][0][1][data['page'][3][3]['value']])
+except Exception, e: doc+=str(e)
+doc+='''"><img src="'''
+try: doc+=str(data['base_url'])
+except Exception, e: doc+=str(e)
+doc+='''../admin/static/archivos/Imagenes/'''
+try: doc+=str(data['min'](data['opciones']['archivos'][0][1][data['page'][3][3]['value']]))
+except Exception, e: doc+=str(e)
+doc+='''" alt="" style="width:33.33%;" class="height-24 height-15-sm height-10-xs height-12-smx pad-05"></span>
+    <span class="img-link" href="'''
+try: doc+=str(data['base_url'])
+except Exception, e: doc+=str(e)
+doc+='''../admin/static/archivos/Imagenes/'''
+try: doc+=str(data['opciones']['archivos'][0][1][data['page'][3][4]['value']])
+except Exception, e: doc+=str(e)
+doc+='''"><img src="'''
+try: doc+=str(data['base_url'])
+except Exception, e: doc+=str(e)
+doc+='''../admin/static/archivos/Imagenes/'''
+try: doc+=str(data['min'](data['opciones']['archivos'][0][1][data['page'][3][4]['value']]))
+except Exception, e: doc+=str(e)
+doc+='''" alt="" style="width:33.33%;" class="height-24 height-15-sm height-10-xs height-12-smx pad-05"></span>
+    <span class="img-link" href="'''
+try: doc+=str(data['base_url'])
+except Exception, e: doc+=str(e)
+doc+='''../admin/static/archivos/Imagenes/'''
+try: doc+=str(data['opciones']['archivos'][0][1][data['page'][3][5]['value']])
+except Exception, e: doc+=str(e)
+doc+='''"><img src="'''
+try: doc+=str(data['base_url'])
+except Exception, e: doc+=str(e)
+doc+='''../admin/static/archivos/Imagenes/'''
+try: doc+=str(data['min'](data['opciones']['archivos'][0][1][data['page'][3][5]['value']]))
+except Exception, e: doc+=str(e)
+doc+='''" alt="" style="width:33.33%;" class="height-24 height-15-sm height-10-xs height-12-smx pad-05"></span>
+
+    <span class="img-link" href="'''
+try: doc+=str(data['base_url'])
+except Exception, e: doc+=str(e)
+doc+='''../admin/static/archivos/Imagenes/'''
+try: doc+=str(data['opciones']['archivos'][0][1][data['page'][3][6]['value']])
+except Exception, e: doc+=str(e)
+doc+='''"><img src="'''
+try: doc+=str(data['base_url'])
+except Exception, e: doc+=str(e)
+doc+='''../admin/static/archivos/Imagenes/'''
+try: doc+=str(data['min'](data['opciones']['archivos'][0][1][data['page'][3][6]['value']]))
+except Exception, e: doc+=str(e)
+doc+='''" alt="" style="width:33.33%;" class="height-24 height-15-sm height-10-xs height-12-smx pad-05"></span>
+    
+    <span class="img-link" href="'''
+try: doc+=str(data['base_url'])
+except Exception, e: doc+=str(e)
+doc+='''../admin/static/archivos/Imagenes/'''
+try: doc+=str(data['opciones']['archivos'][0][1][data['page'][3][7]['value']])
+except Exception, e: doc+=str(e)
+doc+='''"><img src="'''
+try: doc+=str(data['base_url'])
+except Exception, e: doc+=str(e)
+doc+='''../admin/static/archivos/Imagenes/'''
+try: doc+=str(data['min'](data['opciones']['archivos'][0][1][data['page'][3][7]['value']]))
+except Exception, e: doc+=str(e)
+doc+='''" alt="" style="width:33.33%;" class="height-24 height-15-sm height-10-xs height-12-smx pad-05"></span>
+    
+    </div>
+    <div>
+    <span class="img-link" href="'''
+try: doc+=str(data['base_url'])
+except Exception, e: doc+=str(e)
+doc+='''../admin/static/archivos/Imagenes/'''
+try: doc+=str(data['opciones']['archivos'][0][1][data['page'][3][8]['value']])
+except Exception, e: doc+=str(e)
+doc+='''"><img src="'''
+try: doc+=str(data['base_url'])
+except Exception, e: doc+=str(e)
+doc+='''../admin/static/archivos/Imagenes/'''
+try: doc+=str(data['min'](data['opciones']['archivos'][0][1][data['page'][3][8]['value']]))
+except Exception, e: doc+=str(e)
+doc+='''" alt="" style="width:33.33%;" class="height-24 height-15-sm height-10-xs height-12-smx pad-05"></span>
+    <span class="img-link" href="'''
+try: doc+=str(data['base_url'])
+except Exception, e: doc+=str(e)
+doc+='''../admin/static/archivos/Imagenes/'''
+try: doc+=str(data['opciones']['archivos'][0][1][data['page'][3][9]['value']])
+except Exception, e: doc+=str(e)
+doc+='''"><img src="'''
+try: doc+=str(data['base_url'])
+except Exception, e: doc+=str(e)
+doc+='''../admin/static/archivos/Imagenes/'''
+try: doc+=str(data['min'](data['opciones']['archivos'][0][1][data['page'][3][9]['value']]))
+except Exception, e: doc+=str(e)
+doc+='''" alt="" style="width:33.33%;" class="height-24 height-15-sm height-10-xs height-12-smx pad-05"></span>
+    <span class="img-link" href="'''
+try: doc+=str(data['base_url'])
+except Exception, e: doc+=str(e)
+doc+='''../admin/static/archivos/Imagenes/'''
+try: doc+=str(data['opciones']['archivos'][0][1][data['page'][3][10]['value']])
+except Exception, e: doc+=str(e)
+doc+='''"><img src="'''
+try: doc+=str(data['base_url'])
+except Exception, e: doc+=str(e)
+doc+='''../admin/static/archivos/Imagenes/'''
+try: doc+=str(data['min'](data['opciones']['archivos'][0][1][data['page'][3][10]['value']]))
+except Exception, e: doc+=str(e)
+doc+='''" alt="" style="width:33.33%;" class="height-24 height-15-sm height-10-xs height-12-smx pad-05"></span>
+    <span class="img-link" href="'''
+try: doc+=str(data['base_url'])
+except Exception, e: doc+=str(e)
+doc+='''../admin/static/archivos/Imagenes/'''
+try: doc+=str(data['opciones']['archivos'][0][1][data['page'][3][11]['value']])
+except Exception, e: doc+=str(e)
+doc+='''"><img src="'''
+try: doc+=str(data['base_url'])
+except Exception, e: doc+=str(e)
+doc+='''../admin/static/archivos/Imagenes/'''
+try: doc+=str(data['min'](data['opciones']['archivos'][0][1][data['page'][3][11]['value']]))
+except Exception, e: doc+=str(e)
+doc+='''" alt="" style="width:33.33%;" class="height-24 height-15-sm height-10-xs height-12-smx pad-05"></span>
+    <span class="img-link" href="'''
+try: doc+=str(data['base_url'])
+except Exception, e: doc+=str(e)
+doc+='''../admin/static/archivos/Imagenes/'''
+try: doc+=str(data['opciones']['archivos'][0][1][data['page'][3][12]['value']])
+except Exception, e: doc+=str(e)
+doc+='''"><img src="'''
+try: doc+=str(data['base_url'])
+except Exception, e: doc+=str(e)
+doc+='''../admin/static/archivos/Imagenes/'''
+try: doc+=str(data['min'](data['opciones']['archivos'][0][1][data['page'][3][12]['value']]))
+except Exception, e: doc+=str(e)
+doc+='''" alt="" style="width:33.33%;" class="height-24 height-15-sm height-10-xs height-12-smx pad-05"></span>
+    <span class="img-link" href="'''
+try: doc+=str(data['base_url'])
+except Exception, e: doc+=str(e)
+doc+='''../admin/static/archivos/Imagenes/'''
+try: doc+=str(data['opciones']['archivos'][0][1][data['page'][3][13]['value']])
+except Exception, e: doc+=str(e)
+doc+='''"><img src="'''
+try: doc+=str(data['base_url'])
+except Exception, e: doc+=str(e)
+doc+='''../admin/static/archivos/Imagenes/'''
+try: doc+=str(data['min'](data['opciones']['archivos'][0][1][data['page'][3][13]['value']]))
+except Exception, e: doc+=str(e)
+doc+='''" alt="" style="width:33.33%;" class="height-24 height-15-sm height-10-xs height-12-smx pad-05"></span>
+    
+    </div>
+
+    
+    
+  
+    
+   </div>
+       </div>
+
+    </div>
+   </div>
+   
+   
+  <!-- end gallery -->
+  <!-- end gallery --> 
+  <!-- floor apartments -->
+   <!-- parallax floor apartments-->
+   <section  class="bg-position bg-ubuntu_jet height-10" style="background-image:url('''
+try: doc+=str(data['base_url'])
+except Exception, e: doc+=str(e)
+doc+='''../admin/static/archivos/Imagenes/'''
+try: doc+=str(data['opciones']['archivos'][0][1][data['page'][0][6]['value']])
+except Exception, e: doc+=str(e)
+doc+=''');background-attachment: fixed;background-position: 0px -20px">
+     <div class="text-parallax">
+      <span class=" font-s40 hidden"><b >'''
+try: doc+=str(data['page'][2][0]['value'])
+except Exception, e: doc+=str(e)
+doc+='''</b></span>
+     </div>
+    </section>
+
+
+   <!--end  parallax floor apaments-->
+    
+   <div class=" section-parallax z-index1" style="overflow: hidden;">
+    <div id="floorapartments" class="z-index10 container-fluid sin-pad" style="">
+     <div class="row" >
+     
+     '''
+data["widgets"]=[{"titulo":data['page'][2][1]['value'],
+                         "img1":data['opciones']['archivos'][0][1][data['page'][2][2]['value']],
+                         "img2":data['opciones']['archivos'][0][1][data['page'][2][3]['value']],
+                         "flash-info":data['page'][2][4]['value'],
+                         "cols":6,
+                         "id":"more1",
+                         "ids":[],
+                         "click":"#popup1"
+                         },
+                         {"titulo":data['page'][2][8]['value'],
+                         "img1":data['opciones']['archivos'][0][1][data['page'][2][9]['value']],
+                         "img2":data['opciones']['archivos'][0][1][data['page'][2][10]['value']],
+                         "flash-info":data['page'][2][11]['value'],
+                         "cols":6,
+                         "id":"more2",
+                         "ids":[],
+                         "click":"#popup2",
+                         },
+                         {"titulo":data['page'][2][15]['value'],
+                         "img1":data['opciones']['archivos'][0][1][data['page'][2][16]['value']],
+                         "img2":data['opciones']['archivos'][0][1][data['page'][2][17]['value']],
+                         "flash-info":data['page'][2][18]['value'],
+                         "cols":6,
+                         "md-offset":3,
+                         "id":"more3",
+                         "ids":[],
+                         "click":"#popup3",
+                         },
+                         ]
+     
+doc+='''
+     
+     '''
+for elem in data["widgets"]:
+  doc+='''
+     '''
+  data["widget"]=elem
+  doc+='''
+     '''
+  data["widget"]["ids"]=[]
+  doc+='''
+       '''
+  for elem2 in data["widgets"]:
+    doc+='''
+        '''
+    data["widget"]["ids"].append(elem2["id"]+"-info")
+    doc+='''
+       '''
+    pass
+  doc+='''
+      
+      '''
+  try: doc+=str(incluir(data,"box-apartmerts"))
+  except Exception, e:   doc+=str(e)
+  doc+='''
+      '''
+  pass
+doc+='''
+      
+      
+</div>
+  </div>
+</div>
+  <!-- end floor apartments -->
+  
+
+  <!-- parallax about-->
+  
+<section  class="bg-position bg-ubuntu_jet height-10" style="background-image:url('''
+try: doc+=str(data['base_url'])
+except Exception, e: doc+=str(e)
+doc+='''../admin/static/archivos/Imagenes/'''
+try: doc+=str(data['opciones']['archivos'][0][1][data['page'][0][6]['value']])
+except Exception, e: doc+=str(e)
+doc+='''); background-attachment: fixed;background-position: 0px -20px">
+<div class="text-parallax">
+  <span class=" font-s40 hidden"><b>'''
+try: doc+=str(data['page'][4][0]['value'])
+except Exception, e: doc+=str(e)
+doc+='''</b></span>
+ </div>
+</section>
+  <!--
+     <section id="about-parallax" class="rd-parallax rd-parallax-overlay ">
+     <div class="rd-parallax-inner" data-speed="0.3" data-type="html" data-fade="true"></div>
+     <div class="rd-parallax-layer" data-spedd="0.6" data-type="media" data-url="'''
+try: doc+=str(data['base_url'])
+except Exception, e: doc+=str(e)
+doc+='''../admin/static/archivos/Imagenes/'''
+try: doc+=str(data['opciones']['archivos'][0][1][data['page'][0][6]['value']])
+except Exception, e: doc+=str(e)
+doc+='''" style="width:100%;background-position:0px -40px"></div>
+     <div data-speed="0.2" data-type="html" class="rd-parallax-layer parallax-padding">
+      <div class="container">
+       <div class="row height-4">
+        <div class="col-lg-12">
+         <span class=" text-center white baner-other baner-par font-s40">'''
+try: doc+=str(data['page'][4][0]['value'])
+except Exception, e: doc+=str(e)
+doc+='''</span>
+        </div>
+       </div>
+      </div>
+     </div>
+    </section>
+-->
+   <!--end  parallax about-->
+
+   <!--contacto-->
+     <!--contacto-->
+      <section id="other" class="container-fluid  img-other section-parallax z-index1" style="background-attachment: fixed; background-size: cover; background-repeat:no-repeat">
+        <div class="row ">
+         <div class="col-lg-12 text-justify height-45">
+         <div class="text-center">
+         <!--
+          <img src="img/partners/Montes Realty.png" class="width-28 bg-white marg-05">
+          <img src="img/partners/logosApartments_3.png" class="width-28 bg-white marg-05" >
+          <img src="img/partners/Logo-Royal-Court-.png" class="width-28 bg-white marg-05">
+         -->
+
+         </div>
+          <div class="text-center marg-t8">
+
+          <img src="'''
+try: doc+=str(data['base_url'])
+except Exception, e: doc+=str(e)
+doc+='''../admin/static/archivos/Imagenes/'''
+try: doc+=str(data['opciones']['archivos'][0][1][data['page'][4][2]['value']])
+except Exception, e: doc+=str(e)
+doc+='''" class="width-28 bg-white marg-1">
+          
+          <a href="'''
+try: doc+=str(data['page'][4][5]['value'])
+except Exception, e: doc+=str(e)
+doc+='''"><img src="'''
+try: doc+=str(data['base_url'])
+except Exception, e: doc+=str(e)
+doc+='''../admin/static/archivos/Imagenes/'''
+try: doc+=str(data['opciones']['archivos'][0][1][data['page'][4][4]['value']])
+except Exception, e: doc+=str(e)
+doc+='''" class="width-28 bg-white marg-1"></a>
+          <!--
+          <img src="img/partners/logosApartments_2.png" class="width-28 bg-white marg-05"> 
+          -->
+          </div>
+          
+          <div class="text-center">
+          
+          <a href="'''
+try: doc+=str(data['page'][4][7]['value'])
+except Exception, e: doc+=str(e)
+doc+='''"><img src="'''
+try: doc+=str(data['base_url'])
+except Exception, e: doc+=str(e)
+doc+='''../admin/static/archivos/Imagenes/'''
+try: doc+=str(data['opciones']['archivos'][0][1][data['page'][4][6]['value']])
+except Exception, e: doc+=str(e)
+doc+='''" class="width-28 bg-white marg-1"></a>
+          
+          <img src="'''
+try: doc+=str(data['base_url'])
+except Exception, e: doc+=str(e)
+doc+='''../admin/static/archivos/Imagenes/'''
+try: doc+=str(data['opciones']['archivos'][0][1][data['page'][4][8]['value']])
+except Exception, e: doc+=str(e)
+doc+='''" class="width-28 bg-white marg-1">
+          <!--
+          <img src="img/partners/Logo-Marquis.png" class="width-28 bg-white marg-05"> 
+          -->
+          </div>
+          
+          
+          
+          
+
+         
+         </div>
+
+
+          
+      
+         
+        </div>
+      </section>
+  <section  class="bg-position bg-ubuntu_jet height-10" style="background-image:url('''
+try: doc+=str(data['base_url'])
+except Exception, e: doc+=str(e)
+doc+='''../admin/static/archivos/Imagenes/'''
+try: doc+=str(data['opciones']['archivos'][0][1][data['page'][0][6]['value']])
+except Exception, e: doc+=str(e)
+doc+='''); background-attachment: fixed;background-position: 0px -20px">
+<div class="text-parallax">
+ <span class=" font-s40 hidden"><b >'''
+try: doc+=str(data['page'][5][0]['value'])
+except Exception, e: doc+=str(e)
+doc+='''</b></span>
+ </div>
+</section>
+  <!--
+     <section id="about-parallax" class="rd-parallax rd-parallax-overlay height-10" >
+     <div class="rd-parallax-inner contact-pos" data-speed="0.3" data-type="html" data-fade="true" ></div>
+     <div class="rd-parallax-layer" data-spedd="0.6" data-type="media" data-url="'''
+try: doc+=str(data['base_url'])
+except Exception, e: doc+=str(e)
+doc+='''../admin/static/archivos/Imagenes/'''
+try: doc+=str(data['opciones']['archivos'][0][1][data['page'][0][6]['value']])
+except Exception, e: doc+=str(e)
+doc+='''" style="width:100%;background-position:0px -45px"></div>
+     <div data-speed="0.2" data-type="html" class="rd-parallax-layer parallax-padding">
+      <div class="container">
+       <div class="row height-10">
+        <div class="col-lg-12">
+         <span class="white text-center baner-contact baner-par font-s40" >'''
+try: doc+=str(data['page'][5][0]['value'])
+except Exception, e: doc+=str(e)
+doc+='''</span>
+        </div>
+       </div>
+      </div>
+     </div>
+    </section>
+-->
+   <!--end  parallax about-->
+
+   <!--contacto-->
+     <!--contacto-->
+      <section id="contacto" class=" container-fluid img-contacto section-parallax z-index1" style="background-size: cover;background-repeat: no-repeat;background-attachment: fixed;">
+        <div class="row">
+         <div class="col-lg-6 col-xs-12 pad-t5">
+          
+         
+          <iframe class="mapa__view marg-l1 marg-l0-xs" src="'''
+try: doc+=str(data['page'][5][2]['value'])
+except Exception, e: doc+=str(e)
+doc+='''" width="100%" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
+        </div>
+'''
+try: doc+=str(do_shortcode(data['page'][5][3]['value']))
+except Exception, e: doc+=str(e)
+doc+='''              
+            </div>
+         <!--     <form class="form-horizontal" style="padding: 10px" action="">
+                <div class="form-group">
+                  <div class="">
+                    <input class="form-control name" type="text"  style="padding: 5px" required placeholder="name">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="">
+                    <input class="form-control last-name" type="text" style="padding: 5px" required placeholder="last name">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="">
+                    <input class="form-control email" type="email" style="padding: 5px" required placeholder="email">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="">
+                    <textarea class="form-control mensaje" type="text" style="padding: 5px" required placeholder="Message"></textarea>
+                  </div>
+                </div>
+                <div class="form-group text-center m-t-30">
+                  <div class="">
+                    <button class=" btn-bordred send-mail btn-block waves-effect waves-light" type="submit">Send</button>
+                  </div>
+                </div>
+              </form>--> 
+            </div>
+          </div>
+        </div>
+      </section>
+ </div>
+
+'''
+popups=[{"titulo":data['page'][2][1]['value'],
+           "slider":[data['opciones']['archivos'][0][1][data['page'][2][5]['value']],
+                     data['opciones']['archivos'][0][1][data['page'][2][6]['value']]
+                    ],
+           "content":data['page'][2][7]['value'],
+           "id":"popup1"},
+          {"titulo":data['page'][2][8]['value'],
+           "slider":[data['opciones']['archivos'][0][1][data['page'][2][12]['value']],
+                     data['opciones']['archivos'][0][1][data['page'][2][13]['value']]],
+           "content":data['page'][2][14]['value'],
+           "id":"popup2"},
+
+           {"titulo":data['page'][2][15]['value'],
+           "slider":[data['opciones']['archivos'][0][1][data['page'][2][19]['value']],
+                      data['opciones']['archivos'][0][1][data['page'][2][20]['value']]],
+           "content":data['page'][2][21]['value'],
+           "id":"popup3"},
+
+         ]
+
+
+           
+doc+='''
+
+
+'''
+for elem in popups:
+  doc+='''
+
+'''
+  data["widget"]=elem
+  doc+='''
+
+'''
+  try: doc+=str(incluir(data,"apartments-popup"))
+  except Exception, e:   doc+=str(e)
+  doc+='''
+
+'''
+  pass
+doc+='''
+
+<div id="out" class="width-100p hidden section-parallax" style="position: fixed;background-color:rgba(255,255,255,0.5); z-index: 400;top:0;height: 800px">
+<div class="width-90p height-80  text-center" style="position: relative; margin-right: auto;margin-left: auto;background-color: rgba(0,0,0,0.5);">
+<picture>
+ <source
+    media="(min-width: 465px)"
+    srcset="images/kitten-sitting.png">
+<img id="preview" src="'''
+try: doc+=str(data['base_url'])
+except Exception, e: doc+=str(e)
+doc+='''static/img/gallery/gallery_10.jpg"  class="white text-center" style="max-width: 100%" alt="Cargando..." srcset="">
+</picture>
+<span class="f-left"><img src="'''
+try: doc+=str(data['base_url'])
+except Exception, e: doc+=str(e)
+doc+='''../admin/static/archivos/Imagenes/f1.png"  class="height-5"></span>
+<span class="f-right"><img src="'''
+try: doc+=str(data['base_url'])
+except Exception, e: doc+=str(e)
+doc+='''../admin/static/archivos/Imagenes/f2.png" class="height-5"> </span>
+<span class="exit"> x </span>
+</div>
+</div>
+
+<footer class="height-8 text-center graylight" style="background-color: #302C29">
+<br class="marg-t5 marg-t0-xs"> 
+  <span class="d-inline-block">web site development  MC IOKARY, CO and OCCOA BROTHERS SOLUTIONS, LLC</span>
+
+  
+</footer>
+
+
+<script src="'''
+try: doc+=str(data['base_url'])
+except Exception, e: doc+=str(e)
+doc+='''static/js/jquery-1.8.3.min.js"></script>
+
+<script type="text/javascript">
+function popup(selector){ $(selector).removeClass("hidden");
+$(selector+"-cerrar").click(function(){
+$(selector).addClass("hidden");
+});
+
+}
+
+$(document).ready(function(){
+  $("#popup1-cerrar").click(function() {
+
+   $("#popup1").addClass("hidden");
+  });
+  $("#popup2-cerrar").click(function() {
+
+   $("#popup2").addClass("hidden");
+  });
+})
+
+
+</script>
+
+<script src="'''
+try: doc+=str(data['base_url'])
+except Exception, e: doc+=str(e)
+doc+='''static/js/owl.carousel.min.js"></script>
+<script src="'''
+try: doc+=str(data['base_url'])
+except Exception, e: doc+=str(e)
+doc+='''static/js/jquery.rd-parallax.min.js"></script>
+<script src="'''
+try: doc+=str(data['base_url'])
+except Exception, e: doc+=str(e)
+doc+='''static/js/jquery.stellar.min.js"></script>
+<script src="'''
+try: doc+=str(data['base_url'])
+except Exception, e: doc+=str(e)
+doc+='''static/js/swiper.min.js"></script>
+<script src="'''
+try: doc+=str(data['base_url'])
+except Exception, e: doc+=str(e)
+doc+='''static/js/jquery.magnific-popup.min.js"></script>
+<script src="'''
+try: doc+=str(data['base_url'])
+except Exception, e: doc+=str(e)
+doc+='''static/js/main.js"></script>
+
+
+<script type="text/javascript">
+
+
+ 
+ 
+
+ $("#hidden").mouseover(function(){
+
+  $("#more-info1").addClass("hidden");
+  $("#more-info2").addClass("hidden");
+  $(".text").removeClass("animated zoomInUp");
+
+ });
+ $("#hidden2").mouseover(function(){
+
+  $("#more-info1").addClass("hidden");
+  $("#more-info2").addClass("hidden");
+  $(".text").removeClass("animated zoomInUp");});
+ 
+</script>
+
+<script>
+    var swiper = new Swiper('.swiper-container', {
+        pagination: '.swiper-pagination',
+        paginationClickable: true,
+        nextButton: '.swiper-button-next',
+        prevButton: '.swiper-button-prev',
+        spaceBetween: 30,
+        loop:true
+    });
+    </script>
+
+<div class="hidden">Conose mas sobre Asenzor visitando el sitio web <a href="https://zerpatechnology.com.ve">zerpatechnology.com.ve </a></div>
+<script type="text/python3" src="'''
+try: doc+=str(config.base_url)
+except Exception, e: doc+=str(e)
+doc+='''static/brython/decode.by"></script>
+<script type="text/python3" src="'''
+try: doc+=str(config.base_url)
+except Exception, e: doc+=str(e)
+doc+='''static/brython/nuclear.by"></script>
+<script type="text/python3" src="'''
+try: doc+=str(config.base_url)
+except Exception, e: doc+=str(e)
+doc+='''static/brython/galeria.by">
+</script>
+<script type="text/python3">
+from browser import window
+window.Galeria("#galeria")
+window.Slider(".Slider")
+
+
+</script>
+<script type="text/python3" src="'''
+try: doc+=str(config.base_url)
+except Exception, e: doc+=str(e)
+doc+='''static/brython/text-parallax.by"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+'''

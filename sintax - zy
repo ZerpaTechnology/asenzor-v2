@@ -1,0 +1,33 @@
+import sys
+# :h1 es un elemento html 
+# .h1 es un atributo del objeto
+# h1 es una variable 
+# .onclick: es una funcion o atributo llamable
+# .hola{k}=3 iterador para variables dinamicas
+<html>:
+	.lan="es"
+	head:
+		.title="hola"
+	body:
+		"""documentacion"""
+		:h1="hola"
+		:h1="hola"
+		:h1="hola"
+		:div=componente()
+		script:
+			src="jquery"
+			content:
+				for k,elem in enumerate[1,2,3]:
+					.hola{k}=3
+		:a:
+			.href="google.com"
+			.onclick:
+				root.update()
+
+
+
+
+
+
+
+		

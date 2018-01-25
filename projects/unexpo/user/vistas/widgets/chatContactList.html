@@ -1,0 +1,53 @@
+
+<div id="chatContactList" class="{{='hidden' if  'hidden' in data and 'chatContactList' in data['hidden'] else '' }}">
+  <style>
+    #chatContactList{
+      width:200px;
+    }
+    #buscar{
+      background-color:white;
+      color:black;
+      width:100%;
+    }
+    #chatContactList .mensajes{
+      height:250px;
+    }
+    #chatContactList .contact-link
+    {
+      cursor:pointer;
+    }
+    
+    {{if "css" in data and "chatContactList" in  data["css"]:}}
+      {{=data["css"]["chatContactList"]}}
+    {{elif "style" in data and "chatContactList" in  data["style"]:}}
+      {{for selector in data["style"]["chatContactList"]:}}
+        {{=selector}} {
+        {{for estilos in data["style"]["chatContactList"][selector]:}}
+          {{=estilos}} : {{=data["style"]["chatContactList"][selector][estilos]}} ;
+        {{pass}}
+          
+      
+      {{pass}}
+    
+    
+    {{pass}}
+  </style>
+  <div class="bg-ubuntu_blue pad-05 text-center">
+    <span>{{= "Contactos"}}</span>    
+  </div>
+  <div style="overflow-y:scroll" class="bg-white mensajes">
+    <ul>
+      {{if "contactos" in data:}}
+      {{for elem in data["contactos"]:}}
+      <li><a class="contact-link"><img src="{{=data['base_url']}}..static/archivos/Avatares/{{=opciones[1][elem['avatar']] }}"> <span>{{=elem["nombre"]}}</span></a></li>
+      {{pass}}
+      {{pass}}
+    </ul>
+  </div>
+  <input type="search" placeholder="Buscar... " id="buscar">
+</div>
+
+
+
+
+

@@ -1,0 +1,18 @@
+Options +ExecCGI
+AddHandler cgi-script .rb .py .sh
+Header set Access-Control-Allow-Origin "*" 
+
+# Activar RewriteEngine
+RewriteEngine on
+RewriteCond %{REQUEST_FILENAME} !-f  
+RewriteCond %{REQUEST_FILENAME} !-d  
+RewriteRule ^(.+) cgi-bin/error404.py
+
+
+options -Indexes
+
+DirectoryIndex cgi-bin/error404.py
+
+#ErrorDocument 404 /cgi-bin/error.html
+#ErrorDocument 404 /PTC/cgi-bin/error404.py
+

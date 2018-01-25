@@ -1,0 +1,62 @@
+
+<div class="col-md-{{=data['widget']['cols']}} {{='col-md-offset-'+str(data['widget']['md-offset']) if 'md-offset' in data['widget'] else ''}} sin-pad">
+       <div class=" text-center " >
+       <div class="height-6 height-8-sm height-10-xs width-100p tex-center pad-t2 pad-2x-sm z-index10 font-roboto font-s20" style="background-color: rgba(200,0,0,0.8);border:solid;border-color: rgb(71,0,0);color:#d1dddd;" >
+         {{=data["widget"]["titulo"]}}
+         
+         
+
+        </div>
+         <div style="position:relative;height:400px;">
+        <a href="#floorapartments"  onclick="popup('{{=data['widget']['click']}}')"  style=""> 
+          <img id="{{=data['widget']['id']}}" src="{{=data['base_url']}}../admin/static/archivos/Imagenes/{{=data['widget']['img1']}}" alt="floridian" style="min-width:100%;min-height:100%;max-height:100%;position: absolute;left: 0;" class="hidden-xs hidden-sm">
+        <img id="{{=data['widget']['id']}}_1" src="{{=data['base_url']}}../admin/static/archivos/Imagenes/{{=data['widget']['img2']}}" alt="floridian" style="min-width:100%;min-height:100%;max-height:100%;position: absolute;left: 0;" class=" hidden-md hidden-lg">
+        </a>
+         </div>
+         <div class="height-6 height-8-sm height-10-xs width-100p tex-center pad-t2 pad-2x-sm white z-index10 font-roboto font-s20" style="background-color: rgba(200,0,0,0.8);border:solid;border-color: rgb(71,0,0);position:relative" >
+         
+        </div>
+            <div id="hidden" class="height-1">
+ 
+</div>
+
+        
+       <div id="{{=data['widget']['id']}}-info"  class="text-center hidden white width-100p fast-info" style="position: absolute;top:150px">
+ <a href="#floorapartments" onclick="popup('{{=data['widget']['click']}}')"   class="decoration-none white ">
+  <div class="text width-75p" style="background-color:rgba(71,0,0,0.4);margin: 0 auto">
+  {{=do_shortcode(data["widget"]["flash-info"])}}
+  
+  </div>
+ </a>
+ </div>
+       </div>
+       </div>
+       <script type="text/javascript">
+         
+ $("#{{=data['widget']['id']}}").mouseover(function(){
+ $("{{='#'+',#'.join(data['widget']['ids']) }}").addClass("hidden");
+   $("#{{=data['widget']['id']}}-info").removeClass("hidden");
+   
+   $("#{{=data['widget']['id']}}-info").addClass("animated zoomIn");
+   $(".text").addClass("animated zoomInUp");
+
+
+  
+   
+
+  });
+ 
+ $("#{{=data['widget']['id']}}1_1").mouseover(function(){
+  $("{{='#'+',#'.join(data['widget']['ids']) }}").addClass("hidden");
+   $("#{{=data['widget']['id']}}-info").removeClass("hidden");
+   
+   $("#{{=data['widget']['id']}}-info").addClass("animated zoomIn");
+   
+   $(".text").addClass("animated zoomInUp");
+
+
+  
+   
+
+  });
+       </script>

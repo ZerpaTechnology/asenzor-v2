@@ -1,0 +1,15 @@
+@media (max-width: $screen-sm-min) {
+
+	.gallery,.trabajos-gallery{
+		&__inner{
+			li{
+				width:100%;
+				a{
+					img{
+						filter:none;
+					}
+				}
+			}
+		}
+	}
+}
