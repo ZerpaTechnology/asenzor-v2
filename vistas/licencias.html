@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+<ul>
+{{for licencia in data["licencias"]:}}
+	<li><a href="{{print config.base_url+"static/licencias/"+licencia}}">{{print licencia}}<a></li>
+{{pass}}	
+</ul>
+
+</body>
+</html>

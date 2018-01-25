@@ -1,0 +1,130 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+from browser import window,alert,ajax,document as doc
+s=window.s
+config=window.config
+rest=window.getRest()
+paquete=None
+
+class Gestor:
+	def __init__(self,selector):
+		self.selector=selector
+		global rest
+		self.archivo=None
+		self.online_item=None
+		def navegar(evt):
+			"""
+			Esta función permite moverse entre las diferentes prestañas del gestor
+			cundo se hace click en alguna categoria
+			"""
+			current=s(".btn-webapps").iterables.index(evt.target)
+			for elem in s(".tab").iterables:
+				if "hidden" not in elem.class_name:
+					for elem2 in elem.get(selector="b[name='item']"):
+						s(elem2.parent.parent).removeClass("hidden")
+
+			for k,elem in enumerate(s(".tab").iterables):
+				if k==current:
+					s(s(".tab")[k]).removeClass("hidden")
+				else:
+					s(s(".tab")[k]).addClass("hidden")				
+		s(".btn-webapps").bind("click",navegar)
+		def mostrarDetalles(evt):
+			"""
+			Esta funcion muestra informacion de la subida de una app o plugin
+			al llamarse el evento
+			"""
+			global paquete
+			s("#detalles").removeClass("hidden")
+			self.archivo=evt.target.value.split("\\")[-1]
+			paquete=evt.target.files[0]
+			if ".zip" in self.archivo:
+				s("input[name='nombre']")[0].value=self.archivo
+				s("#form-upload")[0].submit()
+				s("iframe[name='iframeUpload']").removeClass("hidden")
+				s("button[name='btn-instalar']").removeClass("hidden")
+			else:
+				s("#detalles p")[0].innerHTML="El archivo "+self.archivo+" no tiene un formato compatible porfavor utilizar .zip"
+		def instalar(evt):
+			"""
+			Instala la aplicacion o plugin en Asenzor una ves que el paquete se a logrado subir
+			"""			
+			req=ajax.ajax()
+			req.open("POST",config.base_url+config.controller_folder+"ajax.py",True)
+			req.send({"app":rest["app"],"nombre":self.archivo,"action":"install","upload":"webapp" if rest["action"]=="allapps" else "plugin"})
+			def completo(evt):
+				if req.text=="True":
+					s("#detalles p")[0].innerHTML="""Aplicación instalada puedes acceder a panel de control <br>
+					a traves de la siguiente direccion url: <a href='"""+config.base_url+self.archivo.replace(".zip","")+"'>"+config.base_url+archivo.replace(".zip","")+"</a>"
+				else:
+					s("#detalles p")[0].innerHTML="No se pudo instalar la aplicacion por favor intente mas tarde"
+			req.bind("complete",completo)
+			
+		def activar(evt):
+			"""
+			Activa o desactiva una aplicacion o plugin en Asenzor
+			"""
+			req=ajax.ajax()
+			req.open("POST",config.base_url+config.controller_folder+"ajax.py",True)
+			req.send({"app":rest["app"],"action":"activar","upload":"webapp" if rest["action"]=="allapps" else "plugin","nombre":evt.target.parent.get(selector="b[name='item']")[0].text.strip()})
+			if evt.target.getAttribute("name")=="activar":
+				evt.target.text="Desactivar"
+				evt.target.setAttribute("name","desactivar")
+
+			else:
+				evt.target.text="Activar"
+				
+				evt.target.setAttribute("name","activar")
+				
+		def eliminar(evt):
+			pass
+		def instalar_online(evt):
+			"""
+			Esta funcion nos permitira instalar una aplicacion disponible en los repositorios de aplicaciones y plugins de
+			asenzor
+			"""
+
+			self.online_item=evt.target.parent.get(selector="b[name='item']")[0].text.strip()
+			pago=evt.target.parent.get(selector="span[name='pago']")[0].value
+			s("input[name='item']")[0].value=self.online_item
+			if pago=="1":
+				s("#alert").removeClass("hidden")
+			else:
+				s("#form-online-install")[0].submit()
+		def insertar_clave(evt):
+			"""
+			inserta la clave en el from para el iframe
+			"""
+			s("input[name='clave']")[0].value=s("input[name='user_clave']")[0].value
+			s("#alert").addClass("hidden")
+
+			s("#form-online-install")[0].submit()
+
+
+		def buscar(evt):
+			"""
+			filtra las app o plugins por el nombre
+			"""
+
+			for elem in s(".tab").iterables:
+
+				if "hidden" not in elem.class_name:
+
+					for elem2 in elem.get(selector="b[name='item']"):
+						
+						if evt.target.value.lower() not in elem2.text.lower():
+							s(elem2.parent.parent).addClass("hidden")
+						else:
+							s(elem2.parent.parent).removeClass("hidden")
+					break
+
+
+
+		s("#subir-app").bind("change",mostrarDetalles)
+		s("button[name='btn-instalar']").bind("click",instalar)
+		s("button[name='activar']").bind("click",activar)
+		s("button[name='desactivar']").bind("click",activar)
+		s("input[name='buscar']").bind("keyup",buscar)
+		s("button[name='instalar_online']").bind("click",instalar_online)
+		s("button[name='insertar_clave']").bind("click",insertar_clave)
+window.Gestor=Gestor

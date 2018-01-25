@@ -1,0 +1,26 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+from browser import window,alert
+s=window.s
+def flash_help(evt):
+ if "hidden" in s("#flash-help")[0].class_name:
+  s("#flash-help").removeClass("hidden")
+ else:
+  s("#flash-help").addClass("hidden")
+ 
+s("#ayuda").bind("click",flash_help)
+
+def flash_info(evt):
+	
+	for k,elem in enumerate(s(".info").iterables):
+
+		if evt.target.text==s(".btn-flash-info")[k].text:
+
+			if "hidden" in elem.class_name:
+				s(s(".info")[k]).removeClass("hidden")
+			
+		else:
+			if "hidden" not in elem.class_name:
+				s(s(".info")[k]).addClass("hidden")
+			
+s(".btn-flash-info").bind("click",flash_info)

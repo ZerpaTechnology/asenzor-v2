@@ -1,0 +1,92 @@
+from browser import alert, window,document as doc
+from browser import websocket
+config=window.config
+getRest=window.getRest
+rest=getRest()
+finishReq=None
+ws = None
+develop=False
+operacion=1
+beforeData=""
+def on_open(evt):
+  pass
+def on_message(evt):
+    # message reeived from server
+    global finishReq
+    global ws
+    global operacion
+    global develop
+    global beforeData
+    
+    if develop==False and evt.data!=beforeData :
+      try:
+        exec("develop="+evt.data)
+        if develop==True:
+          ws.send("#RUN")
+      except Exception as e:
+        alert(e)
+        ws.send("#ERROR"+str(operacion)+"\n"+str(e))
+    else:
+      try:
+        def funcion():
+          exec(evt.data,globals())
+          
+          for elem in locals():
+            try:
+              exec("globals()['"+elem+"']="+elem)
+            except:
+              alert(elem)
+              pass
+        funcion()
+        ws.send("#CORRECTO:"+str(operacion)+"\n"+str(e))
+        globals()["beforeData"]=evt.data
+      except Exception as e:
+        alert(e)
+        ws.send("#ERROR"+str(operacion)+"\n"+str(e))
+      
+
+        
+        
+        
+    
+def on_close(evt):
+    # websocket is closed
+    alert("Connection is closed")
+
+
+
+def _open():
+    if not websocket.supported:
+        alert("WebSocket is not supported by your browser")
+        return
+    global ws
+    global finishReq
+    # open a web socket
+    ws = websocket.WebSocket("ws://localhost:8000/")
+    def enviar():
+          ws.send(str({"app":rest["app"],"admin":True,"action":"develop","args":[True]}))
+    window.setTimeout(enviar,1000)
+    finishReq=False
+    
+    
+    # bind functions to web socket events
+    ws.bind('open',on_open)
+    ws.bind('message',on_message)
+    ws.bind('close',on_close)
+
+def send(ev):
+    #data = doc["data"].value
+    #if data:
+    ws.send(str({"app":rest["app"],"admin":True,"action":"develop","args":[True]}))
+
+def close_connection(ev):
+    ws.close()
+    
+_open()
+  
+
+
+
+
+
+

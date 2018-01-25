@@ -1,0 +1,7 @@
+from browser import window, ajax
+config=window.config
+req=ajax.ajax()
+rest=window.getRest()
+req.open(config.base_url+config.controller_folder+"ajax.py")
+req.send({"app":rest["app"],"compilar":"achivo"})
+__BRYTHON__

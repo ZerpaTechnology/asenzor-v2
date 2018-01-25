@@ -1,0 +1,131 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+from browser import alert, document,html,ajax,window
+
+#exec("categorias="+document["vars"].text)
+
+def elegir(evt):
+
+	
+	#Los que tie nencategoria
+	dependientes=document.get(selector="select[categoria]")
+	dependientes_de_categoria=[]
+
+	
+	categoria=evt.target.getAttribute("categoria")
+	dependencia=evt.target.getAttribute("depende")
+	update=evt.target.getAttribute("update")
+
+	if update==None or update=="False":
+		if categoria!=None:
+			
+			dependencia=document.get(selector="select[name="+categoria+"]")[0].getAttribute("depende")
+			opcionPenultima=""
+			for opcion in document.get(selector="select[name="+categoria+"]")[0]:
+				if opcion.selected==True:
+					opcionPenultima=opcion.text
+			if None==dependencia:
+					pass
+			else:
+
+				selectAntepenultimo=document.get(selector="select[name="+dependencia+"]")[0]
+				selectAntepenultimo.setAttribute("update","False")		
+				
+				dependientes_de_categoria.append(selectAntepenultimo)
+				dependencia2=selectAntepenultimo.getAttribute("depende")
+				valorAntepenultimo=0
+				
+				for k,opcion in enumerate(selectAntepenultimo):
+					if opcion.selected==True:
+						valorAntepenultimo=k
+				
+
+				opcionAntepenultima=selectAntepenultimo[valorAntepenultimo].text
+				
+				if None==dependencia2:
+					evt.target.clear()
+					for subcategoria in categorias[opcionAntepenultima][opcionPenultima]:
+						evt.target<=html.OPTION(subcategoria)
+				else:
+					selectAntepenultimo=document.get(selector="select[name="+dependencia2+"]")[0]
+					dependientes_de_categoria.append(selectAntepenultimo)
+					valorAtepenultimo=0
+					for k,opcion in enumerate(selectAntepenultimo):
+						if opcion.selected==True:
+							valorAntepenultimo=k
+					opcionAntepenultima=selectAntepenultimo[valorAntepenultimo].text
+					
+					for subcategoria in list(categorias[opcionUltima].keys()):
+						selectPenultimo<=html.OPTION(subcategoria)
+					for especialidad in categorias[opcionAntepenultima][opcionPenultima]:
+						evt.target<=html.OPTION(especialidad)	
+					
+		elif dependencia!=None:
+
+			#Los que tienen depende
+			
+			if dependencia!=None:
+				selectPenultimo=document.get(selector="select[name="+dependencia+"]")[0]
+				selectPenultimo.setAttribute("update","False")		
+				dependientes_de_categoria.append(selectPenultimo)
+				dependencia2=selectPenultimo.getAttribute("depende")
+				valorPenultimo=0
+				for k,opcion in enumerate(selectPenultimo):
+					if opcion.selected==True:
+						valorPenultimo=k
+
+				opcionPenultima=selectPenultimo[valorPenultimo].text
+				if None==dependencia2:
+					evt.target.clear()
+					for subcategoria in list(categorias[opcionPenultima].keys()):
+						evt.target<=html.OPTION(subcategoria)
+				else:
+					selectAntepenultimo=document.get(selector="select[name="+dependencia2+"]")[0]
+					dependientes_de_categoria.append(selectAntepenultimo)
+					valorAtepenultimo=0
+					for k,opcion in enumerate(selectAntepenultimo):
+						if opcion.selected==True:
+							valorAntepenultimo=k
+					opcionAntepenultima=selectAntepenultimo[valorAntepenultimo].text
+					
+					for subcategoria in list(categorias[opcionUltima].keys()):
+						selectPenultimo<=html.option(subcategoria)
+					for especialidad in categorias[opcionAntepenultima][opcionPenultima]:
+						evt.target<=html.option(especialidad)	
+		if evt.target.getAttribute("depende")==None and evt.target.getAttribute("categoria")==None:
+			evt.target.setAttribute("update","False")
+		else:
+			evt.target.setAttribute("update","True")
+	else:
+		evt.target.setAttribute("update","False")
+selects=document.get(selector="select")
+
+for select in selects:
+	select.bind("click",elegir)
+def add(evt):
+	
+	elem=document["edit"].children[2].children[0].children[1].children[1]
+	
+	name=document["edit"].children[2].children[0].children[1].children[1].name
+	boxes=document["edit"].children[2].children[0].children
+
+	
+	if document["edit"].getAttribute("new")!=None:
+		
+		if elem.type=="select-one":
+			select=html.SELECT( Class="width-19" ,name=name)
+
+			
+			for opcion in elem:
+				select<=html.OPTION(opcion.text)
+			
+			document["edit"].children[2].children[0]<=html.DIV(html.LABEL(
+				"nuevo "+str(len(boxes)))+select, Class="d-inline-block pad-05 width-20 marg-05")
+
+		elif elem.type=="text" or elem.type=="number" or elem.type=="email": 
+			document["edit"].children[2].children[1+int(document["edit"].getAttribute("new"))].children[0]<=html.DIV(html.LABEL(
+				"nuevo "+str(len(boxes)))+html.INPUT(name=name),Class="d-inline-block pad-05 width-20 b-s1 marg-05",type=elem.type)
+
+
+if "add" in document:
+	document["add"].bind("click",add)

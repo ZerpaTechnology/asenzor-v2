@@ -1,0 +1,205 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+from browser import alert, document,html,ajax,window
+
+
+rest={}
+for elem in window.location.href.split("/")[-1].split("&"):
+	k,v=elem.split("=")
+	rest[k]=v
+f=open("static/brython/zdecode.by","r")
+script=f.read()
+
+
+f.close()
+
+exec(script)
+
+#Pide los elementos a paginar
+req=ajax.ajax()
+req.open("POST","ajax.py",False)
+req.set_header('content-type','application/x-www-form-urlencoded')
+
+req.send({"action":"listar","app":rest["app"],"args":document["table-title"].text,"admin":True})	
+
+
+try:
+	exec(req.text)
+except Exception as e:
+	print("Error en tablas.by")
+	alert(req.text)
+
+
+
+tabla=document["tabla-1"]
+selects=document.get(selector=".table-actions")
+
+btns_aplicar=document.get(selector=".btn-aplicar")
+
+data["n-pag"]
+pag=1
+
+status="Todos"
+respuesta=""	
+__lista__=[]
+def update_tabla(pag):
+	tabla.clear()	
+	__lista__=[]
+	
+	#pendiente para control de estatus
+	
+	for elem in data["listar"]:
+		if status in elem[-1]:
+			__lista__.append(elem)
+		elif status=="Todos":
+			__lista__.append(elem)
+	
+	cabecera=html.TR(html.TD(html.INPUT(type="checkbox",Class="marg-l05")))
+	
+	for campo in data["campos"]:
+		cabecera<=html.TH(decode(campo))
+	tabla<=cabecera
+	#tabla<=html.TR(html.TD( Class="pad-1")+html.TD(data["campo1"], Class="pad-1")+html.TD(data["campo2"]),Class="pad-05")
+	
+	for k,fila in enumerate(__lista__[data["n-pag"]*(pag-1):data["n-pag"]*(pag)]):
+		tabla<=html.TR(html.TH(html.INPUT(type="checkbox"), Class="pad-05")+html.TD(html.A(decode(fila[0]),href="admin=True&app="+data["app"]+"&action=editar&args="+str(fila[1]).replace(" ","")+"&vista="+data["vista"]), Class="pad-05")+html.TD(fila[2], Class="pad-05"))
+	for elem in document.get(selector=".n-pag"):
+		elem.innerHTML="de "+str(int(len(__lista__)/data["n-pag"])+1)
+update_tabla(pag)
+	
+for elem in document.get(selector=".table-pag"):
+	
+	if pag!=int(elem.value):
+		elem.value=pag
+
+for elem in document.get(selector=".table-firt"):
+	def goFirst(evt):
+		pag=1
+		for elem in document.get(selector=".table-pag"):
+			elem.value=1
+		update_tabla(pag)
+	elem.bind("click",goFirst)
+for elem in document.get(selector=".table-last"):
+	def goLast(evt):
+		pag=int(len(data["listar"])/data["n-pag"]+1)	
+		for elem in document.get(selector=".table-pag"):
+			elem.value=int(len(data["listar"])/data["n-pag"]+1)	
+		update_tabla(pag)
+
+	elem.bind("click",goLast)
+for elem in document.get(selector=".table-back"):
+	def goBack(evt):
+		
+		for elem in document.get(selector=".table-pag"):
+			pag=int(elem.value)
+			if int(elem.value)>1:
+				elem.value=int(elem.value)-1
+				pag=int(elem.value)
+		
+		update_tabla(pag)
+
+	elem.bind("click",goBack)
+for elem in document.get(selector=".table-next"):
+	def goNext(evt):
+		
+		for elem in document.get(selector=".table-pag"):
+			pag=int(elem.value)
+
+			if int(elem.value)<int(len(data["listar"])/data["n-pag"])+1:
+
+				elem.value=int(elem.value)+1
+				pag=int(elem.value)
+		
+		update_tabla(pag)
+
+	elem.bind("click",goNext)
+
+
+opciones=[]
+action_current=[]
+
+def checkear(evt):
+	
+	if len(__lista__)>data["n-pag"]:
+		for elem in range(data["n-pag"]*(pag)):
+
+			opciones.insert(0,False)
+
+	
+	for checkbox in tabla.getElementsByTagName("input"):
+		opciones.append(checkbox.checked)
+	
+	for elem in range(len(opciones),len(__lista__)):
+		opciones.append(False)
+	
+	
+	req.open("POST","ajax.py",False)
+	req.set_header('content-type','application/x-www-form-urlencoded')
+	del opciones[0]
+
+	if action_current[0]!="editar":#osea papelera
+
+		req.send({"opciones":opciones,"action":action_current[0],"args":data["titulo"],"beforeAction":data["action"]})
+
+	else:
+		
+		if opciones.count(True)>1:
+			for k,opcion in enumerate(opciones):
+				if opcion==True:
+					
+					window.open("admin=True&app="+data["app"]+"&action=editar&args="+str(data["listar"][k][1])+"&vista="+data["vista"])
+
+	try:
+		exec(req.text)	
+	except Exception as e:
+		alert(req.text)
+		alert(e)
+
+	update_tabla(pag)
+
+	del opciones[:]
+
+	del action_current[:]
+
+
+for actions in selects:
+
+	for action in actions:
+		
+		def accionar(ev):
+			
+
+			rank=list(data["acciones"].keys()).index(ev.target.value)
+			
+			
+			if rank==0:
+				marca=tabla.getElementsByTagName("input")[0].checked
+				for checkbox in tabla.getElementsByTagName("input"):
+					if marca==False:
+						checkbox.checked=True
+					else:
+						checkbox.checked=False
+			else:
+				key=list(data["acciones"].keys())[list(data["acciones"].keys()).index(ev.target.value)]
+				del action_current[:]
+				action_current.append(data["acciones"][key])
+		action.bind("click",accionar)
+
+
+def filtrar(evt):
+	evt.preventDefault()
+	status=evt.target.text
+	update_tabla(pag)
+	
+
+for btn in btns_aplicar:
+	btn.bind("click",checkear)
+
+for elem in document.get(selector=".link-status"):
+	elem.bind("click",filtrar)
+#req.bind("complete",on_complete)
+
+
+
+
+

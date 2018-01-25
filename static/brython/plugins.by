@@ -1,0 +1,61 @@
+#!/usr/bin/python
+from browser import window,alert,ajax,document as doc
+s=window.s
+config=window.config
+rest=window.getRest()
+paquete=None
+class Gestor:
+	def __init__(self,selector):
+		self.selector=selector
+		self.archivo=None
+		def navegar(evt):
+			current=s(".btn-webapps").iterables.index(evt.target)
+			for k,elem in enumerate(s(".tab").iterables):
+				if k==current:
+					s(s(".tab")[k]).removeClass("hidden")
+				else:
+					s(s(".tab")[k]).addClass("hidden")				
+		s(".btn-webapps").bind("click",navegar)
+		def mostrarDetalles(evt):
+			global paquete
+			s("#detalles").removeClass("hidden")
+			self.archivo=evt.target.value.split("\\")[-1]
+			paquete=evt.target.files[0]
+			
+			
+			
+
+			if ".zip" in self.archivo:
+				s("input[name='nombre']")[0].value=self.archivo
+				s("#form-upload")[0].submit()
+				s("iframe[name='iframeUpload']").removeClass("hidden")
+				s("button[name='btn-instalar']").removeClass("hidden")
+			else:
+				s("#detalles p")[0].innerHTML="El archivo "+self.archivo+" no tiene un formato compatible porfavor utilizar .zip"
+		def instalar(evt):			
+			req=ajax.ajax()
+			req.open("POST",config.base_url+config.controller_folder+"ajax.py",True)
+			req.send({"app":rest["app"],"nombre":self.archivo,"action":"install"})
+			def completo(evt):
+				if req.text=="True":
+					s("#detalles p")[0].innerHTML="""Aplicación instalada puedes acceder a panel de control <br>
+					a traves de la siguiente direccion url: <a href='"""+config.base_url+self.archivo.replace(".zip","")+"'>"+config.base_url+archivo.replace(".zip","")+"</a>"
+				else:
+					s("#detalles p")[0].innerHTML="No se pudo instalar la aplicacion por favor intente mas tarde"
+			req.bind("complete",completo)
+			
+		def activar(evt):
+			
+			req.open("POST",config.base_url+config.controller_folder+"ajax.py",True)
+			req.send({"app":rest["app"],"action":"activar"})
+		def desactivar(evt):
+
+			req.open("POST",config.base_url+config.controller_folder+"ajax.py",True)
+			req.send({"app":rest["app"],"action":"desactivar"})
+
+		s("#subir-app").bind("change",mostrarDetalles)
+		s("button[name='btn-instalar']").bind("click",instalar)
+		s("button[name='activar']").bind("click",desactivar)
+		s("button[name='desactivar']").bind("click",activar)
+		
+window.Gestor=Gestor

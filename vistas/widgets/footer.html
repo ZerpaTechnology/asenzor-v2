@@ -1,0 +1,61 @@
+
+{{data["style"]={"widget-chat":{"#widget-chat":{"position":"fixed","right":"0px","bottom":"50px"} } }  }}
+{{#=incluir(data,"widget-chat")}}
+
+<footer class="text-center bg-ubuntu_jet white pad-t1 pad-b1" style="position: fixed;bottom: 0px;left: 0px;width: 100%;z-index:12;">
+<div id="notifications" style="position: fixed;top: 10px; right: 10px">
+	
+</div>
+ {{print data["app"]}}2017@zerpatechnology
+ <div class="right pad-r1">
+ {{if "actionbase" in data:}}
+  <a href="{{print data['actionbase']}}&action=licencias" class="bluelight">Licencias</a>  
+ {{pass}}
+ </div>
+
+<script type="text/javascript" src="{{=config.base_url}}static/js/python/__javascript__/menu.js"></script>
+
+
+<!--<script type="text/python3" src="{{=config.base_url}}static/brython/notifications.by"></script>-->
+
+
+<!--<script type="text/python3" src="{{=config.base_url}}static/brython/websocket.by"></script>-->
+<!-- <script type="text/python3" src="{{=config.base_url}}static/brython/chat.by"></script> -->
+<script>
+    (function($){
+        $(window).on("load",function(){
+            $(".scrollbar").mCustomScrollbar();
+            theme:"dark";
+        });
+    })(jQuery);
+    
+</script>
+<style type="text/css">
+	#login{
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background-color:rgba(0,0,0,0.5);
+	}
+</style>
+<div id="login" class="{{='hidden' if data['login']==True else 'hidden' if data['control']=='admin' and data['metodo']==None else ''}}">
+
+
+	{{=incluir(data,"login")}}
+</div>
+
+
+
+</footer>
+ 
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,84 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+doc+='''<div>
+<h2>Actualizacion del framweork</h2>
+<div>
+	<p>Hay disponible una nueva versión actualizada de AsenZor.</p>
+	<button id="actualizar">Actualizar ahora</button><button>Ocultar esta actualización</button>
+
+</div>
+<h2>Plugins</h2>
+<div>
+<table>
+	<tr>
+		<td><input type="checkbox" name=""></td>
+		<td>Seleccionar todos</td>
+	</tr>
+	<tr>
+		<td><input type="checkbox" name=""></td>
+		<td>
+		<div class="d-inline-block alg-top">
+			<h4>PageCreator</h4>
+			<p>Estas usando la version 0.0.1. Actualiza a la 0.0.2 <a href="">Ver detalles de la actualizacón</a></p>
+			<p>Compatibilidad con AsenZor 0.0.1 segun su autor</p>
+		</div>
+
+		</td>
+	</tr>
+</table>
+<button>Actualizar plugins</button>
+</div>
+<h2>Temas</h2>
+<div>
+<table>
+	<tr>
+		<td><input type="checkbox" name=""></td>
+		<td>Seleccionar todos</td>
+	</tr>
+	<tr>
+		<td><input type="checkbox" name=""></td>
+		<td>
+		<img src="">
+		<div class="d-inline-block alg-top">
+			<h4>'''
+try: doc+=str(settings.app)
+except Exception, e: doc+=str(e)
+doc+='''</h4>
+			<p>Estas usando la version 0.0.1. Actualiza a la 0.0.2 </p>
+			
+		</div>
+
+		</td>
+	</tr>
+</table>
+<button>Actualizar temas</button>
+</div>
+<h2>Traducciones</h2>
+<table>
+	<tr>
+		<td><input type="checkbox" name=""></td>
+		<td>Seleccionar todos</td>
+	</tr>
+	<tr>
+		<td><input type="checkbox" name=""></td>
+		<td>
+		<img src="'''
+try: doc+=str(data['base_url'])
+except Exception, e: doc+=str(e)
+doc+='''../screenshot.png" class="height-10">
+		<div class="d-inline-block alg-top">
+			<h4>'''
+try: doc+=str(settings.app)
+except Exception, e: doc+=str(e)
+doc+='''</h4>
+			<p>Estas usando la version 0.0.1. Actualiza a la 0.0.2 </p>
+			
+		</div>
+
+		</td>
+	</tr>
+</table>
+<div id="alert">
+	
+</div>
+</div>'''

@@ -1,0 +1,174 @@
+{{if "campo" in data:}}
+   {{elem=data["campo"]}}  
+   {{k2=data["indice"]}}
+   {{if type(elem)==dict:}}
+      {{tmp=list(elem)}}
+      {{tmp.remove("name") if "name" in tmp else tmp}}
+      {{tmp.remove("value") if "value" in tmp else tmp}}
+      {{tmp.remove("step") if "step" in tmp else tmp}}
+      {{tmp.remove("opcion") if "opcion" in tmp else tmp}}
+      {{tmp.remove("requerido") if "requerido" in tmp else tmp}}
+      {{tmp.remove("tabla") if "tabla" in tmp else tmp}}
+      {{tmp.remove("depende") if "depende" in tmp else tmp}}
+      {{tmp.remove("categoria") if "categoria" in tmp else tmp}}
+      {{tmp.remove("descripcion") if "descripcion" in tmp else tmp}}
+      {{tmp.remove("padre") if "padre" in tmp else tmp}}
+      {{tmp=tmp[0]}}
+    {{if elem[tmp]=="fixed":}}
+     
+     <div class="d-inline-block pad-05 width-20 marg-05">
+     <label>{{=decode(tmp)}}</label> 
+     <select name="{{=elem['name']}}" value="0" width="200px">
+      <option>{{=decode(elem['value'])}}</option>
+     </select>
+     
+     </div> 
+    {{elif elem[tmp]=="text":}}
+     
+     <div class="d-inline-block pad-05 width-20 b-s1 marg-05">
+      
+      <label>{{=tmp}}<span>[{{=k2}}]</span></label>
+      <input type="{{=elem[tmp]}}" name="{{=elem['name']}}" value="{{=elem['value']}}" {{="required" if "requerido" in elem and elem['requerido']==True else ''}}>
+     </div>
+    {{elif elem[tmp]=="text-admin":}}
+     
+     <div class="d-inline-block pad-05 width-20 b-s1 marg-05">
+      
+      <label>{{=tmp}}<span>[{{=k2}}]</span></label>
+      <input type="{{=elem[tmp]}}" name="{{=elem['name']}}" value="{{=elem['value']}}" {{="required" if "requerido" in elem and elem['requerido']==True else ''}}>
+     </div>
+    {{elif elem[tmp]=="text-email":}}
+     
+     <div class="d-inline-block pad-05 width-20 b-s1 marg-05">
+      
+      <label>{{=tmp}}<span>[{{=k2}}]</span></label>
+      <input type="email" name="{{=elem['name']}}" value="{{=elem['value']}}" {{="required" if "requerido" in elem and elem['requerido']==True else ''}}>
+     </div>
+    {{elif elem[tmp]=="text-phone":}}
+     
+     <div class="d-inline-block pad-05 width-20 b-s1 marg-05">
+      
+      <label>{{=tmp}}<span>[{{=k2}}]</span></label>
+      <input type="phone" name="{{=elem['name']}}" value="{{=elem['value']}}" {{="required" if "requerido" in elem and elem['requerido']==True else ''}}>
+     </div>
+    {{elif elem[tmp]=="text-titulo":}}
+     
+     <div class="d-inline-block pad-05 width-20 b-s1 marg-05">
+      
+      <label>{{=tmp}}<span>[{{=k2}}]</span></label>
+      <input style="width:200px" type="{{=elem[tmp]}}" name="{{=elem['name']}}" value="{{= elem['value']}}" {{="required" if "requerido" in elem and elem['requerido']==True else ''}}>
+      
+      
+       
+      </script>
+     </div>
+    {{elif elem[tmp]=="text-admin":}}
+         {{if data["login"]==True:}}
+          
+          <div class="d-inline-block pad-05 width-20 marg-05">
+          
+          <label>{{=decode(tmp)}}<span>[{{=k2}}]</span></label>
+          <input type="text" name="{{=elem['name']}}" value="{{=decode(elem['value'])}}">
+          </div>
+          {{pass}}
+    {{elif elem[tmp]=="textarea":}}
+     <div class="marg-05">
+     <label>{{=decode(tmp)}}<span>[{{=k2}}]</span></label>
+     <textarea class="width-100p editor" name="{{=elem['name']}}">{{=decode(elem['value'])}}</textarea>
+     </div>
+    {{elif elem[tmp]=="textarea-admin" and data["login"]==True:}}
+     <div class="marg-05">
+     <label>{{=decode(tmp)}}<span>[{{=k2}}]</span></label>
+     <textarea class="width-100p editor" name="{{=elem['name']}}">{{=decode(elem['value'])}}</textarea>
+     </div>
+    {{elif elem[tmp]=="file":}}
+     <div class="d-inline-block pad-05 width-20 marg-05">
+     <img src="" class="width-100p hidden">
+     <label>{{=tmp}}<span>[{{=k2}}]</span></label>
+     <input type="{{=elem[tmp]}}" name="{{=elem['name']}}" class="img-file">
+     </div>
+    {{elif elem[tmp]=="select":}}
+     
+     
+     <div class="d-inline-block pad-05 width-20 marg-05">
+     <label>{{=decode(tmp)}}<span>[{{=k2}}]</span></label>
+     <select style="width:200px" name="{{=elem['name']}}"  {{="depende='"+elem['depende']+"'" if "depende" in elem else ""}}  {{='categoria=\"'+elem['categoria']+'\"' if 'categoria' in elem else ''}} {{='tabla="'+elem['tabla']+'"' if 'tabla' in elem else ''}}> 
+     
+      {{if "opcion" in elem and "tabla" not in elem:}}
+       
+
+       {{for _k, opcion in enumerate(data["opciones"][elem['opcion']][1]):}}
+        <option {{="selected" if elem['value']==_k else ''}} >{{=decode(opcion)}}</option>
+        {{pass}}
+
+      {{elif "opcion" in elem and "tabla" in elem and elem["tabla"]=="Imagenes":}}
+       
+
+       {{for _k, opcion in enumerate(data["imagenes"][elem["opcion"]][1]):}}
+        <option {{="selected" if elem['value']==_k else ''}} >{{=decode(opcion)}}</option>
+        {{pass}}
+       
+
+      {{elif "tabla" in elem and "depende" not in elem:}}
+         
+         {{for opcion in data["tablas"][elem['tabla']]:}}
+         <option >{{=decode(opcion)}}</option>
+         {{pass}}
+      {{elif "tabla" in elem and "depende" in elem:}}
+         
+         {{for opcion in list(data["categorias"][data["tablas"][elem['tabla']][0]]):}}
+         <option >{{=decode(opcion)}}</option>
+         {{pass}}
+      
+      {{pass}}
+        
+     </select>
+     </div>
+    {{elif elem[tmp]=="select-admin":}}
+     {{if data["login"]==True:}}
+      <div class="d-inline-block pad-05 width-20 marg-05">
+      <label>{{=decode(tmp)}}<span>[{{=k2}}]</span></label>
+      <select style="width:200px" name="{{=elem['name']}}" >
+       {{for _k, opcion in enumerate(data["opciones"][elem['opcion']][1]):}}
+        <option value="{{= _k}}" {{= "selected" if elem['value']==_k else ''}} >{{=decode(opcion)}}</option>
+        {{pass}}
+      </select>
+
+      </div>
+      {{pass}}
+    {{elif elem[tmp]=="img":}}
+     <div class="d-inline-block pad-05 width-20 marg-05">
+     <img src="{{=data['base_url']}}../admin/static/archivos/Imagenes/{{=data['opciones'][elem['opcion']][1][elem['value']]}}" class="width-100p">
+     <B>Imagen</B>
+     <input type="" name="{{=elem['name']}}" class="hidden">
+     </div>
+    {{elif elem[tmp]=="img-admin":}}
+   
+     <div class="d-inline-block pad-05 width-20 marg-05">
+       <img src="" class="width-100p hidden" archivos="{{=elem['carpeta'] if 'carpeta' in elem else ''}}">
+       <label>{{print decode(tmp)}}</label>
+       
+       <select style="width:200px" class="img-admin" name="{{print elem['name']}}"  value="{{print elem['value']}}" {{print "depende='"+opcion+"'" if "depende" in elem else ""}} {{print 'tabla="'+elem['tabla']+'"' if 'tabla' in elem else ''}} {{print 'categoria="'+elem['categoria']+'"' if 'categoria' in elem else ''}} {{print 'opcion="'+str(elem['opcion'])+'"' if 'opcion' in elem else ''}}>
+       {{for _k,i in enumerate(data["opciones"][data["campo"]["opciones"]][data["campo"]["opcion"]][1]):}}
+        <option value="{{print _k}}">{{=i}}</option>
+        {{pass}}
+
+       </select>
+
+       </div>
+  {{elif elem[tmp]=="number":}}
+     <div class="d-inline-block pad-05 width-20 marg-05">
+     <label>{{=tmp}}<span>[{{=k2}}]</span></label>
+     <input type="{{=elem[tmp]}}" name="{{=elem['name']}}" value="{{=elem['value']}}" {{= "step='"+elem['step']+"'" if "step" in elem else ""}}>
+     </div>
+  {{elif type(elem)==list:}}
+     <div class="b-s1 pad-1 marg-1 b-r5 marg-05">
+     </div> 
+  {{elif elem!=None:}}
+      <div class="b-s1 b-r5 marg-05">
+      <h2 id="titulo{{=k2}}"></h2>
+      </div>
+  {{pass}}
+{{pass}}
+{{pass}}
+

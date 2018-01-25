@@ -1,0 +1,47 @@
+<div class="container-fluid sin-pad">
+
+<div class="row">
+ <div class="col-md-12 col-sm-12" style="margin:20px auto;">
+ <!--  HOME -->
+ 
+ 
+ <div class="width-32 b-s1 bg-white text-center pad-1 width-30-xs" style="margin: 0 auto; border-color:gray;   box-shadow: 2px 2px 2px #888888;">
+  <div class="font-ubuntu">
+  <img src="{{=config.base_url}}static/imgs/logos/logoZtec.png" class="height-10"><h3 class="bluelight">Bienvenido al Panel de control de {{=data["app"]}}</h3>
+
+  <form method="post" action="{{=config.base_url+settings.app}}/admin/Entrar"  {{='' if data['login']==False else 'target="login"'}}>
+  <div class="text-left">
+   <p>Nombre de usuario o dirección de correo electrónico</p>
+  </div>
+  <div>
+   <input type="text" name="email" style="background:#fbfbfb;box-shadow: inset 0 1px 2px rgba(0,0,0,.07);color:black" class="height-3 marg-1 width-28 width-22-xs">
+  </div>
+  <div>
+  <div class="text-left">
+   <p>Contraseña</p>
+  </div>
+   
+   <input type="password" name="password" style="background:#fbfbfb;box-shadow: inset 0 1px 2px rgba(0,0,0,.07);color: black" class="height-3 marg-1 width-28 width-22-xs">
+  </div>
+   
+   <p>Por favor logueate para continuar</p>
+   <button type="submit" name="action" value="Login" class="btn bg-blue white pad-05 b-r5">Entrar</button>
+   
+  </form> 
+  </div>
+  
+  
+ </div>
+ <div class="marg-b3 text-center pad-t1">
+ <p class="hidden"><a href="">¿Has perdido tu contraseña?</a></p>
+ <p class="hidden"><a href=""> <- Volver al mode user</a></p>
+  
+ </div>
+ 
+
+ </div>
+</div>
+<iframe name="login" src="" style="display: none">
+</iframe>
+
+</div>

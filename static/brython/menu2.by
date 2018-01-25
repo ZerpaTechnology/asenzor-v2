@@ -1,0 +1,479 @@
+#!usr/bin/python
+from browser import ajax,alert,window
+import urllib
+codeEditor="""
+
+elem=document.getElementsByClassName("codeEditor")[document.getElementsByClassName("codeEditor").length-1]
+editor = CodeMirror.fromTextArea(elem, {
+    lineNumbers: true,
+    mode: mixedMode,
+    keyMap: "sublime",
+    autoCloseBrackets: true,
+    matchBrackets: true,
+    showCursorWhenSelecting: true,
+    theme: "monokai",
+    tabSize: 2,
+    selectionPointer: true
+  });
+emmetCodeMirror(editor);
+editores.push(editor);
+  
+"""
+
+s=window.s
+decode=window.decode
+config=window.config
+getRest=window.getRest
+rest=getRest()
+
+if "action" in rest and "codear" ==rest["action"]:
+ 
+ s("#alert").removeClass("hidden")
+ 
+if list(rest["kwargs"])==["Diseño"]:
+  
+  s("#alert").widget("""
+  <div class="pad-1" style="z-index:100">
+  <span id="alert-close">x</span>
+  <h1>Nombre</h1>
+  <input type="text" name="nombre" id="nombre" style="width:100%">
+  </div>
+  
+  <div class="pad-1 d-inline-block">
+  <label>Usuario</label>
+  <select name="user" id="user">
+   <option>admin</option>
+   <option>user</option>
+  </select>
+  </div>
+  <div class="pad-1 d-inline-block">
+  <label>Diseño</label>
+  <select name="opcion" id="widget">
+   <option>Template</option>
+   <option>Widget</option>
+  </select>
+  </div>
+  
+  <div class="text-center marg-t5">
+  <button id="crear" class="white bg-blue pad-05">Crear</button>
+  </div>
+  
+  """)
+
+elif list(rest["kwargs"])==["Controlador"] or list(rest["kwargs"])==["Modelo"]:
+  s("#alert").widget("""
+  <div class="pad-1" style="z-index:100">
+  <span id="alert-close">x</span>
+  <h1>Nombre</h1>
+  <input type="text" name="nombre" id="nombre" style="width:100%">
+  </div>
+  <div class="text-center marg-t5">
+  <button id="crear" class="white bg-blue pad-05">Crear</button>
+  </div>
+  
+  """)
+
+
+
+s("#alert").css({"background-color":"white",
+  "width":"300px",
+  "height":"300px",
+  "margin-left":str((window.innerWidth/2)-150)+"px",
+  "margin-top":str((window.innerHeight/2)-150)+"px",
+  "top":str(-s("#alert")[0].clientHeight/2)+"px",
+  "left":str(-s("#alert")[0].clientWidth/2)+"px",
+  "border":"solid",})
+
+
+valores=[]
+
+
+
+def _lambda( evt):
+ 
+ for k,elem in enumerate(evt.target.parent.children):
+  if elem==evt.target:
+   
+   if "hidden" not in evt.target.parent.children[k+1].class_name.split(" "):
+    evt.target.parent.children[k+1].class_name+=" hidden"
+
+   else:
+
+    
+    v=evt.target.parent.children[k+1].class_name.split(" ")
+    v.remove("hidden")
+    evt.target.parent.children[k+1].class_name=" ".join(v)
+ 
+
+s(".folderclass").bind("click",_lambda )
+
+def borrar(evt):
+      for k,elem in enumerate(s(".tab").iterables):
+          if "hidden" not in elem.class_name:
+           break
+      if s(".path")[k].innerHTML!="":
+        req=ajax.ajax()
+        req.open("POST",config.base_url,True)
+        req.send({"manager":True,"control":"admin","metodo":"delete","kwargs":{"path":s(".path")[k].innerHTML}})
+        s("#tabs-btn")[0].removeChild(s("#tabs-btn")[0].children[k])
+        s(".tab")[k].parent.removeChild(s(".tab")[k])
+        del window.editores[k]
+
+      if len(s(".tab").iterables)==0 and s("#borrar").iterables!=[]:
+          s("#guardar")[0].parent.removeChild(s("#borrar")[0])
+      
+      if len(s(".tab").iterables)==0:
+        s("#guardar")[0].parent.removeChild(s("#guardar")[0])
+      
+      if len(s(".tab"))>0 and k!=0:
+        s(s(".tab")[len(s(".tab"))-1]).removeClass("hidden")
+      elif len(s(".tab"))>0 and k==0:
+        s(s(".tab")[0]).removeClass("hidden")
+      alert(req.text)
+
+
+def update():
+  
+  def cerrar(evt):
+    
+      for k,elem in enumerate(s(".close-btn")):
+        if elem==evt.target:
+          s("#tabs-btn")[0].removeChild(evt.target.parent)
+          s(".tab")[k].parent.removeChild(s(".tab")[k])
+          del window.editores[k]
+          if len(s(".tab"))>0:
+            s(s(".tab")[k-1]).removeClass("hidden")
+      
+      if len(s(".tab-btn").iterables)==0 and s("#borrar").iterables!=[]:
+        s("#guardar")[0].parent.removeChild(s("#borrar")[0])
+
+      if len(s(".tab-btn").iterables)==0:
+        s("#guardar")[0].parent.removeChild(s("#guardar")[0])
+
+
+
+  def mover(evt):
+      for k,elem in enumerate(s(".tab-btn").iterables):
+        if elem==evt.target:
+          break
+      for k2,elem in enumerate(s(".tab").iterables):
+        if k2!=k:
+          s(elem).addClass("hidden")
+        else:
+          s(elem).removeClass("hidden")
+            
+           
+  def guardar(evt):
+   req=ajax.ajax()
+   req.open("POST",config.base_url,True) 
+   for k,tab in enumerate(s(".tab").iterables):
+    if "hidden" not in tab.class_name:
+      break
+   if s("#borrar").iterables==[]:
+        s("#btns-action")[0].innerHTML+="<button id='borrar'>Borrar</button>"
+   req.send({"app":rest["app"],"metodo":"write","control":"admin","kwargs":{"path":s(".path")[k].text},"file":window.editores[k].getDoc().getValue()})
+   
+   def show(evt,req=req):
+    alert(req.text)
+   req.bind("complete",show)
+
+
+  try:
+    s(".close-btn").unbind("click", cerrar)
+  except:
+    pass
+  s(".close-btn").bind("click", cerrar)
+  try:
+    s("#guardar").unbind("click",guardar)
+  except:
+    pass
+  s("#guardar").bind("click",guardar)
+  try:
+    s("#borrar").unbind("click",borrar)
+  except:
+    pass
+  s("#borrar").bind("click",borrar)
+  try:
+    s(".tab-btn").unbind("click", mover)
+  except:
+    pass
+  s(".tab-btn").bind("click", mover)
+  if len(window.editores)==len(s(".tab"))-1:
+    global codeEditor
+    window.eval(codeEditor)
+
+  
+  
+  
+  """
+  for k,elem in enumerate(valores):
+    window.editores[k].getDoc().setValue(valores[k])
+  """
+  
+
+def guardar(evt):
+   req=ajax.ajax()
+   req.open("POST",config.base_url,True) 
+   for k,tab in enumerate(s(".tab").iterables):
+    if "hidden" not in tab.class_name:
+      break
+   if s("#borrar").iterables==[]:
+        s("#btns-action")[0].innerHTML+="<button id='borrar'>Borrar</button>"
+   req.set_header('content-type','application/x-www-form-urlencoded')
+   req.send({"manager":rest["manager"],"app":rest["app"],"metodo":"write","control":"admin","path":s(".path")[k].text,"file":str(window.editores[k].getDoc().getValue())})
+   def show(evt,req=req):
+    alert(req.text)
+   req.bind("complete",show)
+   update()
+
+window.shortcut.add("Ctrl+s",guardar)
+
+
+def crear(evt):
+ 
+ req=ajax.ajax()
+ if list(rest["kwargs"])==["Diseño"]:
+  req.open("POST",config.base_url+rest["app"]+"/admin/Show/path/"+("user" if s("#user")[0].value=="user" else "admin")+"/"+("layouts" if s("#widget")[0].value=="Template" else "widgets"),True) 
+ elif list(rest["kwargs"])==["Controlador"]:
+  req.open("POST",config.base_url+rest["app"]+"/admin/Show/path/user/controladores",True) 
+ elif list(rest["kwargs"])==["Modelo"]:
+  req.open("POST",config.base_url+rest["app"]+"/admin/Show/path/admin/modelos",True)  
+ req.send({})
+  
+ def show(evt,req=req): 
+  
+    
+  
+
+  if req.text.replace("\n","")[-1]=="/":
+    ruta=req.text.replace("\n","")
+  else:
+    ruta=req.text.replace("\n","")+"/"
+  
+  if len(s(".path").iterables)==1:    
+    if s(".path")[0].text=="":
+      if list(rest["kwargs"])==["Diseño"]:
+        s(".path")[0].innerHTML=ruta+s("#nombre")[0].value+".html"
+      elif list(rest["kwargs"])==["Controlador"] or list(rest["kwargs"])==["Modelo"]:
+        s(".path")[0].innerHTML=ruta+s("#nombre")[0].value+".py"
+      else:
+        s(".path")[0].innerHTML=ruta+s("#nombre")[0].value
+      s(".tab-btn")[0].innerHTML=s("#nombre")[0].value
+      if s("#guardar").iterables==[]:
+          s("#btns-action")[0].innerHTML+='<button class="bg-blue white" id="guardar">Guardar</button>'
+      s("#guardar")[0].parent.innerHTML+="<button id='borrar'>Borrar</button>"
+      
+    else:
+
+        if s("#guardar").iterables==[]:
+          s("#btns-action")[0].innerHTML+='<button class="bg-blue white" id="guardar">Guardar</button>'
+          
+        s("#tabs-btn")[0].innerHTML+='<span style="padding:2px"><button class="tab-btn">'+s("#nombre")[0].value+'</button><button class="close-btn">x</button></span>'
+        for k,elem in enumerate(s(".tab").iterables):
+          s(elem).addClass("hidden")
+          pass
+
+        
+        s("#content2")[0].children[len(s(".tab"))].innerHTML+='<div class="tab"><div class="path" style="overflow-x:scroll">'+ruta+'</div><textarea class="codeEditor" class="CodeMirror cm-s-monokai" style="height: 100%"></textarea> </div>'
+        
+        if list(rest["kwargs"])==["Diseño"]:
+          s(".path")[k+1].innerHTML=ruta+s("#nombre")[0].value+".html"
+        elif list(rest["kwargs"])==["Controlador"] or list(rest["kwargs"])==["Modelo"]:
+          s(".path")[k+1].innerHTML=ruta+s("#nombre")[0].value+".py"
+        else:
+          s(".path")[k+1].innerHTML=ruta+s("#nombre")[0].value
+        
+
+  else:    
+      s("#tabs-btn")[0].innerHTML+='<span style="padding:2px"><button class="tab-btn">'+s("#nombre")[0].value+'</button><button class="close-btn">x</button></span>'
+      
+      for k,elem in enumerate(s(".tab").iterables):
+        s(elem).addClass("hidden")
+      
+      s("#content2")[0].children[len(s(".tab").iterables)].innerHTML+='<div class="tab"><div class="path" style="overflow-x:scroll">'+ruta+'</div><textarea class="codeEditor" class="CodeMirror cm-s-monokai" style="height: 100%"></textarea> </div>'
+      if s("#guardar").iterables==[]:
+          s("#btns-action")[0].innerHTML+='<button class="bg-blue white" id="guardar">Guardar</button>'
+      
+      k=0
+      for k, elem in enumerate(s(".tab").iterables):
+        if "hidden" not in elem.class_name:
+          break
+      if list(rest["kwargs"])==["Diseño"]:
+        s(".path")[k].innerHTML=ruta+s("#nombre")[0].value+".html"
+      elif list(rest["kwargs"])==["Controlador"] or list(rest["kwargs"])==["Modelo"]:
+        s(".path")[k].innerHTML=ruta+s("#nombre")[0].value+".py"
+      else:
+        s(".path")[k].innerHTML=ruta+s("#nombre")[0].value
+      
+  update()
+  s("#alert").addClass("hidden")
+  s("#nombre")[0].value=""
+ req.bind("complete",show)
+ 
+
+s("#crear").bind("click",crear)
+
+
+
+def navegar(this):
+ path=[]
+ while this.parent.tagName=="UL" or this.parent.tagName=="LI":
+  if this.parent.tagName=="UL":
+   if this.parent.parent.tagName=="LI":
+    children=this.parent.parent.parent.children
+
+    indice=list(this.parent.parent.parent.children).index(this.parent.parent)
+    
+    if "folderclass" in children[indice-1].class_name:
+     path.insert(0,children[indice-1].text)
+    this=this.parent
+
+  elif this.parent.tagName=="LI":
+   children=this.parent.children
+   indice=list(this.parent.children).index(this)
+  
+   if "folderclass" in children[indice-1].class_name:
+    path.insert(0,children[indice-1].text)
+   this=this.parent
+  this=this.parent
+ 
+ return path
+
+
+def seleccionar( evt):
+  key=list(rest["kwargs"])
+  archivo=evt.target.text.strip()
+  path="/".join(navegar(evt.target))+"/"+archivo
+  modo="text/plain"
+  for elem in [".html",".py",".by",".zby",".js",".css",".php",".xml",".json"]:
+    if len(elem)<len(archivo):
+     if archivo[-len(elem):]==".html":
+      modo="htmlmixed"
+      break
+     elif archivo[-len(elem):]==".py" or archivo[-len(elem):]==".by" or archivo[-len(elem):]==".zby":
+      modo="python"
+      break
+     elif archivo[-len(elem):]==".js":
+      modo="javascript"
+      
+      break
+     elif archivo[-len(elem):]==".css":
+      modo="text/css"
+      
+      break
+     elif archivo[-len(elem):]==".php":
+      modo="php"
+      
+      break
+     elif archivo[-len(elem):]==".xml":
+      modo="xml"
+      
+      break
+     elif archivo[-len(elem):]==".json":  
+      modo="json"
+      
+      break
+  req=ajax.ajax()
+  if list(rest["kwargs"])==["Diseño"]:
+    path="layout/"+path
+    req.open("POST",config.base_url+rest["app"]+"/"+rest["control"]+"/Show/"+path,True)  
+    req.send({})
+    
+    
+    
+  elif list(rest["kwargs"])==["Controlador"]:
+    #pendiente para incluir controles globales
+    path="controlador/"+path
+    req.open("POST",config.base_url+rest["app"]+"/"+rest["control"]+"/Show/"+path,True)  
+    req.send({})
+
+  elif list(rest["kwargs"])==["Modelo"]:
+    path="modelo/"+path
+    req.open("POST",config.base_url+rest["app"]+"/"+rest["control"]+"/Show/"+path,True)  
+    req.send({})
+  elif list(rest["kwargs"])==["Script"]:
+    path="static/"+path
+    req.open("POST",config.base_url+rest["app"]+"/"+rest["control"]+"/Show/"+path,True)  
+    req.send({})
+  elif list(rest["kwargs"])==["Ajustes"]:
+    path="ajustes/"+path
+    
+    req.open("POST",config.base_url+rest["app"]+"/"+rest["control"]+"/Show/"+path,True)  
+    req.send({})
+
+  elif list(rest["kwargs"])==["Plugin"]:
+    
+    
+    req.open("POST",config.base_url+rest["app"]+"/"+rest["control"]+"/Show/"+path,True)  
+    req.send({})
+  if len(s(".tab").iterables)==1 and s(".path")[0].text=="":
+        k=0    
+
+        s(".tab-btn")[0].text=evt.target.text        
+        if s("#guardar").iterables==[]:
+          s("#btns-action")[0].innerHTML+='<button class="bg-blue white" id="guardar">Guardar</button>'          
+        s("#guardar")[0].parent.innerHTML+="<button id='borrar'>Borrar</button>"
+        
+  else:
+        
+        
+        for elem in s(".tab").iterables:
+          s(elem).addClass("hidden")
+          pass
+        
+        s("#tabs-btn")[0].innerHTML+='<span style="padding:2px"><button class="tab-btn">'+evt.target.text+'</button><button class="close-btn">x</button></span>'
+        if len(s(".tab").iterables)>0:
+          s("#content2")[0].children[len(s(".tab"))].innerHTML+='<div class="tab"><div class="path" style="overflow-x:scroll"></div><textarea class="codeEditor" class="CodeMirror cm-s-monokai" style="height: 100%"></textarea> </div>'
+        else:
+          s("#content2")[0].children[0].innerHTML+='<div class="tab"><div class="path" style="overflow-x:scroll"></div><textarea class="codeEditor" class="CodeMirror cm-s-monokai" style="height: 100%"></textarea> </div>'
+
+        if s("#guardar").iterables==[]:
+          s("#btns-action")[0].innerHTML+='<button class="bg-blue white" id="guardar">Guardar</button>'
+          
+        
+        if s("#borrar").iterables==[]: 
+          s("#guardar")[0].parent.innerHTML+="<button id='borrar'>Borrar</button>"
+
+        update()    
+        
+        
+
+  for k,elem in enumerate(s(".tab").iterables):
+          if "hidden" not in elem.class_name:
+            break
+    
+  window.editores[k].getDoc().setValue("cargando...")  
+  def _lambda( evt):
+        archivo=req.text.split("\n")
+        if len(s(".tab").iterables)==1:
+          k=0
+        else:
+          for k,elem in enumerate(s(".tab").iterables):
+            if "hidden" not in elem.class_name:
+              break
+        s(".path")[k].innerHTML=archivo[0]
+        window.editores[k].getDoc().setValue("\n".join(archivo[1:]))
+        window.editores[k].setOption("mode", modo)
+  req.bind("complete",_lambda        )
+
+
+s(".fileclass").bind("click", seleccionar)
+
+
+
+
+def cerrar( evt):
+  s("#alert").addClass("hidden")
+s("#alert-close").bind("click",cerrar  )
+def crear( evt):
+  s("#alert").removeClass("hidden")
+s("#nuevo").bind("click",crear)
+
+ 
+def _lambda( evt):
+ if "hidden" in s("#treefiles")[0].class_name:
+  s("#treefiles").removeClass("hidden")
+ else:
+  s("#treefiles").addClass("hidden")
+s("#titulo").bind("click",_lambda )
+

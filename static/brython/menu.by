@@ -1,0 +1,83 @@
+from browser import document, alert,window
+import time
+s=window.s
+
+l=[]
+for elem in document.get(selector=".menu"):
+	l.append(elem.text)
+def change(evt):
+	evt.preventDefault()
+	try:
+		if str(evt.target)=="<HTMLSpanElement object>":
+			for elem in s(".menu").iterables:
+				if elem.children[0]==evt.target:
+					
+						s(evt.target.parent).addClass("bg-bluelight")
+				
+						
+				else:
+					
+					s(elem.parent).removeClass("bg-bluelight")
+					s(elem).removeClass("bg-bluelight")
+		else:
+			for elem in s(".menu").iterables:
+				if elem==evt.target:
+					
+						
+					s(evt.target).addClass("bg-bluelight")
+				else:
+					
+					s(elem.parent).removeClass("bg-bluelight")
+					s(elem).removeClass("bg-bluelight")
+
+
+		indice=l.index(evt.target.text)
+		subs=document.get(selector=".sub")
+		
+		if "hidden" in subs[indice].class_name:
+			for elem in subs:
+				if "hidden" not  in elem.class_name:
+					elem.class_name+=" hidden"
+			subs[indice].class_name=subs[indice].class_name.replace("hidden","")
+			
+
+
+
+		else:
+			subs[indice].class_name+=" hidden"
+
+		
+	except Exception as e:
+		alert(e)
+		alert("===")
+def change(evt):
+	
+	for k,elem in enumerate(s("#main-menu")[0].get(selector="span[name='menu']")):
+		if elem!=evt.target:
+			s(elem).removeClass("bg-bluelight")
+			s(elem.parent.children[1]).addClass("hidden")
+		else:
+			s(evt.target).addClass("bg-bluelight")
+			s(evt.target.parent.children[1]).removeClass("hidden")
+	
+for k,elem in enumerate(s("#main-menu")[0].get(selector="span[name='menu']")):
+	elem.bind("click",change)
+
+
+def change2(evt):
+
+	if "hidden" in document["menu"].class_name:
+		document["menu"].class_name=document["menu"].class_name.replace("hidden","")
+		
+		
+		document["content"].class_name=document["content"].class_name.replace("col-sm-offset-1","")
+		document["content"].class_name+=" col-sm-offset-2"
+	else:
+		document["menu"].class_name+=" hidden"
+		
+		document["content"].class_name+=" col-sm-offset-1"
+		document["content"].class_name=document["content"].class_name.replace("col-sm-offset-2","")
+	
+		
+		
+document["btn-menu"].bind("click",change2)

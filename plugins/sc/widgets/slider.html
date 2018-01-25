@@ -1,0 +1,63 @@
+<style type="text/css">
+.zslider{
+	position: relative;
+	background: black;
+}
+.f-left{
+  position: absolute;
+  
+  font-size: 50px;
+  color: blue;
+  top:45%;
+  left: 0;
+  cursor: pointer;
+
+  
+
+  z-index: 200;
+ }
+  .exit{
+  
+  font-size: 30px;
+  color: white;
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  cursor: pointer;
+
+
+ }
+.f-right{
+  
+  position: absolute;
+  
+  font-size: 50px;
+  color: blue;
+  
+  right: 5%;top: 45%;
+  right: 0;
+  z-index: 200;
+  cursor: pointer;
+   }
+</style>
+
+<div>
+
+<div class="zslider" style="position: relative;width:400px;height: 400px">
+
+	<div class="content " style="height: 400px;overflow: hidden;">
+	{{for k, elem in enumerate(data['plugin-widget']["slider"][1][1]):}}
+		{{img=data['opciones'][elem['opciones']][0][1][elem['value']]}}
+		<img src="{{=config.base_url+config.apps_folder+settings.app+'/admin/'+routes.static_folder}}archivos/Imagenes/{{=img}}"
+		style="max-height:100%;max-width: 100%;vertical-align: center" >
+
+	{{pass}}
+</div>
+  <div class="f-left"><img src="{{=data['base_url']}}../admin/static/archivos/Imagenes/f1.png"  class="height-5"></div>
+  <div class="f-right"><img src="{{=data['base_url']}}../admin/static/archivos/Imagenes/f2.png"  class="height-5"></div>
+</div>
+
+
+
+</div>
+	 

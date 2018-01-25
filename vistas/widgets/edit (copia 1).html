@@ -1,0 +1,99 @@
+<div class="pad-1">
+
+{{args=data['args'].keys()[0]}}
+{{if data['args'][args]==None and data['vista']!='login':}}
+{{btn="Registar"}}
+{{elif data['vista']=='login':}}
+{{btn="Entrar"}}
+{{else:}}
+{{btn="Guardar"}}
+{{pass}}
+
+
+
+<form method="post" action="post.py" enctype='multipart/form-data'>
+{{for box in data["boxes"]:}}
+	{{if type(box[0])==dict:}}
+	<div class="b-s1 pad-1 b-r5">
+		<h1>{{print data["titulo"]}}</h1>
+		{{for elem in box:}}
+			{{if type(elem)==dict:}}
+				{{tmp=elem.keys()}}
+				{{tmp.remove("name") if "name" in tmp else tmp}}
+				{{tmp.remove("value") if "value" in tmp else tmp}}
+				{{tmp.remove("step") if "step" in tmp else tmp}}
+				{{tmp.remove("opcion") if "opcion" in tmp else tmp}}
+				{{tmp=tmp[0]}}
+				
+				{{if elem[tmp]=="fixed":}}
+					<div class="d-inline-block pad-05 width-20">
+					<label>{{print tmp}}</label>
+					<select name="{{print elem['name']}}" value="{{print elem['value']}}">
+						<option>{{print elem['value']}}</option>
+					</select>
+					
+					</div>	
+				{{elif elem[tmp]=="text":}}
+					<div class="d-inline-block pad-05 width-20">
+					
+					<label>{{print tmp}}</label>
+					<input type="{{print elem[tmp]}}" name="{{print elem['name']}}" value="{{print elem['value']}}">
+					</div>
+				{{elif elem[tmp]=="text-admin":}}
+					{{if data["login"]==True:}}
+					<div class="d-inline-block pad-05 width-20">
+					
+					<label>{{print tmp}}</label>
+					<input type="text" name="{{print elem['name']}}" value="{{print elem['value']}}">
+					</div>
+					{{pass}}
+				{{elif elem[tmp]=="textarea":}}
+					<div>
+					<label>{{print tmp}}</label>
+					<textarea class="width-100p" name="{{print elem['name']}}">{{print elem['value']}}</textarea>
+					</div>
+				{{elif elem[tmp]=="file":}}
+					<div class="d-inline-block pad-05 width-20">
+					<label>{{print tmp}}</label>
+					<input type="{{print elem[tmp]}}" name="{{print elem['name']}}" >
+					</div>
+				{{elif elem[tmp]=="select":}}
+				
+
+					<div class="d-inline-block pad-05 width-20">
+					<label>{{print tmp}}</label>
+					<select name="{{print elem['name']}}" >
+						{{for _k, opcion in enumerate(data["opciones"][elem['opcion']][1]):}}
+						<option value="{{print _k}}" {{print "selected" if elem['value']==_k else ''}} >{{print opcion}}</option>
+						{{pass}}
+					</select>
+					</div>
+				{{elif elem[tmp]=="select-admin":}}
+					{{if data["login"]==True:}}
+
+					<div class="d-inline-block pad-05 width-20">
+					<label>{{print tmp}}</label>
+					<select name="{{print elem['name']}}" >
+						{{for _k, opcion in enumerate(data["opciones"][elem['opcion']][1]):}}
+						<option value="{{print _k}}" {{print "selected" if elem['value']==_k else ''}} >{{print opcion}}</option>
+						{{pass}}
+					</select>
+					</div>
+					{{pass}}
+				{{elif elem[tmp]=="number":}}
+					<div class="d-inline-block pad-05 width-20">
+					<label>{{print tmp}}</label>
+					<input type="{{print elem[tmp]}}" name="{{print elem['name']}}" value="{{print elem['value']}}" step="{{print elem['step']}}">
+					</div>
+				{{pass}}
+			{{pass}}
+		{{pass}}	
+	{{pass}}
+
+	</div>
+	{{pass}}
+	<input type="submit" name="action" value="{{print btn}}" class="btn bg-blue white">
+
+
+</form>
+</div>

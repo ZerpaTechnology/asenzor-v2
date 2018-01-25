@@ -1,0 +1,85 @@
+from browser import window
+
+config=window.config
+settings=window.settings
+
+globals()["config"]=config
+globals()["settings"]=settings
+
+
+class Component:
+  	def __init__(self,url,data={},admin=False,isglobal=False,websocket=None):
+  		self.url=url
+  		print(globals())
+  		print(config)
+  		
+  		data["boxes"]=[]
+  		
+  		if isglobal==True:
+		          f=open(config.base_url+settings.app+"/admin/Show/layout/global/widgets/"+url+".html/action=componer/")
+
+
+		          
+  		elif admin:
+
+             		f=open(config.base_url+settings.app+"/admin/Show/layout/admin/widgets/"+url+".html/action=componer/")
+
+  		else:
+  			
+              		f=open(config.base_url+settings.app+"/admin/Show/layout/user/widgets/"+url+".html/action=componer/")
+
+  		self.widget=f.read()
+  		
+
+
+
+  		if websocket!=None:
+
+		              
+		        websocket.send(str({"control":"admin","metodo":"Show","kwargs":{"widget":url},"isglobal":isglobal}))
+		        def respuesta(evt):
+		          self.req.text=evt.data
+		        websocket.bind("message",respuesta)
+  			self.widget="None"
+  		
+
+  	def run(self,data={}):
+  	  
+  		if data!={}:
+  			self.data=data
+  		
+  		decode=window.Codificador.Codificador.decode.new
+  		normalizar=window.nuclear.normalizar.new
+  		locals()["decode"]=decode
+  		locals()["config"]=config
+  		locals()["normalizar"]=normalizar
+
+
+
+
+  		doc=""      		
+  		#self.widget=convertir(self.req.text,d=self.data)
+  		exec(self.widget,locals())
+  		print(doc)
+
+  		widget=doc
+  	
+  		if "<script " in widget:
+			cuenta=widget.count("<script ")
+			f2=0
+			for elem in range(cuenta):
+				i1=widget.find("<script ",f2)
+				f=widget.find(">",i1)
+				i2=widget.find("</script",f+1)
+				f2=widget.find(">",i2)
+				window.eval(widget[f+1:i2])
+		
+  		return widget
+window.Component=Component
+componentes={"widget-campo-box":Component("widget-campo-box",{},True,True),
+       "widget-campo":Component("widget-campo",{},True,True),
+       "widget-campo-boxes":Component("widget-campo-boxes",{},True,True),}
+print("0000")
+
+
+window.componentes=componentes

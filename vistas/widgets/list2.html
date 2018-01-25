@@ -1,0 +1,64 @@
+<div>
+<span class="font-s50">Menus</span><button>Añadir nuevo</button>
+</div>
+<div class="width-60p d-inline-block">
+	<select>
+		<option>Acciones en lote</option>
+		<option>Editar</option>
+		<option>Mover a la papelera</option>
+	</select>
+	<button>Aplicar</button>
+	<select>
+		<option>Todas las fechas</option>
+		<option>Septiembre 2014</option>
+	</select>
+	<button>Filtrar</button>
+</div>
+
+<div class="d-inline-block">
+	27 elementos
+	<button><<</button>
+	<button><</button>
+	<input type="number" name="" value="1" class="width-5">
+	de 2
+	<button>></button>
+	<button>>></button>
+</div>
+<table class="table table-hover">
+  <tr>
+  	<td><input type="checkbox" name=""></td>
+  	<td><a href=""><div>Titulo</div></a></td>
+  	<td><a href=""><div>Fecha</div></a></td>
+  </tr>
+
+  {{for k,menu in enumerate(data["listar"]):}}
+  <tr>
+  	<td><input type="checkbox" name=""></td>
+  	<td><a href="{{print data['actionbase']}}&action=editar&args={{print str(menu[3])}}">{{print menu[0]}}</a></td>
+  	<td></td>
+  </tr>
+  {{pass}}
+</table>
+<div class="width-60p d-inline-block">
+	<select>
+		<option>Acciones en lote</option>
+		<option>Editar</option>
+		<option>Mover a la papelera</option>
+	</select>
+	<button>Aplicar</button>
+	<select>
+		<option>Todas las fechas</option>
+		<option>Septiembre 2014</option>
+	</select>
+	<button>Filtrar</button>
+</div>
+<div class="d-inline-block">
+	27 elementos
+	<button><<</button>
+	<button><</button>
+	<input type="number" name="" value="1" class="width-5">
+	de 2
+	<button>></button>
+	<button>>></button>
+</div>
+

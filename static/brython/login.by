@@ -1,0 +1,16 @@
+from browser import window,ajax,alert
+s=window.s
+
+
+config=window.config
+
+
+def checkear():	
+	cookies=window.getCookie()
+	
+	if ("token" in cookies and cookies["token"]=="") and ("token2" in cookies and cookies["token2"]==""):
+		s("#login").removeClass("hidden")
+		s("#login")
+	else:
+		s("#login").addClass("hidden")
+window.setInterval(checkear,1000)

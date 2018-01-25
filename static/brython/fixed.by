@@ -1,0 +1,28 @@
+from browser import document,alert,window
+
+jq=window.jQuery
+
+
+altura=jq("#nav-main").offset().top
+anchura=jq(window).width()
+
+
+def pegar(ev):
+	if jq(window).scrollTop()>altura:
+		jq("#nav-main").addClass("ftop0")
+		
+		if anchura<940:
+			jq("#logo-bar").removeClass("hidden")
+		else:
+			jq("#logo-bar").addClass("hidden")
+
+
+
+	else:
+		jq("#nav-main").removeClass("ftop0")
+		jq("#logo-bar").addClass("hidden")
+
+
+jq(window).on("scroll",pegar)
+
+

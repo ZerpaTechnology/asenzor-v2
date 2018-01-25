@@ -1,0 +1,39 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+from browser import window
+s=window.s
+class Media(object):
+	"""docstring for Media"""
+	def __init__(self, selector):
+		self.selector=selector
+		def marcar(evt):
+			if "activo" in evt.target.class_name.split(" "):
+				s(evt.target).removeClass("activo")	
+				s(evt.target).removeClass("marcardo")	
+				
+			elif "marcado" in evt.target.class_name.split(" "):
+				s(evt.target).removeClass("marcado")
+				s(evt.target).removeClass("activo")
+			else:
+				for elem in s(selector)[0].get(selector=".item"):
+					if "activo" in elem.class_name.split(" "):
+						if elem!=evt.target:
+							s(elem).removeClass("activo")
+							s(elem).addClass("marcado")
+					
+				s(evt.target).addClass("activo")
+				
+				s(self.selector+" .media-preview")[0].src=evt.target.style.backgroundImage.strip()[len("url('"):-len("')")]
+				s(self.selector+" .media-preview")[0].style.maxWidth="150px"
+				s(self.selector+" input[name=nombre]")[0].value=evt.target.getAttribute("name")
+				s(self.selector+" input[name=url]")[0].value=evt.target.getAttribute("enlace")
+
+
+		for elem in s(selector)[0].get(selector=".item"):
+			elem.bind("click",marcar)
+
+	def update(self):
+		pass
+
+window.Media=Media
+		

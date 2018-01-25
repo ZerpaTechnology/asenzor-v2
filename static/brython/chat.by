@@ -1,0 +1,183 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+from browser import ajax,window,document as doc
+from browser import websocket
+rest=getRest()
+cookies={}
+s=window.s
+token=None
+
+if "token" in cookies:                    
+  if "app" in rest:
+   token=cookies["token"][rest["app"]]
+  else:
+    token=cookies["token"][list(cookies["token"])[0]]
+else:
+ token=None
+
+chatbox=None
+if not websocket.supported:
+    
+    for elem in document.cookie.split(";"):
+        k,v=elem.split("=")
+        if  ":" in v:
+            d={}
+            if "," in v :
+              for elem2 in v.split(","):
+                  k2,v2=elem.split(":")
+                  d[k2]=v2
+              cookies[k]=d
+            else:
+              k2,v2=v.split(":")
+              cookies[k]={k2:v2}
+
+
+        else:
+            cookies[k]=v
+
+    
+    def chatear(evt):
+        for k,elem in enumerate(s(".chat_links").iterables):
+            if elem==evt.target:
+                  break
+        k=len(s(".chat-box").iterables)-1
+        if k==-1:
+          s("#contact-box")[0].children[0].innerHTML+=chatbox.run(data[0])
+        else:
+         s("#contact-box")[0].children[k].innerHTML+=chatbox.run(data[k])
+
+    def iniciar(evt):
+     global rest
+     global token                 
+                   
+     if "admin" in rest and token!=None:
+       req.send({"admin":True,"action":"chat","args":{"conectar":token}})
+       def obtenerContactos(evt):
+            global chatbox
+            if req.text!="":
+               exec(req.text)
+               data={"contactos":contactos}
+               widget=Component(url="chat",admin=True)
+               chatbox=Component(url="chatbox",admin=True)
+               s("#widget-chat")[0].innerHTML=widget.run(data)
+               for elem in s(".chat_links").iterables:
+                     elem.bind("click",chatear)
+       req.bind("complete",obtenerContactos)
+       req.send({"action":"chat","args":{"conectar":token}})           
+    s("#iniciar").bind("click",iniciar)
+     
+
+
+
+    def chat(evt):
+      global rest
+      global token
+      if evt.keyCode==13:
+         req=ajax.ajax()
+         if "admin" in rest:
+            req.send({"admin":True,"action":"chat","args":{"contacto":""},"mensaje":s("#chatbox")[0].value})
+         else:
+            req.send({"action":"chat","args":{"conectar":token}})
+            def conectar(evt):
+                if req.text!="":
+                      token=req.text
+            req.bind("complete",conectar)
+         s("#chatbox")[0].value=""
+      else:
+          if evt.keyCode==13:
+              pass
+    s("#chat").bind("keyup", chat)
+
+    def escuchar(evt):
+      global rest
+      req=ajax.ajax()
+      req.open("POST",config.base_url+config.controller_folder+"ajax.py",True)
+      if "admin" in rest:
+       req.send({"admin":True})
+      else:
+        req.send({""})
+    window.setInterval(escuchar,1000)    
+    
+else:
+  
+  ws = websocket.WebSocket("ws://localhost:8000/")
+  conexcionAbierta=False
+  
+  widgetChat=Component("chatBox")
+  widgetContact=Component("chatContactList")
+  WidgetChats=[]
+  
+
+  def send(ev):
+      #data = doc["data"].value
+      #if data:
+      if evt.keyCode==13:
+       ws.send(str({"admin":True,"action":"chat","mensaje":evt.target.text}))
+  
+  def on_message(evt):
+    try:
+      global widgetChats
+      exec("data="+evt.data)
+      
+      for elem in widgetChats:
+        if elem.get(selector=".titulo").text==data[0]["value"]:
+          if elem.get(selector=".mensajes"):
+            elem.children[0].innerHTML+='<div class="'+data[2]["value"]+'"><p>'+data[1]["value"]+'</p></div>'
+    except Exception as e:
+      alert(e)
+  
+  def _open(ev):
+      global ws
+      global widgetChat
+      global widgetContact
+      global conexcionAbierta
+      global base_url
+      
+      # open a web socket 
+      if ws==None:
+        ws=websocket.WebSocket("ws://localhost:8000/")
+      if conexcionAbierta==False:
+        req=ajax.ajax()
+        req.open("POST",config.base_url+config.controller_folder+"/ajax.py",True)
+        req.send({"args":"Contactos","admin":True,"action":"show"})
+        data={}
+        def complete(evt):
+          try:
+             exec("data['contactos']="+req.text)
+             alert(data["contactos"])
+           except:
+              alert(req.text)        
+        req.bind("complete",complete)        
+        s(".chatBox")[0].innerHTML=widgetContact.run(data)
+        def contact_link(evt):
+          c=len(s(".chatBox").iterables)-2
+          while c>=0:
+            if []==s(".chatBox")[c].get(selector=".chat"):
+                data={"conversaciones":[]}
+                s(".chatBox")[c].children[0].innerHTML=widgetChat.run(data)
+                break
+            c-=1    
+        s(".contact-link").bind("click",contact_link)
+        conexcionAbierta=True
+      else:
+        ws.close()
+        
+
+      # bind functions to web socket events
+      #ws.bind('open',on_open)
+      ws.bind('message',on_message)
+     # ws.bind('close',on_close)
+      
+  s('#chat').bind('click', _open)
+  s('.chat .chatbox').bind('click', send)
+  
+   
+
+
+
+
+
+
+
+
+

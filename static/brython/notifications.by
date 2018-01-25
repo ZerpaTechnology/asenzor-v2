@@ -1,0 +1,153 @@
+#!/usr/bin/python
+from browser import window,ajax,alert,document
+import copy
+s=window.s
+urlBuilder=window.urlBuilder
+normalizar=window.normalizar
+Component=window.Component
+config=window.config
+versiones=[]
+getRest=window.getRest
+rest=getRest()
+getCookie=window.getCookie
+cookies=getCookie()
+
+componentes={"notifications":Component("notifications",{},True),"alert":Component("alert",{},True,True)}
+
+data={}
+
+s("#notifications").removeClass("hidden")
+cargado=False
+intervalo=None
+req=ajax.ajax()
+
+req.open("GET","http://zerpatechnology.com.ve/"+config.controller_folder+"ajax.py?control=versiones_disponibles",True)
+req.send()
+
+def ordenar(lista):
+	l=[]
+
+	for elem in lista:
+		if " - " in elem:
+
+			k,v=elem.split(" - ")
+			if len(l)>0:
+
+				a,b,c=v.split(".")
+				for k2,elem2 in enumerate(l):
+					if " - " in elem2:
+						k3,v3=elem2.split(" - ")
+						a2,b2,c2=v3.split(".")
+						
+						if int(a)<=int(a2) and int(b)<=int(b2) and int(c)<=int(c2):
+							l.insert(k2,elem)
+							break
+
+					else:
+						a2,b2,c2=elem2.split(".")
+						if int(a)<=int(a2) and int(b)<=int(b2) and int(c)<=int(c2):
+							l.insert(k2,elem)
+							break
+				if elem not in l:
+					l.append(elem)
+
+					
+			else:
+				l.append(elem)
+		else:
+			a,b,c=elem.split(".")
+			for k2,elem2 in enumerate(l):
+				if " - " in elem2:
+						k3,v3=elem2.split(" - ")
+						a2,b2,c2=v3.split(".")
+
+						if int(a)<=int(a2) and int(b)<=int(b2) and int(c)<=int(c2):
+							l.insert(k2,elem)
+							break
+						
+
+				else:
+						a2,b2,c2=elem2.split(".")
+						if int(a)<=int(a2) and int(b)<=int(b2) and int(c)<=int(c2):
+							l.insert(k2,elem)
+							break
+			if elem not in l:
+				l.append(elem)
+				break
+	return l					
+
+
+
+
+
+def mostrar(evt):
+	global versiones
+	
+	if req.text!="":
+		versiones=normalizar(req.text)
+
+	
+req.bind("complete",mostrar)
+
+if "notification" in cookies and cookies["notification"]==True:
+	
+	
+
+	def actualizar(evt):
+		global componentes
+		
+		data["content"]=""
+		if versiones!=None:
+			for elem in versiones:
+				data["content"]+="<div class='text-center ff' ><a class='d-inline-block btn btn-1 pad-1 marg-05' href='"+urlBuilder(config,rest["app"],"admin","index","Actualizar",versiones[elem])+"/action=download"+"' ><span class='white'>"+elem+"</span></a></div>"
+		widget=componentes["alert"].run(data)
+
+		if widget!="":
+
+			s("#alert")[0].outerHTML=widget
+			s("#alert button").bind("click",donwload)
+			s("#alert-close").bind("click",close)
+
+
+	s("#actualizar").bind("click",actualizar)
+	
+
+	def close(evt):
+		s("#alert").addClass("hidden")
+	s("#alert-close").bind("click",close)
+
+
+else:
+
+
+	def notificar():
+		global componentes
+		global cargado
+		global intervalo
+		global config
+		from http import cookies
+		cookie=cookies.SimpleCookie()
+		if componentes["notifications"].req.text!="":
+
+			if versiones!=None and versiones!={} and versiones!=[]:
+			    
+			    if len(list(versiones))-1>list(ordenar(versiones)).index(config.version):
+					data={"notification":"Nueva actualizacion disponible AsenZor v"+ordenar(list(versiones))[-1],
+						  "notification-img":"",
+						  "notification-link":config.base_url+rest["app"]+"/admin/index/Actualizar/action=update"}
+					s("#notifications")[0].innerHTML+=componentes["notifications"].run(data)
+					window.clearInterval(intervalo)
+					s(".close-notification").bind("click",close)
+			document.cookie=" notification=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/"+config.base_url.split("/")[3]
+			document.cookie=" notification=True;path=/"+config.base_url.split("/")[3]
+			
+			
+
+	def close(evt):
+		padre=evt.target.parent.parent
+		padre.removeChild(evt.target.parent)
+
+
+
+	intervalo=window.setInterval(notificar,5000)
+

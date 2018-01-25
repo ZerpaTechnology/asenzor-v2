@@ -1,0 +1,2044 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+#no modificar con codemirror
+from browser import document,window,alert
+import threading
+decode=window.decode
+def getCookie():
+  cookies={}
+  for elem in document.cookie.split(";"):
+    if "=" in elem:                
+        k,v=elem.split("=")
+        cookies[k.strip()]=normalizar(v)
+  return cookies
+def defaultValues():
+  return [[None],[]]
+def defaultEvents():
+  eventos=[[["click", [] ],
+           ["mouseenter",[]],
+           ["mouseleave",[]],
+           ["mouseover",[]],
+           ["mouseout",[]],
+           ["mousemove",[]],
+           ["mousedown",[]],
+           ["mouseup",[]],
+           ["dblclick",[]],
+           ["keypress",[]],
+           ["keydonw",[]],
+           ["keyup",[]],
+           ["input",[]],
+           ["blur",[]],
+           ["focus",[]],
+           ["drag",[]],
+           ["dragend",[]],
+           ["dragenter",[]],
+           ["dragleave",[]],
+           ["dragover",[]],
+           ["dragstart",[]],
+           ["drop",[]],
+          ],[]]
+  return eventos
+
+def getEvents(elemento):#[ [[evt,[funciones]],[evt,[funciones]]] , [hijos] ]      lista=[]
+      hijos=[]
+      eventos=["click","mouseenter","mouseleave","mouseover","mouseout","mousemove","mousedown","mouseup","dblclick","keypress","keydonw","keyup","input","blur","focus","drag","dragend","dragenter","dragleave","dragover","dragstart","drop"]
+  
+      if len(elemento.children)>0:
+        for elem in elemento.children:
+          hijos+=[getEvents(elem)]
+          
+
+      for elem in eventos:
+        lista+=[[elem,elemento.events(elem)]]
+      
+      return [lista,hijos]
+def getValues(elemento):#[ [[evt,[funciones]],[evt,[funciones]]] , [hijos] ]
+      
+      if "value" in dir(elemento):
+        lista=[elemento.value]
+      else:
+        lista=[None]
+      hijos=[]
+      
+      if len(elemento.children)>0:
+        for elem in elemento.children:
+          hijos+=[getValues(elem)]
+          
+
+      
+      return [lista,hijos]
+
+def updateEvent(listaEvent,padre):
+      if type(listaEvent[0][0])==str:
+        eventos=listaEvent[0][0]
+        for k, eventolist in enumerate(eventos):
+          if len(eventolist)>0:
+          
+            if eventolist!=None and type(eventolist)==list and type(eventolist[0])==str:
+                  for funcion in eventolist[1]:
+                    padre.bind(eventolist[0],funcion)
+
+      else:
+        eventos=listaEvent[0]
+        
+        for k, eventolist in enumerate(eventos):
+          if len(eventolist)>0:
+            if eventolist!=None and type(eventolist)==list:
+              for funcion in eventolist[1]:
+                    padre.bind(eventolist[0],funcion)
+
+
+      hijos=listaEvent[1]
+      c=0
+      
+        
+          
+          
+   
+      for k,hijo in enumerate(hijos):
+        
+        if hijo!=None and len(padre.children)>0:
+          
+          updateEvent(hijo,padre.children[k])
+      
+      
+def updateValues(listaValues,padre):
+
+  values=listaValues[0]
+  hijos=listaValues[1]
+  for k, valor in enumerate(values):
+    if valor!=None:
+      padre.value=valor
+  for k,hijo in enumerate(hijos):
+    if hijo!=None:
+      updateValues(hijo,padre.children[k])
+
+
+
+
+
+def zjoin(lista,sep):
+  c=""
+  for elem in lista:
+
+    c+=str(elem)+sep
+  return c[:-1]
+
+def getRest(admin="admin",manager="asenzor"):
+    global decode    
+    newRoot=decode(window.location.href)
+    global config
+    
+    if newRoot[-1]=="/":
+        newRoot=newRoot[:-1].split("/")
+    else:
+        newRoot=newRoot.split("/")
+    for k,elem in enumerate(newRoot):
+      if "" ==elem:
+        del newRoot[k]
+    newRoot=newRoot[2:]
+    folder_url=config.base_url.split("/")
+    for k,elem in enumerate(folder_url):
+      if "" ==elem:
+        del folder_url[k]
+    c=0    
+    #en el formato proyecto/version/controlador/vista
+    #si no esta habilitado la gestion de proyectos
+
+    #-------------------------------------------------
+    #En "version" se maneja tres parametros:
+    # en "produccion" no hay control de versiones
+    # =produccion (config.mod_debug == False & este modo indica que se carga las aplicaciones de la carpeta apps)
+    # =desarrollo (config.mod_debug == True & este modo solo se usa para el admin)
+    # =N (config.mod_debug == True & se administran versiones "N" es un numero)
+    #--------------------------------------------------
+    
+    
+    config.custom_url=newRoot
+    parametros_rest={}    
+    parametros_rest["app"]=None
+    parametros_rest["control"]=None
+    parametros_rest["metodo"]=None
+    parametros_rest["args"]=[]
+    parametros_rest["kwargs"]={}
+    parametros_rest["manager"]=False
+
+    import os
+
+    c=0
+    while c<100000:
+      c+=1
+    if config.seo_url==True:
+
+              
+              try:
+                  
+                  posFolder=newRoot.index(folder_url[-1])
+              except:
+                  posFolder=-1
+
+              
+              if newRoot!=[]:
+
+                  
+                  c=len(folder_url)-2
+                  c2=0
+                  folderPath=folder_url
+
+
+                  
+                  if posFolder!=-1 and len(newRoot)-1>posFolder:
+
+                      if posFolder==0:#lo que siga son parametros
+                          
+                          if newRoot[posFolder+1]==admin:
+
+                              parametros_rest["control"]=newRoot[posFolder+1]
+                              parametros_rest["app"]=config.default_app
+
+                          elif newRoot[posFolder+1]==manager:
+                            
+                            parametros_rest["app"]=newRoot[posFolder+2]
+                            parametros_rest["manager"]=True
+
+
+                            if len(newRoot[posFolder+3:])>0:
+                                
+
+                                parametros_rest["control"]=newRoot[posFolder+3]
+                                
+
+
+                                if len(newRoot[posFolder+4:])>0:
+
+                                    parametros_rest["metodo"]=newRoot[posFolder+4]
+                                    parametros_rest["args"]=[]
+
+                                            
+                                    for k,elem in enumerate(newRoot[posFolder+5:]):
+
+                                            if "&" not in elem:
+                                                
+                                                if k!=len(newRoot[posFolder+5:])-1:
+
+
+
+                                                    if k!=len(newRoot[posFolder+5:])-2 and "=" not in elem:
+                                                        
+
+
+                                                        parametros_rest["args"]+=[normalizar(elem)]
+                                                    else:
+
+                                                        if "=" in elem:
+                                                            k,v=elem.split("=")
+                                                            parametros_rest[k]=normalizar(v)
+                                                        else:
+                                                            if "{" in decode(elem) and "}" in decode(elem):
+
+                                                                parametros_rest["kwargs"]=normalizar(decode(elem))
+                                                            else:
+                                                                if "=" not in elem:
+                                                                    parametros_rest["args"]+=[normalizar(elem)]
+                                                                else:
+                                                                    k,v=elem.split("=")
+                                                                    parametros_rest[k]=normalizar(v)
+
+                                                else:
+
+                                                    if "{" in decode(elem) and "}" in decode(elem):
+
+                                                        parametros_rest["kwargs"]=normalizar(decode(elem))
+                                                    else:
+                                                        if "=" not in elem:
+                                                            parametros_rest["args"]+=[normalizar(elem)]
+                                                        else:
+                                                            k,v=elem.split("=")
+                                                            parametros_rest[k]=normalizar(v)
+
+                                            elif "&" in elem and "=" in elem:
+
+
+                                                if k==len(newRoot[posFolder+5:])-1:
+                                                    
+                                                    for params in elem.split("&"):
+                                                        k,v=params.split("=")
+                                                        parametros_rest[k]=normalizar(v)
+
+                                                elif k==len(newRoot[posFolder+5:])-2 and "{" in newRoot[-1] and "}" in newRoot[-1]:
+                                                    for params in elem.split("&"):
+                                                        k,v=params.split("=")
+                                                        parametros_rest[k]=normalizar(v)
+                                    
+                          
+
+                          elif newRoot[posFolder+1] in config.apps:
+
+
+                              parametros_rest["app"]=newRoot[posFolder+1]
+                              
+                              if len(newRoot[posFolder+2:])>0:
+                                  parametros_rest["control"]=newRoot[posFolder+2]
+                                  if len(newRoot[posFolder+2:])>1:
+                                      parametros_rest["metodo"]=newRoot[posFolder+3]
+                                      if len(newRoot[posFolder+2:])>2:
+                                          if len(newRoot[posFolder+2:])>3:
+
+                                              parametros_rest["args"]=[]
+                                              
+                                              for k,elem in enumerate(newRoot[posFolder+4:]):
+
+                                                      if "&" not in elem:
+                                                          
+                                                          if k!=len(newRoot[posFolder+4:])-1:
+
+
+
+                                                              if k!=len(newRoot[posFolder+4:])-2 and "=" not in elem:
+
+
+                                                                  parametros_rest["args"]+=[normalizar(elem)]
+                                                              else:
+
+                                                                  if "=" in elem:
+                                                                      k,v=elem.split("=")
+                                                                      parametros_rest[k]=normalizar(v)
+                                                                  else:
+                                                                      parametros_rest["args"]+=[normalizar(elem)]
+
+                                                          else:
+
+                                                              if "{" in decode(elem) and "}" in decode(elem):
+
+                                                                  parametros_rest["kwargs"]=normalizar(decode(elem))
+                                                              else:
+                                                                  if "=" not in elem:
+                                                                      parametros_rest["args"]+=[normalizar(elem)]
+                                                                  else:
+                                                                      k,v=elem.split("=")
+                                                                      parametros_rest[k]=normalizar(v)
+
+                                                      elif "&" in elem and "=" in elem:
+
+
+                                                          if k==len(newRoot[posFolder+4:])-1:
+                                                              
+                                                              for params in elem.split("&"):
+                                                                  k,v=params.split("=")
+                                                                  parametros_rest[k]=normalizar(v)
+
+                                                          elif k==len(newRoot[posFolder+4:])-2 and "{" in newRoot[-1] and "}" in newRoot[-1]:
+                                                              for params in elem.split("&"):
+                                                                  k,v=params.split("=")
+                                                                  parametros_rest[k]=normalizar(v)
+
+                                              
+                                          else:
+                                              if "=" not in newRoot[posFolder+4]:
+                                                  parametros_rest["args"]=[newRoot[posFolder+4]]
+                                              else:
+                                                  if "&" in newRoot[posFolder+4]:
+                                                      for elem in newRoot[posFolder+4].split("&"):
+                                                          if "=" in elem:
+                                                              k,v=elem.split("=")
+                                                              parametros_rest[k]=normalizar(v)
+                                                  else:
+                                                      if "=" in newRoot[posFolder+4]:
+                                                          k,v=newRoot[posFolder+4].split("=")
+                                                          parametros_rest[k]=normalizar(v)
+                                  
+                      else:
+                          pass
+                  elif posFolder!=-1 and len(newRoot)-1==posFolder:
+
+                      if newRoot[posFolder]==admin:
+                              parametros_rest["control"]=newRoot[posFolder]
+                      parametros_rest["app"]=config.default_app
+
+
+                  else:
+                      
+                      if newRoot[posFolder+1]==admin:
+                              parametros_rest["control"]=newRoot[posFolder+1]
+                              parametros_rest["app"]=config.default_app
+                      if newRoot[posFolder+1] in config.apps:
+
+                              parametros_rest["app"]=newRoot[posFolder+1]
+
+                              if len(newRoot[posFolder+2:])>0:
+                                  parametros_rest["control"]=newRoot[posFolder+2]
+                                  if len(newRoot[posFolder+2:])>1:
+                                      parametros_rest["metodo"]=newRoot[posFolder+3]
+                                      if len(newRoot[posFolder+2:])>2:
+                                          if len(newRoot[posFolder+2:])>3:
+
+                                              parametros_rest["args"]=[]
+                                              
+                                              for k,elem in enumerate(newRoot[posFolder+4:]):
+
+                                                      if "&" not in elem:
+                                                          
+                                                          if k!=len(newRoot[posFolder+4:])-1:
+
+
+
+                                                              if k!=len(newRoot[posFolder+4:])-2 and "=" not in elem:
+
+
+                                                                  parametros_rest["args"]+=[normalizar(elem)]
+                                                              else:
+
+                                                                  if "=" in elem:
+                                                                      k,v=elem.split("=")
+                                                                      parametros_rest[k]=normalizar(v)
+                                                                  else:
+                                                                      parametros_rest["args"]+=[normalizar(elem)]
+
+                                                          else:
+
+                                                              if "{" in decode(elem) and "}" in decode(elem):
+
+                                                                  parametros_rest["kwargs"]=normalizar(decode(elem))
+                                                              else:
+                                                                  if "=" not in elem:
+                                                                      parametros_rest["args"]+=[normalizar(elem)]
+                                                                  else:
+                                                                      k,v=elem.split("=")
+                                                                      parametros_rest[k]=normalizar(v)
+
+                                                      elif "&" in elem and "=" in elem:
+
+
+                                                          if k==len(newRoot[posFolder+4:])-1:
+                                                              
+                                                              for params in elem.split("&"):
+                                                                  k,v=params.split("=")
+                                                                  parametros_rest[k]=normalizar(v)
+
+                                                          elif k==len(newRoot[posFolder+4:])-2 and "{" in newRoot[-1] and "}" in newRoot[-1]:
+                                                              for params in elem.split("&"):
+                                                                  k,v=params.split("=")
+                                                                  parametros_rest[k]=normalizar(v)
+
+                                              
+                                          else:
+                                              if "=" not in newRoot[posFolder+4]:
+                                                  parametros_rest["args"]=[newRoot[posFolder+4]]
+                                              else:
+                                                  if "&" in newRoot[posFolder+4]:
+                                                      for elem in newRoot[posFolder+4].split("&"):
+                                                          if "=" in elem:
+                                                              k,v=elem.split("=")
+                                                              parametros_rest[k]=normalizar(v)
+                                                  else:
+                                                      if "=" in newRoot[posFolder+4]:
+                                                          k,v=newRoot[posFolder+4].split("=")
+                                                          parametros_rest[k]=normalizar(v)
+                          
+                  if "args" not in parametros_rest:
+                      parametros_rest["args"]=[]
+                  if "kwargs" not in parametros_rest:
+                      parametros_rest["kwargs"]={}
+                  if "action" not in parametros_rest:
+                      parametros_rest["action"]=None
+                  if "control" not in parametros_rest:
+                      parametros_rest["control"]=None
+                  if "metodo" not in parametros_rest:
+                      parametros_rest["metodo"]=None
+                  try:
+                      parametros_rest["action"]=data["action"].value
+                      parametros_rest["multipart/form-data"]=True
+                  except:
+                      parametros_rest["multipart/form-data"]=False
+
+              
+    else:
+
+        if "&" in newRoot[-1]:
+            parametros_url=newRoot[-1].split("&")
+        
+        if newRoot[-1]=="":
+            if newRoot[-2]=="admin":
+                parametros_rest["control"]="admin"
+                parametros_rest["metodo"]="index"
+                parametros_rest["app"]=config.default_app
+        else:
+            newRoot[-1]=newRoot[-1].replace(" ","")
+            if newRoot[-1]=="admin":
+                parametros_rest["control"]="admin"
+                parametros_rest["metodo"]="index"
+                parametros_rest["app"]=config.default_app
+            else:
+                if newRoot[-2]=="admin":
+                    parametros_rest["control"]="admin"
+
+                if "&" in newRoot[-1]:
+                    for elem in parametros_url:
+                        a=elem.split("=")
+                        parametros_rest[a[0]]=normalizar(a[1])
+                        if "app" in parametros_rest:
+                            if parametros_rest["app"] not in config.apps:
+                                parametros_rest["app"]=config.default_app
+                else:
+
+                    if "metodo=" not in newRoot[-1]:
+                        parametros_rest["metodo"]="index"
+                    else:
+                        parametros_rest["metodo"]=newRoot[-1].split("=")[1]
+
+                    if "app=" not in newRoot[-1]:
+
+                        parametros_rest["app"]=config.default_app
+                    elif newRoot[-1].split("=")[1] in config.apps:
+                        parametros_rest["app"]=newRoot[-1].split("=")[1]
+                    else:
+                        parametros_rest["app"]=config.default_app 
+    if "args" not in parametros_rest:
+        parametros_rest["args"]=[]
+    if "kwargs" not in parametros_rest:
+        parametros_rest["kwargs"]={}
+    if "action" not in parametros_rest:
+        parametros_rest["action"]=None
+    return parametros_rest
+
+def normalizar(v):
+    global decode
+    try:
+        v=decode(v)
+        exec("a="+v)
+        return a
+    except:
+        return v
+class Config:
+  """docstring for Config"""
+  def __init__(self):
+    
+    self.seo_url=True
+    from browser import ajax
+    req=ajax.ajax()
+    import os
+    self.version="0.0.1"
+    self.controller_folder="cgi-bin/"
+    self.apps=[]
+    if __file__!="undefined":
+      self.base_url="/".join(__file__.split("/")[:-3])+"/"
+    else:
+      route=os.getcwd().split("/")
+      self.base_url="/".join(route[:route.index(getRest()["app"])])+"/"
+    
+    self.default_app=None
+    self.asenzor_host="http://localhost/PTC/"
+    req.open("POST",self.base_url,True)
+    req.send({"control":"apps"})
+    
+    def complete(evt,self=self):
+        if req.text!="":
+          exec("temp="+req.text)
+          self.default_app=temp["default_app"]
+          self.apps+=temp["apps"]
+
+        
+    req.bind("complete",complete)
+    
+    
+    
+    
+    import os
+
+    os.getcwd()
+
+
+
+class Settings:
+  """docstring for Config"""
+  def __init__(self):
+    rest=getRest()
+    
+    self.app=rest["app"]
+
+config=Config() 
+settings=Settings()
+class Component:
+  	def __init__(self,url,data={},admin=False,isglobal=False,websocket=None):
+  		self.url=url
+  		
+
+  		config=Config() 
+  		settings=Settings()
+  		if websocket==None:
+		        from browser import ajax
+		        self.req=ajax.ajax()
+		        self.data=data
+		        self.req.open("POST",config.base_url,True)
+
+		        if settings.app!=None:
+ 
+		              self.req.send({"app":settings.app,"admin":admin,"action":"show","kwargs":{"widget":url},"isglobal":isglobal})
+  		else:
+		        websocket.send(str({"admin":admin,"action":"show","kwargs":{"widget":url},"isglobal":isglobal}))
+		        def respuesta(evt):
+		          self.req.text=evt.data
+		        websocket.bind("message",respuesta)
+  		self.widget="None"
+  		
+
+  	def run(self,data={}):
+  	  
+  		if data!={}:
+  			self.data=data
+  		global config
+
+  		self.widget=convertir(self.req.text,d=self.data)
+		if "<script " in self.widget:
+			cuenta=self.widget.count("<script ")
+			f2=0
+			for elem in range(cuenta):
+				i1=self.widget.find("<script ",f2)
+				f=self.widget.find(">",i1)
+				i2=self.widget.find("</script",f+1)
+				f2=self.widget.find(">",i2)
+				window.eval(self.widget[f+1:i2])
+		return self.widget
+class s:
+
+ def __init__(self,selector):
+   
+   self.iterables=[]
+   self.selector=selector
+   import copy
+   if type(self.selector)==str:
+    if self.selector[0]=="[" and self.selector[-1]=="]":
+     self.iterables=document.get(name=self.selector[1:-1])
+    else:
+     self.iterables=document.get(selector=self.selector)
+    if "#" in self.selector and len(self.selector.split(" "))==1:
+     self.iterables=document.get(selector=selector)
+     
+   else:
+    self.iterables=[selector]
+
+   if self.iterables!=[]:
+     pos=list(self.iterables[0].parent.children).index(self.iterables[0])
+
+     if pos==0:
+      self.previousSibling=self.iterables[0].parent.children[-1]
+     else:
+      self.previousSibling=self.iterables[0].parent.children[pos-1]
+
+     pos=list(self.iterables[0].parent.children).index(self.iterables[0])
+     if pos==len(self.iterables[0].parent.children)-1:
+      self.nextSibling=self.iterables[0].parent.children[0]
+     else:
+      self.nextSibling=self.iterables[0].parent.children[pos+1]
+     
+   
+ 
+ def desvincular(self,evt_name,evt=-1):
+    if evt==None:
+      evt=-1
+    
+    for k,elem in enumerate(self.iterables):
+      eventos=s(self.selector)[k].events(evt_name)
+      s(self.selector)[k].outerHTML=elem.outerHTML
+      if len(eventos)>0:
+        del eventos[evt]
+        for evento in eventos:
+          s(self.selector)[k].bind(evt_name,evento)
+
+
+   
+ def _get(self,selector):
+  if type(self.selector)==str:
+   l=[]
+   for elem in self.iterables:
+    l.extend(elem.get(selector=selector))
+   return l
+  else:
+   self.selector.get(selector=selector)
+
+ def children(self,selector=None,):
+  
+  if type(selector)==str:
+   l=[]
+   
+   if selector==None:
+    for elem in self.iterables:
+     l.extend(s(elem.children))
+
+   else:
+    for elem in self.iterables:
+
+     hijo=elem.get(selector=selector)
+     if hijo in elem.children:
+      l.extend(elem.get(selector=selector))
+   return l
+  elif selector==None:
+   l=[]
+   for elem in self.iterables:
+    l.extend(elem.children)
+      
+   return l
+
+  else:
+   esta=False
+   for elem in self.iterables:
+    if hijo in elem.children:
+     esta=True
+   return esta
+
+ def bind(self,evento,funcion):
+  for elem in self.iterables:
+    elem.bind(evento,funcion)
+ def unbind(self,evento,funcion):
+  for elem in self.iterables:
+    elem.unbind(evento,funcion)
+ 
+ 
+ def src(self,url=None):
+  if "#" in self.selector and len(self.selector.split(" "))==1:
+   if url!=None:
+    self.iterables[0].src=url
+   return self.iterables[0].src
+ def __len__(self):
+    return len(self.iterables)
+ def __next__(self):
+  if not self.iterables:
+    raise StopIteration
+  else:
+   return self.iterables.pop(0)
+ def val(self,valor=None):
+  if valor!=None:
+   for elem in self.iterables:
+    elem.value=valor
+  else:
+   if len(self. iterables)==1:
+    return self.iterables[0].value
+   elif len(self. iterables)>1:
+    l=[]
+    for elem in self.iterables:
+     l.append(elem.value)
+    return l
+
+
+ def __getitem__(self,i):
+  return self.iterables[i]
+
+ def css(self,json,valor=None):
+  
+  for elem in self.iterables:
+   if type(json)==dict:
+    elem.set_style(json)
+    
+     
+   elif valor!=None:
+    elem.set_style({json:valor})
+ 
+ def widget(self,i=None,estructura=None,url=None,data={}):
+  
+  eventos=["click","mouseenter","mouseleave","mouseover","mouseout","mousemove","mousedown","mouseup","dblclick","keypress","keydonw","keyup","input","blur","focus","drag","dragend","dragenter","dragleave","dragover","dragstart","drop"]
+
+  if i==None:
+   if url==None:
+    l=[]
+
+    for elem in self.iterables:
+     
+     l.append(elem.outerHTML)
+    
+    return l
+   else:
+    from browser import ajax
+    global config
+    req=ajax.ajax()
+    req.open("POST",config.base_url+config.controller_folder+"ajax.py",True)
+    req.send({"admin":True,"action":"show","args":{"widget":url}})
+    
+  
+
+    def insertar(evt,self=self,req=req,data=data):
+     nonlocal eventos
+     if "#" in self.selector and len(self.selector.split(" "))==1:
+      estructura=req.text
+
+
+
+      widget=self.iterables[0]
+      
+      if type(i)==int:
+       if i==-1:
+        convercion=convertir(estructura,d=data)
+        
+        miseventos=getEvents(widget)
+        miseventos[0]+=[None]
+        miseventos[1]+=[defaultEvents()]
+
+        widget.innerHTML+=convercion
+        
+        updateEvent(miseventos,widget)
+
+       else:
+        html=""
+        for k,padre in enumerate(widget.parent.children):
+         if k!=i:
+          html+=padre.outerHTML
+         else:
+          html+=estructura+padre.outerHTML
+        
+        miseventos=getEvents(widget)
+        miseventos[0].insert(i,None)
+        miseventos[1].insert(i,defaultEvents())
+        widget.parent.innerHTML=html
+        updateEvent(miseventos,widget)
+      else:
+       convercion=convertir(estructura,d=data)
+       
+       
+       widget.innerHTML=convercion
+       
+      
+      if "<script " in convercion:
+       cuenta=convercion.count("<script ")
+       f2=0
+       for elem in range(cuenta):
+        i1=convercion.find("<script ",f2)
+        f=convercion.find(">",i1)
+        i2=convercion.find("</script",f+1)
+        f2=convercion.find(">",i2)
+        window.eval(convercion[f+1:i2])
+
+
+
+
+    req.bind("complete",insertar)
+    
+    
+
+    
+  else:
+   
+   
+   if "#" in self.selector and len(self.selector.split(" "))==1:
+    widget=self.iterables[0]
+    if type(i)==int:
+     if i==-1:
+      miseventos=getEvents(widget)
+      miseventos[0]+=[None]
+      miseventos[1]+=[defaultEvents()]
+      widget.innerHTML+=convertir(estructura,d=data)
+      updateEvent(miseventos,widget)
+     else:
+      html=""
+      for k,padre in enumerate(widget.parent.children):
+       if k!=i:
+        html+=padre.outerHTML
+       else:
+        html+=estructura+padre.outerHTML
+      miseventos=getEvents(widget)
+      miseventos[0].insert(i,None)
+      miseventos[1].insert(i,defaultEvents())
+
+      widget.parent.innerHTML=html
+      updateEvent(miseventos,widget)
+
+
+    else:
+     estructura=i
+     widget.innerHTML=convertir(estructura,d=data)
+   else:
+    
+    for elem in self.iterables:
+     
+     widget=elem
+     if type(i)==int:
+      if url==None:
+       if i==-1:
+        
+        miseventos=getEvents(widget)
+        misvalores=getValues(widget)
+        
+        
+        
+        widget.innerHTML+=convertir(estructura,d=data)
+        #miseventos[0]+=[None]
+        miseventos[1]+=[defaultEvents()]
+        misvalores[0]+=[None]
+        misvalores[1]+=[defaultValues()]
+        updateValues(misvalores,widget)
+        
+        updateEvent(miseventos,widget)
+        
+       else:
+        html=""
+        for k,padre in enumerate(widget.parent.children):
+         if k!=i:
+          html+=padre.outerHTML
+         else:
+          html+=estructura+padre.outerHTML
+      
+        miseventos=getEvents(widget)
+        widget.parent.innerHTML=html
+        miseventos[0].insert(i,None)
+        miseventos[1].insert(i,defaultEvents())
+        
+        updateEvent(miseventos,widget)
+
+      else:
+
+       from browser import ajax
+       req=ajax.ajax()
+
+       req.open("POST",config.base_url+config.controller_folder+"ajax.py",True)
+       req.send({"admin":True,"action":"show","args":{"widget":url}})
+       def insertar(evt,req=req,data=data):
+        estructura=req.text
+
+        if i==-1:
+         miseventosgetEvents(widget)
+         widget.innerHTML+=convertir(estructura,d=data)
+         miseventos[0]+=[None]
+         miseventos[1]+=[defaultEvents()]
+         updateEvent(miseventos,widget)
+        else:
+         html=""
+         for k,padre in enumerate(widget.parent.children):
+          if k!=i:
+           html+=padre.outerHTML
+          else:
+           html+=estructura+padre.outerHTML
+         miseventos=getEvents(widget)
+         widget.parent.innerHTML=html
+         miseventos[0].insert(i,None)
+         miseventos[1].insert(i,defaultEvents())
+         updateEvent(miseventos,widget.parent)
+
+        if "<script " in estructura:
+         cuenta=estructura.count("<script ")
+         f2=0
+         for elem in range(cuenta):
+          i1=estructura.find("<script ",f2)
+          f=estructura.find(">",i1)
+          i2=estructura.find("</script",f+1)
+          f2=estructura.find(">",i2)
+
+          window.eval(estructura[f+1:i2])
+       req.bind("complete",insertar)
+     else:
+
+      estructura=i
+      widget.innerHTML=convertir(estructura,d=data)
+   
+ def addClass(self,clase):
+    for elem in self.iterables:
+      clases=elem.class_name.split(" ")
+      if clase not in clases:
+       clases+=[clase]
+       elem.class_name=" ".join(clases)
+       
+    
+   
+ def removeClass(self,clase):
+  
+  for elem in self.iterables:
+    clases=elem.class_name.split(" ")
+
+    if clase in clases:
+
+     clases.remove(clase)
+     elem.class_name=" ".join(clases)
+
+ def __iter__(self):
+  return self
+
+
+
+
+def urlBuilder(base,app,control,metodo="",*args,**kwargs):
+    try:
+        if metodo==None:
+          metodo=""
+        if args==None:
+          args=()
+        if kwargs==None:
+          kwargs={}
+        if "args" in kwargs:
+                args=kwargs["args"]
+                del kwargs["args"]
+        _kwargs=""
+        for elem in list(kwargs):
+            if elem!="seo_url"  and elem !="kwargs":
+                _kwargs+=elem+"="+str(kwargs[elem])+"&"
+        _kwargs=_kwargs[:-1]
+
+        if "seo_url" in kwargs:
+            seo_url=kwargs["seo_url"]
+        else:
+            seo_url=False
+        
+
+        
+        if "seo_url" in dir(base):
+
+                seo_url=base.seo_url
+                base=base.base_url
+
+        if seo_url==False:
+            if "kwargs" not in kwargs:
+                __kwargs={}
+            else:
+                __kwargs=kwargs["kwargs"]
+            if metodo=="":
+                _metodo=""
+            else:
+                _metodo="&metodo="+metodo
+
+
+            return base+"app="+app+"&control="+control+_metodo+"&args="+str(args)+_kwargs+"&kwargs="+str(__kwargs)
+        else:
+            
+
+            if "kwargs" not in kwargs:
+                __kwargs={}
+            else:
+                __kwargs=kwargs["kwargs"]
+            
+            if list(args)!=[]:
+                if metodo=="":
+                    _metodo=""
+                else:
+                    _metodo="/"+metodo
+
+                if _kwargs!="":
+
+
+                    if __kwargs!={}:
+
+
+
+                        if list(args)!=[]:
+                            return base+app+"/"+control+_metodo+"/"+zjoin(args,"/")+"/"+_kwargs+"/"+str(__kwargs)
+                        else:
+                            
+                            return base+app+"/"+control+_metodo+"/"+"/"+_kwargs+"/"+str(__kwargs)
+                    else:
+
+                        if list(args)!=[]:
+
+                            
+                            return base+app+"/"+control+_metodo+"/"+zjoin(args,"/")+"/"+_kwargs
+                        else:
+                            return base+app+"/"+control+_metodo+"/"+"/"+_kwargs
+                else:
+
+                    return  base+app+"/"+control+_metodo+"/"+zjoin(args,"/")
+            else:
+                return base+app+"/"+control+_metodo
+    except Exception as e:
+        print(e)
+
+
+def getConjuntos(cadena,etiquetas,exclusion=None):
+ aperturas=[]
+ cierres=[]
+ c=0
+ activa=False
+ conjuntos=[]
+ ex_aper=[]
+ ex_cier=[]
+ exclusiones=[]
+ while c+len(etiquetas[1])<len(cadena):
+  if exclusion!=None:
+   if type(exclusion)==list:
+    if cadena[c:c+len(exclusion[0])]==exclusion[0]:
+     activa=True
+     ex_aper.append(c)
+    
+    if cadena[c:c+len(exclusion[1])]==exclusion[1]:
+     activa=False
+     c+=len(exclusion[1])
+     ex_cier.append(c)
+   else:
+    c+=len(exclusion) 
+  else:
+   pass
+  if activa==False:
+   if type(etiquetas[0])==str:
+    if cadena[c:c+len(etiquetas[0])]==etiquetas[0]:
+     
+     aperturas.append(c)
+    elif cadena[c:c+len(etiquetas[1])]==etiquetas[1]:
+     if len(cierres)<len(aperturas):
+      cierres.append(c+len(etiquetas[1]))
+    c+=1
+   else:
+    for elem in etiquetas:
+
+     if cadena[c:c+len(elem[0])]==elem[0]:
+     
+      aperturas.append(c)
+      
+
+      while cadena[c:c+len(elem[1])]!=elem[1] and c<len(cadena):
+       
+       c+=1
+
+      
+      
+     if cadena[c:c+len(elem[1])]==elem[1]:
+      if len(cierres)<len(aperturas):
+       cierres.append(c+len(elem[1])) 
+     
+
+    c+=1
+
+ 
+ 
+ 
+ c=0
+ for elem in aperturas:
+  conjuntos.append([elem,cierres[c]])
+  c+=1
+ if exclusion==None:
+  exclusiones=None
+  
+ else:
+  c=0
+  for elem in ex_aper:
+   exclusiones.append([elem,ex_cier[c]])
+   c+=1
+  conjuntos=borrar([aperturas[0],cierres[0]],exclusiones)
+
+ return [conjuntos,exclusiones]
+def borrar(c1,c2):
+ 
+ if type(c1[0])==list or type(c1[0])==tuple:
+   if type(c2[0])==list or type(c2[0])==tuple:
+
+    con1=0
+    while con1<len(c1):
+     con2=0
+     while con2<len(c2):
+      c1[con1]=borrar(c1[con1],c2[con2])
+      con2+=1
+     con1+=1
+    l=[]
+    for elem in c1:
+     if type(elem[0])==list:
+      l.extend(elem)
+     else:
+      l.append(elem)
+    return l
+
+   else:
+    #al parecer listo
+    c=0
+    while c<len(c1):
+     c1[c]=borrar(c1[c],c2)
+     c+=1
+    l=[]
+    for elem in c1:
+     if type(elem[0])==list:
+      l.extend(elem)
+     else:
+      l.append(elem)
+    return l  
+ else:
+  if type(c2[0])==list or type(c2[0])==tuple:
+   return borrarAll(c1,c2)
+  else:
+   if seJunta(c1,c2):
+    i1=c1[0]
+    f1=c1[1]
+    i2=c2[0]
+    f2=c2[1]
+    if i1!=i2 and f1==f2 or i1==i2 and f1!=f2 or i1!=i2 and f1!=f2: 
+     
+     if i1>=i2 and f1>=f2:
+
+      return [f2,f1]
+     elif i1<=i2 and f1<=f2:
+
+      return [i1,i2]
+     elif i1<i2 and f1>f2:
+      return [[i1,i2],[f2,f1]]
+     else:
+      return []
+    else:
+     
+     return []
+   else:
+    
+    return c1
+#al parecer esta listo
+def borrarAll(c1,c2):
+ c=0
+
+ 
+ for elem in c2:
+  
+  c1=borrar(c1,elem) 
+  
+  c+=1
+ 
+ return c1
+def seJunta(c1,c2):
+ i1=c1[0]
+ i2=c2[0]
+ f1=c1[1]
+ f2=c2[1]
+ if i1<=i2 and f1<=f2 and f1>=i2:
+  return True
+ elif i2<=i1 and  i1<f1 and f2>=i1 and f2<=f1:
+  return True
+ else:
+  #seccion nueva
+  if i2<=i1 and f2>=f1 or i2>=i1 and f2<=f1:
+   return True
+  else:
+   return False
+def convertir(t,etiquetas=["{{","}}"],d={},debug=False):
+ """
+ Es el utilizado actualmente por el motor de plantillas
+ """
+
+ def abspath(cadena):
+  l=cadena.split("/")
+  
+  for i in range(cadena.count("../")):
+   f=l.index("..")
+   del l[f-1]
+   del l[f-1]
+  return "/".join(l)
+ 
+
+ global Config
+ global Settings
+ print(t)
+ cpython=True
+ ultimo=0 #nota si dice list index out range estar pendiente que el embebido este dentro de
+ #etiquestas por ejemplo <div></<div>
+ PYTHON,ex=getConjuntos(t,["{{","}}"])
+
+ HTML=borrarAll([0,len(t)],PYTHON)
+
+ #"hola mundo"
+ # 0123456789
+ 
+ e=[[17, 40], [41, 65]]
+ con=[0,len(t)]
+ #print "=========================="
+ #print "conjuntos: ",conjuntos
+ #print mostrarConjuntos(t,[conjuntos])
+ #print "---------------------------"
+ #print "exclusiones: ",exclusiones
+ #print mostrarConjuntos(t,exclusiones)
+ l=[]
+ #print "HTML ", HTML
+ #print "python ",PYTHON
+ iden=""
+ config=Config()
+ decode=window.decode
+ settings=Settings
+ if "{{" in t and "}}" in t:
+
+  if type(HTML[0])==list:
+
+   for html in HTML:
+    giden=""
+    if t[html[0]:html[1]][0]=='"' or t[html[0]:html[1]][-1]=='"':
+     c0=-1
+     while c0>-len(t[html[0]:html[1]]) and (t[html[0]:html[1]][c0]=="\t" or t[html[0]:html[1]][c0]==" "):
+      giden+=t[html[0]:html[1]][c0]
+
+      c0-=1
+     
+     codhtml="zkv+= '''"+t[html[0]:html[1]]+"'''"+"\n"
+     
+    elif t[html[0]:html[1]][0]=="'" or t[html[0]:html[1]][-1]=="'":
+     c0=-1
+     while c0>-len(t[html[0]:html[1]]) and (t[html[0]:html[1]][c0]=="\t" or t[html[0]:html[1]][c0]==" "):
+      giden+=t[html[0]:html[1]][c0]
+
+      c0-=1
+     
+     codhtml='zkv+= """'+t[html[0]:html[1]]+'"""'+"\n"
+    else:
+     c0=-1
+     while c0>-len(t[html[0]:html[1]]) and (t[html[0]:html[1]][c0]=="\t" or t[html[0]:html[1]][c0]==" "):
+      giden+=t[html[0]:html[1]][c0]
+
+      c0-=1
+     
+     codhtml="zkv+= '''"+t[html[0]:html[1]]+"'''"+"\n"
+    
+    if codhtml!="zkv+= ''":
+     
+
+     l.append(iden+codhtml)
+     
+
+     
+    for python in PYTHON:
+     
+     if html[1]==python[0]:
+      
+      codpython=t[python[0]:python[1]][2:-2]+"\n"
+      tab=getTab(codpython)
+      lfor=len("for ")
+      lwhile=len("while ")
+      lif=len("if ")
+      lelse=len("else:")
+      ltry=len("try:")
+      lexcept=len("except ")
+      lelif=len("elif ")
+      lpass=len("pass")
+      lprint=len("print ")
+      lreturn=len("return ")
+      lincluir=len("incluir(")
+      
+      if tab=="":
+       
+       if codpython[0:lfor]=="for ":
+        l.append(iden+codpython)
+        iden+="  "
+       
+        
+
+       elif codpython[0:lwhile]=="while ":
+        
+        l.append(iden+codpython)
+        iden+="  "
+       elif codpython[0:lif]=="if ":
+        
+        l.append(iden+codpython)
+        iden+="  "
+       elif "else:" in codpython[0:lelse]:
+        iden=iden[:-2]
+        l.append(iden+codpython)
+        iden+="  "
+       elif "try:" in codpython[0:ltry]:
+        
+        l.append(iden+codpython)
+        iden+="  "
+       elif "except" in codpython[0:lexcept]:
+        iden=iden[:-2]
+        l.append(iden+codpython)
+        iden+="  "
+       elif codpython[0:lelif]=="elif ":
+        iden=iden[:-2]
+        l.append(iden+codpython)
+        iden+="  "
+       elif codpython[0:lpass]=="pass" and codpython=="pass\n":
+        l.append(iden+codpython)
+        iden=iden[:-2]
+       elif codpython[0:lreturn]=="return ":
+        l.append(iden+codpython)
+        iden=iden[:-2]
+       elif codpython[0:lprint]=="print ":
+
+        if "incluir(" in codpython:
+         ini=codpython.find("incluir(")
+         fin=codpython.find(")",ini)
+         _c=ini
+         o=0
+         d2="{}"
+         while _c<fin:
+
+          if codpython[_c]=="{":
+           if o==0:
+            dini=_c
+           o+=1
+
+          elif  codpython[_c]=="}":
+           o-=1
+           if o==0:
+            d2=codpython[dini:_c+1]
+
+
+          _c+=1
+         
+         l.insert(-1,iden+"data="+d2+"\n")
+         codpython= codpython[:codpython.find(")",ini)]+",tab='"+giden+"'"+codpython[codpython.find(")",ini):]
+         codpython[:codpython.find(")",ini)]+",tab='"+giden+"'"+codpython[codpython.find(")",ini):]
+        
+         l[-1]=l[-1][:-1]+"+"+iden+""+"str("+codpython.replace("print ","")[:-1]+")\n"
+
+       
+        else:
+
+          l[-1]=l[-1][:-1]+"+"+"str("+codpython[len("print"):]+")\n"
+  
+       elif codpython[:1]=="=" and codpython[:2]!="=":
+        l[-1]=l[-1][:-1]+"+"+"str("+codpython[1:]+")\n"
+
+        
+        
+        #iden=iden[:-2]
+       else:
+        l.append(iden+codpython)
+
+       
+      else:
+
+       liden=len(iden)
+       
+       if codpython[liden:liden+lfor]=="for ":
+        l.append(iden+codpython)
+        iden+="  "
+       elif codpython[liden:liden+lwhile]=="while ":
+        l.append(iden+codpython)
+        iden+="  "
+       elif codpython[liden:liden+lif]=="if ":
+        l.append(iden+codpython)
+        iden+="  "
+
+       elif "else:" in codpython[liden-2:liden+lelse]:
+        
+        iden=iden[:-2]
+        l.append(iden+codpython)
+        iden+="  "
+       elif "try:" in codpython[liden:liden+ltry]:
+        l.append(iden+codpython)
+        iden+="  "
+       elif "except" in codpython[liden-2:liden+lexcept]:
+        iden=iden[:-2]
+        l.append(iden+codpython)
+        iden+="  "
+       elif codpython[liden-2:liden+lelif]=="elif ":
+        iden=iden[:-2]
+        l.append(iden+codpython)
+        iden+="  "
+      
+        """ 
+        elif codpython[liden-2:liden+lprint]=="print ":
+         print "siiii"
+         #iden=iden[:-2]
+         l.append(iden+codpython)
+         #iden+="  "
+        """
+       elif codpython[:lpass]=="pass" and codpython=="pass\n":
+        l.append(iden+codpython)
+        iden=iden[:-2]
+       
+       elif codpython[liden:lreturn]=="return ":
+        l.append(iden+codpython)
+        iden=iden[:-2] 
+       else:
+        l.append(iden+codpython)
+
+
+      
+
+      
+  else:
+   l.append(t[HTML[0]:HTML[1]])
+  #aqui esta la verdadera data
+  _i=str(d).find("\\n")
+  
+  
+  data=d
+  config=config
+  settings=settings
+  txt="\nzkv=''\n"
+  for elem in l:
+   txt+=elem
+
+  
+  exec(txt)
+
+
+  l=zkv.split("\n")
+  
+  c2=0
+  ncod=""
+  for elem in l:
+   c=0
+   e=""
+   while c<len(elem) and elem!="" and (elem[c]==" " or elem[c]=="\t"):
+    c+=1
+
+   if c!=len(elem):
+    if elem[0]=="\t":
+     e=elem[1:]+"\n"
+    else:
+     e=elem+"\n"
+
+   
+   ncod+=e
+
+   c2+=1
+  
+  return zkv
+ else:
+
+  return t
+def getTab(linea):
+ """
+ obtine una cadena con la sangria de la cadena pasada
+
+ ejemplo:
+ >>>getTab("  hola mundo")
+ "  "
+
+ """
+ c=0
+ cadena=""
+ while c <len(linea):
+  if linea[c]=="\t" or linea[c]=="\r" or linea[c]==" ":
+   cadena+=linea[c] 
+  else:
+   return cadena
+
+  c+=1
+ return cadena
+def compilar(cod):
+ def transformar(cod,inicio=True):
+  global decode
+  global s
+  c=0
+  temp=[]
+  abrio=False#para saber si hay que llamar recursivamente
+  k=0
+  while c<len(cod):
+   if inicio==True:
+    if abrio==False:
+
+     if "lambda" in cod[c] and cod[c].rstrip()[-1]==":" and (cod[c][cod[c].find("lambda")-1]==" " or cod[c][cod[c].find("lambda")-1]=="," ):
+      
+      abrio=True
+      _tab=getTab(cod[c])
+      tab=getTab(cod[c+1])
+      i=cod[c].find("lambda")     
+      f=cod[c].find(":",i)
+      parametros=cod[c][i+len("lambda"):f]
+      funcion=cod[c][:i]
+      temp.append(_tab+"def _lambda("+parametros+"):\n")
+
+     else:
+      temp.append(cod[c])
+     
+    else:
+    
+     
+
+     if "lambda" in cod[c] and cod[c].rstrip()[-1]==":" and (cod[c][cod[c].find("lambda")-1]==" " or cod[c][cod[c].find("lambda")-1]=="," ):
+      
+      ncod=transformar(cod[c:],False)
+      c+=len(ncod)-2
+      temp.extend(ncod)
+     else:
+      
+      if cod[c][:len(tab)+1]==tab+")":
+
+       temp.append(funcion+"_lambda")
+       temp.append(cod[c])
+       abrio=False
+      else:
+       if cod[c].replace("\t","").replace(" ","").replace("\n","")!=")":
+        temp.append(cod[c])
+       
+
+     """
+     _tab=getTab(cod[c])
+     tab=getTab(cod[c+1])
+     i=cod[c].find("lambda")     
+     f=cod[c].find(":",i)
+     parametros=cod[c][i+len("lambda"):f]
+     funcion=cod[c][:i]
+     temp.append(_tab+"def _lambda("+parametros+"):\n")
+     c+=1
+     cerro=False
+     
+     if getTab(cod[c])>=tab and c < len(cod)-1:      
+      
+      if cod[c][:len(tab)+1]==tab+")":       
+       temp.append(funcion+"_lambda")
+       if "lambda" not in cod[c]:
+        temp.append(cod[c])
+       else:
+        ncod=transformar(cod[c:],False)
+        c+=len(ncod)-1
+        temp.extend(ncod)  
+      else:
+
+       temp.append(cod[c])
+      
+      
+
+     
+     _tab=getTab(cod[c])
+     tab=getTab(cod[c+1])
+     i=cod[c].find("lambda")
+     f=cod[c].find(":",i)
+     funcion=cod[c][:i]
+     parametros=cod[c][i+len("lambda"):f]
+     temp.append(c,_tab+"def _lambda("+parametros+"):\n")
+
+     c2=c+1
+     while getTab(cod[c])>=tab and c < len(cod)-1:
+      #limpia los espacios vacios
+      while cod[c].replace("\t","").replace(" ","")=="":
+       temp.append(cod[c])
+       c+=1
+      if "lambda" not in cod[c]:
+        if cod[c][:len(tab)+1]==tab+")":
+         temp.append(funcion+"_lambda")
+         temp.append(cod[c])
+         return temp
+        temp.append(cod[c])
+         
+        c+=1
+      else:
+       ncod=transformar(cod[c:],False)
+       c+=len(ncod)
+       temp.extend(ncod)
+     """
+   else:
+    if "lambda" in cod[c] and cod[c].rstrip()[-1]==":" and (cod[c][cod[c].find("lambda")-1]==" " or cod[c][cod[c].find("lambda")-1]=="," ):
+     
+     _tab=getTab(cod[c])
+     tab=getTab(cod[c+1])
+     i=cod[c].find("lambda")     
+     f=cod[c].find(":",i)
+     parametros=cod[c][i+len("lambda"):f]
+
+     funcion=cod[c][:i]
+     temp.append(_tab+"def _lambda("+parametros+"):\n")
+
+     c+=1
+
+    
+    if "lambda" in cod[c] and cod[c].rstrip()[-1]==":" and (cod[c][cod[c].find("lambda")-1]==" " or cod[c][cod[c].find("lambda")-1]=="," ):
+     transformar(cod[c:],False)
+
+
+    else:
+
+     
+     if getTab(cod[c])>=tab and c < len(cod)-1:
+
+      if cod[c][:len(tab)+1]==tab+")":
+
+
+       temp.append(funcion+"_lambda")
+       temp.append(cod[c])
+
+       return temp
+
+      else:
+        temp.append(cod[c])
+     elif cod[c].replace("\t","").replace(" ","")!="":
+      return temp
+     elif getTab(cod[c])<tab and c < len(cod)-1 and cod[c].strip()==")":
+      temp.append(cod[c])
+
+   c+=1
+
+  return temp  
+
+
+  
+ def ejecutar(p):
+  """Funcion echa para aislar las variables"""
+
+  
+  
+  def abspath(cadena):
+   l=cadena.split("/")
+   
+   for i in range(cadena.count("../")):
+    f=l.index("..")
+    del l[f-1]
+    del l[f-1]
+   return "/".join(l)
+  def getRest(admin="admin"):
+
+    
+    newRoot=decode(window.location.href)
+    global config
+    
+    if newRoot[-1]=="/":
+        newRoot=newRoot[:-1].split("/")
+    else:
+        newRoot=newRoot.split("/")
+    for k,elem in enumerate(newRoot):
+      if "" ==elem:
+        del newRoot[k]
+
+    newRoot=newRoot[2:]
+    folder_url=config.base_url.split("/")
+    for k,elem in enumerate(folder_url):
+      if "" ==elem:
+        del folder_url[k]
+
+    #en el formato proyecto/version/controlador/vista
+    #si no esta habilitado la gestion de proyectos
+
+    #-------------------------------------------------
+    #En "version" se maneja tres parametros:
+    # en "produccion" no hay control de versiones
+    # =produccion (config.mod_debug == False & este modo indica que se carga las aplicaciones de la carpeta apps)
+    # =desarrollo (config.mod_debug == True & este modo solo se usa para el admin)
+    # =N (config.mod_debug == True & se administran versiones "N" es un numero)
+    #--------------------------------------------------
+    
+    
+    config.custom_url=newRoot
+    parametros_rest={}    
+    parametros_rest["app"]=config.default_app
+    parametros_rest["control"]=None
+    parametros_rest["vista"]=None
+    parametros_rest["args"]=[]
+    parametros_rest["kwargs"]={}
+
+    import os
+    if config.seo_url==True:
+
+              
+              try:
+                  
+                  posFolder=newRoot.index(folder_url[-1])
+              except:
+                  posFolder=-1
+
+
+              if newRoot!=[]:
+
+                  
+                  c=len(folder_url)-2
+                  c2=0
+                  folderPath=folder_url
+
+                          
+                  
+
+                  if posFolder!=-1 and len(newRoot)-1>posFolder:
+
+                      if posFolder==0:#lo que siga son parametros
+                          
+                          if newRoot[posFolder+1]==admin:
+
+                              parametros_rest["control"]=newRoot[posFolder+1]
+                              parametros_rest["app"]=config.default_app
+
+
+                          if newRoot[posFolder+1] in config.apps:
+
+
+                              parametros_rest["app"]=newRoot[posFolder+1]
+                              
+                              if len(newRoot[posFolder+2:])>0:
+
+
+                                  parametros_rest["control"]=newRoot[posFolder+2]
+                                  if len(newRoot[posFolder+2:])>1:
+                                      parametros_rest["vista"]=newRoot[posFolder+3]
+                                      if len(newRoot[posFolder+2:])>2:
+                                          if len(newRoot[posFolder+2:])>3:
+
+                                              parametros_rest["args"]=[]
+                                              
+                                              for k,elem in enumerate(newRoot[posFolder+4:]):
+
+                                                      if "&" not in elem:
+                                                          
+                                                          if k!=len(newRoot[posFolder+4:])-1:
+
+
+
+                                                              if k!=len(newRoot[posFolder+4:])-2 and "=" not in elem:
+
+
+                                                                  parametros_rest["args"]+=[normalizar(elem)]
+                                                              else:
+
+                                                                  if "=" in elem:
+                                                                      k,v=elem.split("=")
+                                                                      parametros_rest[k]=normalizar(v)
+                                                                  else:
+                                                                      parametros_rest["args"]+=[normalizar(elem)]
+
+                                                          else:
+
+                                                              if "{" in decode(elem) and "}" in decode(elem):
+
+                                                                  parametros_rest["kwargs"]=normalizar(decode(elem))
+                                                              else:
+                                                                  if "=" not in elem:
+                                                                      parametros_rest["args"]+=[normalizar(elem)]
+                                                                  else:
+                                                                      k,v=elem.split("=")
+                                                                      parametros_rest[k]=normalizar(v)
+
+                                                      elif "&" in elem and "=" in elem:
+
+
+                                                          if k==len(newRoot[posFolder+4:])-1:
+                                                              
+                                                              for params in elem.split("&"):
+                                                                  k,v=params.split("=")
+                                                                  parametros_rest[k]=normalizar(v)
+
+                                                          elif k==len(newRoot[posFolder+4:])-2 and "{" in newRoot[-1] and "}" in newRoot[-1]:
+                                                              for params in elem.split("&"):
+                                                                  k,v=params.split("=")
+                                                                  parametros_rest[k]=normalizar(v)
+
+                                              
+                                          else:
+                                              if "=" not in newRoot[posFolder+4]:
+                                                  parametros_rest["args"]=[newRoot[posFolder+4]]
+                                              else:
+                                                  if "&" in newRoot[posFolder+4]:
+                                                      for elem in newRoot[posFolder+4].split("&"):
+                                                          if "=" in elem:
+                                                              k,v=elem.split("=")
+                                                              parametros_rest[k]=normalizar(v)
+                                                  else:
+                                                      if "=" in newRoot[posFolder+4]:
+                                                          k,v=newRoot[posFolder+4].split("=")
+                                                          parametros_rest[k]=normalizar(v)
+                                  
+                      else:
+                          pass
+                  elif posFolder!=-1 and len(newRoot)-1==posFolder:
+
+                      if newRoot[posFolder]==admin:
+                              parametros_rest["control"]=newRoot[posFolder]
+                      parametros_rest["app"]=config.default_app
+
+
+                  else:
+
+                      if newRoot[posFolder+1]==admin:
+                              parametros_rest["control"]=newRoot[posFolder+1]
+                              parametros_rest["app"]=config.default_app
+                      if newRoot[posFolder+1] in config.apps:
+
+                              parametros_rest["app"]=newRoot[posFolder+1]
+
+                              if len(newRoot[posFolder+2:])>0:
+                                  parametros_rest["control"]=newRoot[posFolder+2]
+                                  if len(newRoot[posFolder+2:])>1:
+                                      parametros_rest["vista"]=newRoot[posFolder+3]
+                                      if len(newRoot[posFolder+2:])>2:
+                                          if len(newRoot[posFolder+2:])>3:
+
+                                              parametros_rest["args"]=[]
+                                              
+                                              for k,elem in enumerate(newRoot[posFolder+4:]):
+
+                                                      if "&" not in elem:
+                                                          
+                                                          if k!=len(newRoot[posFolder+4:])-1:
+
+
+
+                                                              if k!=len(newRoot[posFolder+4:])-2 and "=" not in elem:
+
+
+                                                                  parametros_rest["args"]+=[normalizar(elem)]
+                                                              else:
+
+                                                                  if "=" in elem:
+                                                                      k,v=elem.split("=")
+                                                                      parametros_rest[k]=normalizar(v)
+                                                                  else:
+                                                                      parametros_rest["args"]+=[normalizar(elem)]
+
+                                                          else:
+
+                                                              if "{" in decode(elem) and "}" in decode(elem):
+
+                                                                  parametros_rest["kwargs"]=normalizar(decode(elem))
+                                                              else:
+                                                                  if "=" not in elem:
+                                                                      parametros_rest["args"]+=[normalizar(elem)]
+                                                                  else:
+                                                                      k,v=elem.split("=")
+                                                                      parametros_rest[k]=normalizar(v)
+
+                                                      elif "&" in elem and "=" in elem:
+
+
+                                                          if k==len(newRoot[posFolder+4:])-1:
+                                                              
+                                                              for params in elem.split("&"):
+                                                                  k,v=params.split("=")
+                                                                  parametros_rest[k]=normalizar(v)
+
+                                                          elif k==len(newRoot[posFolder+4:])-2 and "{" in newRoot[-1] and "}" in newRoot[-1]:
+                                                              for params in elem.split("&"):
+                                                                  k,v=params.split("=")
+                                                                  parametros_rest[k]=normalizar(v)
+
+                                              
+                                          else:
+                                              if "=" not in newRoot[posFolder+4]:
+                                                  parametros_rest["args"]=[newRoot[posFolder+4]]
+                                              else:
+                                                  if "&" in newRoot[posFolder+4]:
+                                                      for elem in newRoot[posFolder+4].split("&"):
+                                                          if "=" in elem:
+                                                              k,v=elem.split("=")
+                                                              parametros_rest[k]=normalizar(v)
+                                                  else:
+                                                      if "=" in newRoot[posFolder+4]:
+                                                          k,v=newRoot[posFolder+4].split("=")
+                                                          parametros_rest[k]=normalizar(v)
+                          
+                  if "args" not in parametros_rest:
+                      parametros_rest["args"]=[]
+                  if "kwargs" not in parametros_rest:
+                      parametros_rest["kwargs"]={}
+                  if "action" not in parametros_rest:
+                      parametros_rest["action"]=None
+                  if "control" not in parametros_rest:
+                      parametros_rest["control"]=None
+                  if "vista" not in parametros_rest:
+                      parametros_rest["vista"]=None
+                  try:
+                      parametros_rest["action"]=data["action"].value
+                      parametros_rest["multipart/form-data"]=True
+                  except:
+                      parametros_rest["multipart/form-data"]=False
+
+              
+    else:
+
+        if "&" in newRoot[-1]:
+            parametros_url=newRoot[-1].split("&")
+        
+        if newRoot[-1]=="":
+            if newRoot[-2]=="admin":
+                parametros_rest["control"]="admin"
+                parametros_rest["vista"]="index"
+                parametros_rest["app"]=config.default_app
+        else:
+            newRoot[-1]=newRoot[-1].replace(" ","")
+            if newRoot[-1]=="admin":
+                parametros_rest["control"]="admin"
+                parametros_rest["vista"]="index"
+                parametros_rest["app"]=config.default_app
+            else:
+                if newRoot[-2]=="admin":
+                    parametros_rest["control"]="admin"
+
+                if "&" in newRoot[-1]:
+                    for elem in parametros_url:
+                        a=elem.split("=")
+                        parametros_rest[a[0]]=normalizar(a[1])
+                        if "app" in parametros_rest:
+                            if parametros_rest["app"] not in config.apps:
+                                parametros_rest["app"]=config.default_app
+                else:
+
+                    if "vista=" not in newRoot[-1]:
+                        parametros_rest["vista"]="index"
+                    else:
+                        parametros_rest["vista"]=newRoot[-1].split("=")[1]
+
+                    if "app=" not in newRoot[-1]:
+
+                        parametros_rest["app"]=config.default_app
+                    elif newRoot[-1].split("=")[1] in config.apps:
+                        parametros_rest["app"]=newRoot[-1].split("=")[1]
+                    else:
+                        parametros_rest["app"]=config.default_app 
+    if "args" not in parametros_rest:
+        parametros_rest["args"]=[]
+    if "kwargs" not in parametros_rest:
+        parametros_rest["kwargs"]={}
+    if "action" not in parametros_rest:
+        parametros_rest["action"]=None
+    return parametros_rest
+
+
+  global urlBuilder
+  class Component:
+  	def __init__(self,url,data={},admin=False,websocket=None):
+		self.url=url
+		global base_url
+		if websocket==None:
+		  		from browser import ajax
+		  		self.req=ajax.ajax()
+		  		self.data=data
+		  		self.req.open("POST",config.base_url+config.controller_folder+"ajax.py",True)
+		  		self.req.send({"admin":admin,"action":"show","kwargs":{"widget":url}})
+		else:
+		      websocket.send(str({"admin":admin,"action":"show","kwargs":{"widget":url}}))
+		      def respuesta(evt):
+		        self.req.text=evt.data
+		      websocket.bind("message",respuesta)
+		self.widget="None"
+
+  	def run(self,data={}):
+  		if data!={}:
+  			self.data=data
+  		self.widget=convertir(self.req.text,d=self.data)
+		if "<script " in self.widget:
+			cuenta=self.widget.count("<script ")
+			f2=0
+			for elem in range(cuenta):
+				i1=self.widget.find("<script ",f2)
+				f=self.widget.find(">",i1)
+				i2=self.widget.find("</script",f+1)
+				f2=self.widget.find(">",i2)
+				window.eval(self.widget[f+1:i2])
+		return self.widget
+  
+  import sys
+  try:
+
+    exec("".join(p))
+
+  except Exception as e:
+
+    print("Error ",e.args)
+    
+    if len(e.args)>1:
+      print(e.args[1])
+      print("linea: " ,e.args[2])
+      print("columna: ",e.args[3])
+      print("\n".join("".join(p).split("\n")[e.args[2]-2:e.args[2]-1]))
+      print("--------------------------")
+      print(e.args[4])
+      print("--------------------------")
+      print("\n".join("".join(p).split("\n")[e.args[2]+1:e.args[2]+2]))
+      
+  
+ ejecutar(transformar(cod)) 
+def compexec(ruta):
+ print(ruta)
+ f=open(ruta)
+ c=f.readlines()
+
+ try:
+    
+    compilar(c)
+ except Exception as e:
+    import traceback
+    import sys
+
+    exc_type,exc_obj,exc_tb=sys.exc_info()
+    fname = exc_tb.tb_frame.f_code.co_filename
+    print("".join(traceback.format_exception(exc_type,fname,exc_tb)))
+    print(exc_tb.tb_lineno)
+    print(e.args)
+    
+    
+  
+ f.close()
+window.Component=Component
+window.s=s
+window.normalizar=normalizar
+window.config=config
+window.getRest=getRest
+window.urlBuilder=urlBuilder
+window.zjoin=zjoin
+window.getConjuntos=getConjuntos
+window.seJunta=seJunta
+window.convertir=convertir
+window.getTab=getTab
+window.compilar=compilar
+window.compexec=compexec
+window.getCookie=getCookie

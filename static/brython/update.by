@@ -1,0 +1,78 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+from browser import ajax,window,alert
+import time
+config=window.config
+s=window.s
+cookie=window.getCookie()
+rest=window.getRest()
+normalizar=window.normalizar
+jq=window.jQuery
+
+
+
+
+
+
+
+def descargar(version):
+	promesa=jq.ajax(config.base_url+config.controller_folder+"ajax.py?"+"app="+cookie["beforeApp"]+"&control=admin&action=download&args="+str([version]))
+	def mostrar(*args):
+		s("#status")[0].innerHTML=args[0]
+	promesa.done(mostrar)
+	"""
+	req=ajax.ajax()
+	req.open("POST",config.base_url+config.controller_folder+"ajax.py",True)
+	def cancelar():
+		alert("se canselo la descarga")
+	
+	req.send({"app":cookie["beforeApp"],"control":"admin","action":"download","args":[version]})
+	req.set_timeout(1000, cancelar)
+	
+
+	def donwload(evt,resolve=resolve,reject=reject):
+		if req.text!="":
+			s("#status")[0].innerHTML=req.text
+			resolve(str({"app":cookie["beforeApp"],"control":"admin","action":"download","args":[version]}))
+	req.bind("complete",donwload)
+	"""
+
+descargar(rest["args"][1])
+	
+
+
+exito=False
+intervalo=None
+size=""
+tiempo=time.time()
+def verificar():
+	req2=ajax.ajax()
+	
+	req2.open("POST",config.base_url+config.controller_folder+"ajax.py?app="+str(cookie["beforeApp"])+"&control=admin&action=check&args="+str(["0ByJYMxvQwmxFNkpRa19hU3RZWWc"]),True)
+	req2.send({"app":cookie["beforeApp"],"control":"admin","action":"check","args":str(["0ByJYMxvQwmxFNkpRa19hU3RZWWc"])})
+	def check(evt):
+		if req2.text!="":
+			
+			s("#status")[0].innerHTML=req2.text[1:]
+		
+			if req2.text[0]=="@":
+				s("#status")[0].innerHTML=req2.text[1:]
+				window.clearInterval(intervalo)
+			else:
+				if time.time()-tiempo>60*1 and time.time()-tiempo<60*2 and size==req2.text[1:].split(" ")[1]:
+					
+					descargar(rest["args"][1])
+				else:
+					if "%" in req2.text[1:]:
+						size=req2.text[1:].split(" ")[1]
+					
+
+		
+	req2.bind("complete",check)
+
+intervalo=window.setInterval(verificar,3000)
+
+
+	
+

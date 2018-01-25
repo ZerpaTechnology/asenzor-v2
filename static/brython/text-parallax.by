@@ -1,0 +1,49 @@
+#!usr/bin/env python
+from browser import alert,window
+
+config=window.config
+s=window.s
+
+from browser import document,alert,window
+
+
+def scroll(evt,clase=".text-parallax",grosor=45,posIni=70):
+ activar=False
+ import copy
+ 
+ #document.body.scrollTop
+ for k,elem in enumerate(document.get(selector=clase)):
+  #grosor de las letras
+  """
+  if elem.parent.getBoundingClientRect().top+elem.parent.height/2-grosor<posIni and elem.parent.getBoundingClientRect().top+posIni>posIni:
+  """
+  #-webkit-transform: translate3d(0, -8px, 5px);
+  elem.style.transform="translate3d(0px,"+str((elem.parent.getBoundingClientRect().top*1.5)-posIni)+"px,-100px)"
+  elem.style.webkitTransform="translate3d(0px,"+str((elem.parent.getBoundingClientRect().top*1.5)-posIni)+"px,-100px)"
+  elem.style.MozTransform="translate3d(0px,"+str((elem.parent.getBoundingClientRect().top*1.5)-posIni)+"px,-100px)"
+  elem.style.OTransform="translate3d(0px,"+str((elem.parent.getBoundingClientRect().top*1.5)-posIni)+"px,-100px)"
+  elem.style.msTransform="translate3d(0px,"+str((elem.parent.getBoundingClientRect().top*1.5)-posIni)+"px,-100px)"
+
+  """
+   #lo paso
+   #if elem.parent.getBoundingClientRect().top>posIni:
+   #elem.style.top=grosor*grosor/(window.screen.height-posIni)
+
+
+   if "hidden"  in elem.class_name:
+    elem.class_name=elem.class_name.replace(" hidden","")
+  else:  
+  """
+  if "hidden" in elem.children[0].class_name:
+    elem.children[0].class_name=elem.children[0].class_name.replace("hidden","")
+  
+def render(evt=None,clase=".text-parallax"):
+ for k,elem in enumerate(document.get(selector=clase)):
+
+  elem.children[0].style.left=str(window.screen.width/2-elem.clientWidth/2)+"px"
+  elem.style.width="100%"
+
+ 
+render()
+window.addEventListener("scroll",scroll,True)
+window.addEventListener("orientationchange",render,True)

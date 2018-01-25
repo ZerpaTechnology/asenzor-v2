@@ -1,0 +1,47 @@
+<div id="alert" class="pad-1 hidden">
+<style type="text/css">
+	#alert{
+		width: 80%;
+		height:500px;
+		position: fixed;
+		top:20px;
+		left:10%;
+		z-index: 100;
+		background-color:white;
+
+	}
+  #alert-close{
+  position: absolute;
+  right: -10px;
+  top:-10px;
+  background-color: gray;
+  color:white;
+  border: solid;
+  border-width: 1px;
+  border-radius: 15px;
+  padding: 5px;
+  cursor: pointer;
+
+  }
+</style>
+<span id="alert-close">x</span>
+  {{if "widget" in data:}}
+    {{incluir(data,data["widget"])}}
+  {{elif "content" in data:}}
+    {{if type(data["content"])==list:}}
+      {{for elem in data["content"]:}}
+         <div>{{=elem}}<div>
+      {{pass}}
+      {{pass}}
+  {{pass}}
+  {{if type(data["content"])==str:}}
+     {{=data["content"]}}
+  {{pass}}
+    
+  
+  <script type="text/javascript">
+  	$("#alert-close").bind("click",function(){
+  		$("#alert").addClass("hidden")
+  	});
+  </script>
+</div>

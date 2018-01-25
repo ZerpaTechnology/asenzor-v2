@@ -1,0 +1,31 @@
+<head>
+	 <title>Personalizador</title>
+ <meta charset="utf-8">
+   <meta http-equiv="pragma" content="no-cache">
+	
+	<script src="{{=config.base_url}}static/js/jquery-3.1.0.js"></script>
+	
+  <link rel="stylesheet" type="text/css" href="{{=config.base_url}}static/css/bootstrap.css">
+  
+	<link rel="stylesheet" href="{{=config.base_url}}static/css/jquery.mCustomScrollbar.css" />
+ <script type="text/javascript" src="{{=config.base_url}}static/js/jquery.mCustomScrollbar.js"></script>
+ <script type="text/javascript" src="{{=config.base_url}}static/js/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
+  <script type="text/javascript" src="{{=config.base_url}}static/script/file=Config.js&manager=True"></script>
+  
+  <script type="text/javascript" src="{{=config.base_url}}static/js/python/__javascript__/Codificador.js"></script>
+  
+  <!--<script type="text/python3" src="{{=config.base_url}}static/brython/nuclear.by"></script>-->
+  <script type="text/javascript" src="{{=config.base_url}}static/js/python/__javascript__/py_datos.js"></script>
+  <script type="text/javascript" src="{{=config.base_url}}static/js/python/__javascript__/nuclear.js"></script>
+   <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+<link rel="stylesheet" type="text/css" href="{{=config.base_url}}/Components/css/Components.css">
+<link rel="stylesheet" type="text/css" href="{{=config.base_url}}static/css/flexboxgrid.css">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Link Swiper's CSS -->
+{{if "vars" in data:}}
+
+{{for elem in data["vars"]:}}
+<var name='{{=elem}}' style="display: none">{{=decode(str(data["vars"][elem]))}}</var>
+{{pass}}
+{{pass}}
+</head>

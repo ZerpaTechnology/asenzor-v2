@@ -1,0 +1,14 @@
+<div class="{{=data['plugin-widget']['clase']}} galeria owl-carousel carousel-principal owl-theme owl-loaded owl-drag height-58 height-20-xs height-25-smx height-30-sm bg-ubuntu_jet">
+      {{c=0}}  
+      
+      {{for k,item in enumerate(data['plugin-widget']["galeria"][1][1]):}}
+        {{if c==0:}}<div>{{pass}}
+          
+  <span class="img-link" href="{{=data['base_url']}}../admin/static/archivos/Imagenes/{{=data['opciones']['archivos'][0][1][item['value']]}}"><img src="{{=data['base_url']}}../admin/static/archivos/Imagenes/{{=data['min'](data['opciones']['archivos'][0][1][item['value']])}}" style="width:33.33%;" alt="" class="height-24 height-15-sm height-10-xs height-12-smx pad-05"></span>
+  {{c+=1}}
+  {{if c==data['plugin-widget']['paginacion'] or k==len(data['plugin-widget']["galeria"][1][1])-1:}}
+  </div>{{c=0}}
+  {{pass}}
+  {{pass}}      
+   </div>
+   

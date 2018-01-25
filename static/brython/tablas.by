@@ -1,0 +1,346 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+from browser import alert, document,html,ajax,window
+import copy
+decode=window.decode
+s=window.s
+var=window.VAR
+config=window.config
+normalizar=window.normalizar
+zjoin=window.zjoin
+getRest=window.getRest
+rest=getRest()
+data=copy.copy(rest)
+data["ajax-data"]=var("ajax-data")
+data["baseAction"]=var("baseAction")
+data["titulo"]=var("titulo")
+data["filtrar"]=var("filtrar")
+data["acciones"]=var("acciones")
+data["addNew"]=var("addNew")
+data["n-pag"]=var("n-pag")
+data["table-headers"]=var("table-headers")
+data["pag"]=var("pag")
+data["status"]=var("status")
+data["filtros"]=var("filtros")
+data["keyNew"]=var("keyNew")
+data["campos"]=var("campos")
+doc=""
+
+
+tabla=document["tabla-1"]
+
+
+
+
+
+pag=1
+
+status="Todos"
+respuesta=""	
+
+
+def update_tabla(pag):
+	tabla=document["tabla-1"]
+	
+	tabla.clear()	
+
+	
+	#pendiente para control de estatus
+	
+	"""
+	cabecera=html.TR(html.TD(html.INPUT(type="checkbox",Class="marg-l05")))
+	
+	for campo in data["campos"]:
+		cabecera<=html.TH(decode(campo))
+	tabla<=cabecera
+	#tabla<=html.TR(html.TD( Class="pad-1")+html.TD(data["campo1"], Class="pad-1")+html.TD(data["campo2"]),Class="pad-05")
+	
+	for k,fila in enumerate(__lista__[data["n-pag"]*(pag-1):data["n-pag"]*(pag)]):
+		
+		tabla<=html.TR(html.TH(html.INPUT(type="checkbox"), Class="pad-05")+html.TD(html.A(decode(fila[0]),href=urlBuilder(config,data["app"],"admin","",list(fila[1])[0],fila[1][list(fila[1])[0]],action="editar")), Class="pad-05")+html.TD(fila[2], Class="pad-05"))
+	for elem in document.get(selector=".n-pag"):
+		elem.innerHTML="de "+str(int(len(__lista__)/data["n-pag"])+1)
+	"""
+
+
+
+#__lista__=[]
+
+
+
+
+
+
+
+#Pide los elementos a paginar
+#req=ajax.ajax()
+#req.open("POST",config.base_url,True)
+#req.set_header('content-type','application/x-www-form-urlencoded')
+#pasar una lista causa que se pasen los valores individuales en campos de un mismo nombre igual como ocurriria al usar varios campos con igual name
+#ejem args ["hola","mundo"]
+#MiniFieldStorage("args","hola") MiniFieldStorage("args","mundo")
+#para convertirlo usare str
+#req.send({"action":"listar","app":rest["app"],"metodo":rest["metodo"],"control":rest["control"],"ajax":True})	
+
+"""
+def complete(evt,req=req):
+    
+	try:
+	    
+		
+		global pag
+		global data
+		global __lista__
+		
+		exec(req.text)
+
+		
+		__lista__=copy.copy(data["listar"])
+		
+		update_tabla(pag)
+		for elem in document.get(selector=".table-pag"):
+			if pag!=int(elem.value):
+				elem.value=pag
+		
+	except Exception as e:
+		print("Error en tablas.by")
+		print(e.args)
+		print(req.text)
+		alert(req.text)
+	
+"""
+#req.bind("complete",complete)
+def paginar(x,y):
+  
+  a=float(x)/float(y)
+  if a>int(a):
+    return int(a)+1
+  else:
+    return int(a)
+
+
+
+
+	
+
+
+
+	
+
+
+
+	
+
+opciones=[]
+action_current=[0]
+
+
+
+		
+	
+
+
+	
+
+	
+
+
+
+class Tabla(object):
+	"""docstring for Tabla"""
+	def __init__(self,selector,pag=1,paginacion=5):
+		self.selector=selector
+		self.lista=var("listar")
+		
+		self.listaTemp=copy.copy(self.lista)
+		self.pag=pag
+		self.paginacion=paginacion
+		f=open(config.base_url+rest["app"]+"/admin/Show/layout/global/widgets/tabla-contenido.html/action=componer/")
+		self.contenido=f.read()
+		self.btns_aplicar=s(self.selector)[0].get(selector=".btn-aplicar")
+
+		for btn in self.btns_aplicar:
+			btn.bind("click",self.checkear)
+
+		for elem in s(self.selector)[0].get(selector=".link-status"):
+			elem.bind("click",self.filtrar)
+		for elem in s(self.selector)[0].get(selector=".table-firt"):
+			elem.bind("click",self.goFirst)
+		for elem in s(self.selector)[0].get(selector=".table-next"):
+			elem.bind("click",self.goNext)
+		for elem in s(self.selector)[0].get(selector=".table-back"):
+			elem.bind("click",self.goBack)
+		for elem in s(self.selector)[0].get(selector=".table-last"):
+			elem.bind("click",self.goLast)
+		for elem in s(self.selector)[0].get(selector=".table-actions"):
+			elem.bind("change",self.accionar)
+		for elem in s(self.selector)[0].get(selector="input[name='table-search']"):	
+			elem.bind("keyup",self.search)
+		for tabla in s(self.selector)[0].get(selector=".content")[0].children:
+
+			for th in list(tabla.children[0].children)[0]:
+				
+				if str(type(th.children))!="<class 'method'>":
+					th.children[0].children[0].bind("click",self.marcar)
+
+	def accionar(self,ev):
+		
+		global action_current
+		
+		rank=list(data["acciones"].keys()).index(ev.target.value)
+		
+		if rank==0:
+			self.marcar()
+			
+		else:
+			key=list(data["acciones"].keys())[list(data["acciones"].keys()).index(ev.target.value)]
+			
+			action_current=[data["acciones"][key]]
+	def marcar(self,evt=None):
+		if evt==None:
+			for tabla in s(self.selector)[0].get(selector=".content")[0].children:
+					if "hidden" not in tabla.class_name:
+						tabla=tabla.children[0]
+						for tr in list(tabla.children[0].children)[1:]:
+							tr.children[0].children[0].checked=True
+		else:
+			if evt.target.checked==True:
+				for tabla in s(self.selector)[0].get(selector=".content")[0].children:
+					if "hidden" not in tabla.class_name:
+						tabla=tabla.children[0]
+						for tr in list(tabla.children[0].children)[1:]:
+							tr.children[0].children[0].checked=True
+			else:
+				for tabla in s(self.selector)[0].get(selector=".content")[0].children:
+					if "hidden" not in tabla.class_name:
+						tabla=tabla.children[0]
+						for tr in list(tabla.children[0].children)[1:]:
+							tr.children[0].children[0].checked=False
+
+
+	def goBack(self,evt):
+		
+			if self.pag >1:
+				s(s(self.selector)[0].get(selector=".content")[0].children[self.pag-1]).addClass("hidden")
+				self.pag-=1
+				s(s(self.selector)[0].get(selector=".content")[0].children[self.pag-1]).removeClass("hidden")
+				self.update_indice()
+
+	def update_indice(self):
+		for elem in s(self.selector)[0].get(selector="input[name='table-indice']"):
+			elem.value=self.pag
+		for elem in s(self.selector)[0].get(selector="span[name='from-indice']"):
+
+			elem.text=str(len(self.listaTemp)//self.paginacion+1)
+
+	def update_tabla(self):
+		
+		global data
+		global doc
+		doc=""
+		data["listar"]=self.listaTemp
+		
+		exec(self.contenido,globals())
+		
+		s(self.selector)[0].get(selector=".content")[0].outerHTML=doc
+		self.pag=1
+		self.update_indice()
+		for tabla in s(self.selector)[0].get(selector=".content")[0].children:
+
+			for th in list(tabla.children[0].children)[0]:
+				
+				if str(type(th.children))!="<class 'method'>":
+					th.children[0].children[0].bind("click",self.marcar)
+
+	def goLast(self,evt):
+			
+			if self.pag<paginar(len(self.listaTemp),self.paginacion):
+				
+				s(s(self.selector)[0].get(selector=".content")[0].children[self.pag-1]).addClass("hidden")
+				self.pag=paginar(len(self.listaTemp),self.paginacion)
+				
+				s(s(self.selector)[0].get(selector=".content")[0].children[self.pag-1]).removeClass("hidden")
+
+				self.update_indice()
+
+	def goNext(self,evt):
+
+			if self.pag<(len(self.listaTemp)/self.paginacion):
+				
+				s(s(self.selector)[0].get(selector=".content")[0].children[self.pag-1]).addClass("hidden")
+				self.pag+=1
+				s(s(self.selector)[0].get(selector=".content")[0].children[self.pag-1]).removeClass("hidden")
+				self.update_indice()
+
+
+	def goFirst(self,evt):
+		if self.pag >1:
+				s(s(self.selector)[0].get(selector=".content")[0].children[self.pag-1]).addClass("hidden")
+				self.pag=1
+				s(s(self.selector)[0].get(selector=".content")[0].children[0]).removeClass("hidden")
+				self.update_indice()
+		
+	def filtrar(self,evt):
+		evt.preventDefault()
+		status=evt.target.text
+		self.update_tabla()
+	def checkear(self,evt):
+		c=0
+		opciones=[]
+		enlaces=[]
+		pag=int(document.get(selector="input[name='table-indice']")[0].value)
+		for tabla in s(self.selector)[0].get(selector=".content")[0].children:
+			tabla=tabla.children[0]
+		
+			for tr in list(tabla.children[0].children)[1:]:
+				opciones.append(tr.children[0].children[0].checked)
+				if tr.children[0].children[0].checked==True:
+					enlaces.append(tr.children[1].children[0].href)
+				else:
+					enlaces.append(None)
+
+
+		
+		req=ajax.ajax()
+		req.open("POST",config.base_url,False)
+		req.set_header('content-type','application/x-www-form-urlencoded')
+		if action_current[0]!="editar":#osea papelera
+			pass
+			req.send({"marcados":opciones,"action":action_current[0],"metodo":rest["metodo"],"app":rest["app"],"control":rest["control"],"ajax":True})
+			f=open(config.base_url+rest["app"]+"/"+rest["control"]+"/"+rest["metodo"]+"/action=listar&ajax=True/")
+			self.lista=normalizar(f.read())
+			self.listaTemp=copy.copy(self.lista)
+			self.update_tabla()
+
+		else:
+			for k,opcion in enumerate(opciones):
+				if opcion==True:
+					window.open(enlaces[k])
+						
+		
+		
+
+		
+
+		
+	def search(self,evt):
+	
+		
+		if evt.target.value!="":
+			c=0
+			self.listaTemp=copy.copy(self.lista)
+			for elem in self.lista:
+				if evt.target.value.lower() not in elem[0].lower():
+					self.listaTemp.remove(elem)
+					c+=1
+		else:
+
+			self.listaTemp=copy.copy(self.lista)
+		for elem in s(self.selector)[0].get(selector=".table-pag"):
+			elem.value=1
+		
+		self.update_tabla()
+		
+		
+		
+window.Tabla=Tabla

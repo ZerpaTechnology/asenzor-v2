@@ -1,0 +1,85 @@
+<sidebar class="col-md-2 col-sm-2 pad-1  z-index10 font-ubuntu" id="menu" style="height:90%;position: fixed;top: 40px; left:0;background-color:#3f3f3f">
+<style type="text/css">
+  #main-menu span[name='menu']{
+  background-color:rgb(50,55,60);
+  color:white;
+  border-color: rgb(30,30,30);
+  cursor: pointer;
+  }
+  #main-menu span[name='menu']:hover{
+    background-color:rgb(60,65,70);
+  }
+</style>
+<div style="height:90%" class="scrollbar">
+  
+  <div class="text-center bg-gray">
+  <div class="b-s2 pad-1 b-r5">
+    <form action="{{=config.base_url+settings.app+'/'+data['control']}}/Salir" method="post" class="d-inline-block"> 
+     <input type="submit" value="Salir" class="btn bg-blue white">
+    </form>   
+     <div class="height-8 b-s1 b-r5 d-inline-block">
+     
+      <img src="{{=data['base_url']}}../admin/static/archivos/Avatares/{{print data['opciones']['archivos'][1][1][data['user']['avatar']]}}" class="height-8" >
+     </div>
+    
+    <h4>{{print data['user']["usuario"]}}</h4>
+    {{print data['user']["email"]}}  
+  </div>
+  
+  <div id="main-menu">
+    
+    {{for menu in data["adminMenu"]:}}
+      {{titulo=menu[0]}}
+
+      <div>
+      <span style="display: block; padding: 10px 5px;" class="b-s1 text-justify" name="menu">
+      <img src="{{=config.base_url}}static/imgs/iconos/{{print menu[3]}}" class="height-2"> 
+      {{=titulo}}</span>
+      <ul name="submenu" class="hidden">
+      {{for sub in menu[2]:}}
+        
+        
+        {{if sub[1][0]!=None:}}
+
+          {{if type(normalizar(decode(str(sub[1][1]['valor']))))==str:}}
+            {{url=urlBuilder(config,settings.app,"admin","",decode(str(sub[1][1]['valor'])),action=sub[1][0])}}
+            
+          {{elif type(normalizar(decode(str(sub[1][1]['valor']))))==dict:}}
+          
+            {{url=urlBuilder(config,settings.app,"admin","",action=sub[1][0],kwargs=decode(str(sub[1][1]['valor'])))}}
+          
+          {{elif type(normalizar(decode(str(sub[1][1]['valor']))))==list:}}
+          
+            {{url=urlBuilder(config,settings.app,"admin","",args=normalizar(decode(str(sub[1][1]['valor']))),action=sub[1][0])}}
+          {{pass}}
+      
+        {{else:}}
+            {{url=urlBuilder(config,settings.app,'admin','')}}
+            {{if type(sub[1][1]['valor'])==dict:}}
+              {{data["actionNew"][sub[1][1]['valor'].keys()[0]]=config.base_url+data['actionbase']+'&action='+sub[1][0]+'&args='+decode(str(sub[1][1]['valor']) ) if sub[1][1]['valor'][sub[1][1]['valor'].keys()[0]]==None else None}}
+        
+            {{elif type(sub[1][1]['valor'])==list:}}
+              {{url=urlBuilder(config,settings.app,'admin','',args=normalizar(decode(str(sub[1][1]['valor']) ) ))}}
+
+          {{pass}}
+        {{pass}}
+      
+        <li class="pad-05"><a href="{{=url}}">{{=sub[0]}}</a>
+        </li>
+      
+      
+      {{pass}}
+      
+      </ul>
+      </div>
+    
+    {{pass}}
+    
+  </div>
+  </div>
+  </div>
+  
+  
+
+ </sidebar>
+

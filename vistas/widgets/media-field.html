@@ -1,0 +1,174 @@
+<style type="text/css">
+	#media-field{
+		border: solid;
+		border-width: 1px;
+		margin: 10px;
+	}
+	#media-field .btn-cerrar{
+		border: solid;
+		border-width: 1px;
+		display: inline-block;
+		position: absolute;
+		height: 30px;
+		width: 30px;
+		cursor: pointer;
+		right:10px;
+		top:0px;
+		padding: 5px;
+		text-align: center;
+	}
+	#media-field .item{
+		background-color: black;
+		height: 200px;
+		width:200px;
+		display: inline-block;
+		margin: 2px;
+
+		cursor: pointer;
+
+		/*border-color:rgb(100,150,200);*/
+		position: relative;
+		background-size: cover;
+	}
+	#media-field .marcar{
+		/*background-color: rgb(200,200,200);*/
+		/*background-color:rgb(100,150,200);*/
+		/*border: solid;*/
+		/*border-color:white;*/
+		height: 20px;
+		width:20px;
+		display: inline-block;
+		position: absolute;
+		top:-10px;
+		right:-10px;
+		
+		border-width: 1px;
+	}
+	#media-field .item.activo{
+		border:solid;
+		border-color:rgb(100,150,200);
+
+	}
+	#media-field .item.activo .marcar{
+		
+		background-color:rgb(100,150,200);
+		border: solid;
+		border-width: 1px;
+		border-color:white;
+	}
+	#media-field .item.marcado{
+		border:solid;
+		border-width: 5px;
+		border-color:rgb(200,200,200);
+	}
+	#media-field .item.marcado .marcar{
+		background-color: rgb(200,200,200);
+		/*background-color:rgb(100,150,200);*/
+		border: solid;
+		border-width: 1px;
+		border-color:white;
+	}
+</style>
+<div id="media-field">
+	<div>
+		<h1>Insertar medios</h1>
+		<span class="btn-cerrar">x</span>
+		<div>
+			<span href="#tab-1" class="btn btn-info">Subir archivo</span>
+			<span href="#tab-2" class="btn btn-info">Biblioteca de medios</span>
+		</div>
+	</div>
+	<div class="content">
+		<div id="tab-1" class="bg-white hidden" >
+
+			
+		</div>
+		<div id="tab-2">
+			<div class="container-fluid">
+				<div class="row">
+				<div class="col-md-8 bg-white" style="max-height: 400px;overflow-y: scroll;padding: 10px">
+					{{for elem in data["model"]["archivos"].obtenerFilas("Archivos"):}}
+					{{content=data["model"]["archivos"].contener(elem[1])}}
+					{{if "enlace" in content[0]:}}
+					<span class="item" style="background-image: url('{{=content[0]['enlace']['value']}}');" 
+					    size="" 
+					    enlace="{{=content[0]['enlace']['value']}}"
+					    name="{{=content[0]['renombre']['value']}}"
+					    >
+						<span class="marcar"></span>
+					</span>
+					{{pass}}
+					{{pass}}
+					
+				</div>
+				<div class="col-md-4" style="max-height: 400px;overflow-y: scroll;">
+				<div>
+				<img src="" class="media-preview" >
+				<p>Nombre de archivo: 2017-09-19-PHOTO-00000389.jpg</p>
+				<p>Tipo de archivo: image/jpeg</p>
+				<p>Subido el: 20 Septiembre, 2017</p>
+				<p>Tamaño de archivo: 129 KB</p>
+				<p>Dimensiones: 956 × 1280</p>
+				</div>
+				<table>
+					<tr>
+						<td><label>Url</label></td>
+						<td><input type="" name="url"></td>
+					</tr>
+					<tr>
+						<td><label>Titulo</label></td>
+						<td><input type="" name="nombre"></td>
+					</tr>
+					<tr>
+						<td><label>Tamaño</label></td>
+						<td><input type="" name="size"></td>
+					</tr>
+					<tr>
+						<td><label>Leyenda</label></td>
+						<td><textarea class="width-100p"></textarea></td>
+					</tr>
+					<tr>
+						<td><label>Texto alternativo</label></td>
+						<td><input type="" name="alternativo"></td>
+					</tr>
+					<tr>
+						<td><label>Descripción</label></td>
+						<td><input type="" name="descripcion"></td>
+					</tr>
+					<tr>
+						<td><label>Subido por</label></td>
+						<td><label>admin</label></td>
+					</tr>
+				</table>
+				
+					
+
+				</div>
+					
+				</div>
+				
+			</div>
+
+		</div>
+	</div>
+	<div class="container-fluid">
+		<div class="row">
+		<div class="col-md-11">
+			
+		</div>
+		<div class="col-md-1 text-right">
+		<button class="btn white bg-blue" name="insertar">Insertar</button>	
+		</div>
+			
+		</div>
+		
+	</div> 
+</div>
+<script type="text/python3" src="{{=config.base_url}}static/script/file=config.by&manager=True"></script>
+<script type="text/python" src="{{=config.base_url}}static/brython/decode.by"></script>
+<script type="text/python" src="{{=config.base_url}}static/brython/nuclear.by"></script>
+<script type="text/python" src="{{=config.base_url}}static/brython/media-field.by"></script>
+<script type="text/python">
+from browser import window
+window.Media("#media-field")
+</script>

@@ -1,0 +1,56 @@
+<div id="widget-chat">
+  <style>
+    .chatBox > div{
+      display:inline-block;
+      vertical-align:bottom;
+    }
+    
+    {{if "css" in data and "widget-chat" in  data["css"]:}}
+      {{=data["css"]["widget-chat"]}}
+    {{elif "style" in data and "widget-chat" in  data["style"]:}}
+      {{for selector in data["style"]["widget-chat"]:}}
+        {{=selector}} {
+        {{for estilos in data["style"]["widget-chat"][selector]:}}
+          {{=estilos}} : {{=data["style"]["widget-chat"][selector][estilos]}} ;
+        {{pass}}
+          
+      
+      {{pass}}
+    
+    
+    {{pass}}
+  </style>
+  <div >
+    <span class="chatBox">
+      <div></div>
+    </span>
+    <span class="chatBox">
+      <div></div>
+    </span>
+    <span class="chatBox">
+      <div></div>
+    </span>
+    <span class="chatBox">
+      <div></div>
+    </span>
+    <span class="chatBox">
+      <div>
+        {{data["hidden"].append("chat")}}
+        {{incluir(data,"chatBox",admin=False)}}
+      </div>
+    </span>
+    <span class="chatBox">
+      {{data["hidden"].append("chatContactList")}}
+      {{data["style"]["chatContactList"]={"#chatContactList":{"position":"relative"} }  }} 
+      <div>{{incluir(data,"chatContactList",admin=False)}}</div>
+    </span>    
+    
+
+    <span id="chat">
+       <div class="width-2 d-inline-block height-20 bg-ubuntu_blue" style="padding-top:100px">
+        <span class="" style="writing-mode: vertical-lr;
+          transform: rotate(180deg);">CHAT</span>
+       </div>
+    </span>
+  </div>
+</div>

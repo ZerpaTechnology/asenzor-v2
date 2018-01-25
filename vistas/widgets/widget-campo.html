@@ -1,0 +1,108 @@
+<div class="campoForm">
+
+{{
+"""
+"depende" hace referencia al valor de otro campo
+
+"subtabla" actualiza su valor en referencia a una tabla fon el formato de la tabla opciones 
+generalmente se aplica a esta, valor es el indice de valores de esta subtabla, los campos con este
+atributo deben ser actualizados al producir un evento change
+
+Opciones [tabla,subtabla,[valor...] ]
+"""
+}}
+
+<div style="background-color:rgb(200,200,200);padding: 10px;margin: 5px">
+<input type="checkbox" name="seleccion" style="margin-top:10px ">
+<div class="d-inline-block">
+<label> Tipo</label>
+  <select name="tipo">
+  	<option>text</option><!-- input de text -->
+  	<option>text-admin</option><!-- input de text que cambia a span en el user -->
+  	<option>text-email</option><!-- input de email-->
+  	<option>text-phone</option><!-- input de telefono-->
+  	<option>text-titulo</option><!-- input de text que cambia el nombre de la seccion en el admin y es texto en el span o h en el user-->
+  	<option>textarea</option> <!-- textarea tyminice  en admin -->
+  	<option>textarea-admin</option><!-- textarea tyminice  en admin cambia a contenido en el user-->
+  	<option>select</option><!-- simple campo de select -->
+  	<option>select-img</option><!-- simple campo de select -->
+  	<option>media</option><!-- despliega el popup de la biblioteca multimedia -->
+  	<option>img</option><!-- es una etiquete img -->
+  	<option>img-admin</option><!--muestra una image en el dashboard al ser seleccionada por un select 
+    -->
+    <option>number</option>
+  	<option>fixed</option><!-- texto fijo tanto para el user como el admin-->
+  	<option>file</option><!-- campo que permite subir un archivo-->
+    <option>file-img</option><!-- campo que permite subir una imagen y previsualizarla-->
+  	<!--<option>list</option>-->
+  </select>
+</div>
+<div class="d-inline-block">
+ <label> Nombre</label>
+ <input type="text" name="name">
+ </div>
+ <div class="d-inline-block">
+ <label> Titulo</label>
+ <input type="text" name="titulo">
+ <label> Valor</label>
+ </div>
+   <div class="d-inline-block">
+   <input type="text" name="value">
+   <label> Opcion</label>
+   </div>
+   <div class="d-inline-block">
+   <select name="opcion">
+   	<option></option>
+    {{for k,elem in enumerate(data["opciones"]):}}
+   	<option>{{=k}}</option>
+    {{pass}}
+   </select>
+   </div>
+ <div class="d-inline-block">
+ <label>Opciones</label>
+ <select name="opciones">
+ <option></option>
+ 
+    {{for elem in data["opciones"]:}}
+    <option>{{=elem}}</option>
+    {{pass}}
+ 
+ </select>
+ </div>
+   
+ <div class="d-inline-block">
+ <label>Tabla</label>
+ <select name="tabla">
+ <option></option>
+ {{if "tablas" in data:}}
+    {{for tabla in data["tablas"]:}}
+   	<option>{{=tabla}}</option>
+    {{pass}}
+ {{pass}}
+ </select>
+ </div>
+ <div class="d-inline-block">
+ <label>Depende</label>
+ <input name="depende">
+ 	<option></option>
+  {{if "campos" in data:}}
+    {{for campo in data["campos"]:}}
+   	<option>{{=campo}}</option>
+    {{pass}}
+  {{pass}}
+ </select>
+ </div>
+ <div class="d-inline-block">
+ <label>min</label>
+ <input type="number" name="min" step="0.00000001">
+ </div>
+ <div class="d-inline-block">
+ <label>max</label>
+ <input type="number" name="max" step="0.00000001">
+ </div>
+ <div class="d-inline-block">
+ <label>step</label>
+ <input type="number" name="step" step="0.00000001">
+</div>
+ </div>
+</div>

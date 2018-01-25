@@ -1,0 +1,8 @@
+
+<h1>Hay un error </h1>
+{{if data["login"]==True:}}
+{{=data["errores"]}}
+{{else:}}
+<span>Puedes chequearlo haciendo click en el siguiente enlace:</span>
+<a href="{{=config.base_url+settings.app+'/admin/errores/'+data['log']}}">Ir al error</a>
+{{pass}}

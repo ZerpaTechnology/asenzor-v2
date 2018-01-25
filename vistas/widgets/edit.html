@@ -1,0 +1,180 @@
+
+{{=incluir(data,"flash-help",isglobal=True)}}
+<section class="container-fluid sin-pad ">
+
+
+{{data["versiones"]=len(data["model"]["main"].db.tablas[str(data["metodo"])+"-"+str(data["args"][1])] ) if str(data["metodo"])+"-"+str(data["args"][0]) in  data["model"]["main"].db.tablas else None}}
+<div>
+
+<link href="{{=config.base_url}}static/js/tinymce/js/tinymce/skins/lightgray/content.min.css" rel="stylesheet" type="text/css">
+
+<div class="row">
+<div class="col-md-9">
+
+<div>
+  
+{{if "control-post" in data:}}
+ <span class="alg-top">Enlace: </span><div class="width-28-xs" style="overflow-x:scroll;display:inline-block"><a name="preview-enlace" href="{{=urlBuilder(config,data['app'],data['control-post'],data['post']) }}">{{=urlBuilder(config,data['app'],data['control-post'],data['post'])}}</a></div>
+ {{pass}}
+</div>
+  
+
+<div class="hidden" id="vars">
+{{print data["categorias"]}}
+</div>
+
+
+<form id="form" method="post" action="{{=config.base_url+settings.app+'/'+data['control']+'/'+data['metodo']+('/'+'/'.join( [str(elem) for elem in data['args']] ))}}/action=save" enctype='multipart/form-data' onsubmit="return window.modificar_atributo();">
+{{args=data['metodo']}}
+
+{{if normalizar(data['args'][0])==None and data['metodo']!='login':}}
+
+ {{btn="Registrar"}}
+{{elif data['metodo']=='login':}}
+ {{btn="Entrar"}}
+{{else:}}
+ {{btn="Guardar"}}
+{{pass}} 
+
+<div class="pad-1 b-s1 marg-1 bg-ubuntu_porcelain" id="edit" {{print 'new='+str(data['repeate']) if 'new' in data and 'repeate' in data else ''}}> 
+<h1>{{print data["titulo"]}}</h1>
+<hr class="height-1 bg-ubuntu_blue">
+{{if data["versiones"]!=None:}}
+<div class="ff marg-b1">
+  {{for elem in range(data["versiones"]-1):}}
+  <span class="btn bg-gray sin-marg b-r5 btn-version">{{=elem}}</span>
+  {{pass}}
+
+  <span class="btn bg-gray b-r5 btn-version">version actual</span>
+  <span class="btn bg-bluelight white b-r5" id="ir-version" >ir a la version</span>
+</div>
+{{pass}}
+<div id="edit-box">
+
+{{if "boxes" in data:}}
+{{=incluir(data,"edit-box",isglobal=True)}} 
+{{pass}}
+</div>
+
+
+</div>
+
+
+<input type="submit" id="enviar" value="{{print btn}}" class="btn bg-blue white pad-05 b-r5">
+{{brython_load("nuevo.by",python="3")}}
+<!--<script type="text/python3" src="{{=config.base_url}}static/brython/nuevo.by">-->
+</script>
+
+<div id="tablas">
+ 
+</div>
+
+</form>
+<form id="metadatos">
+
+  
+</form>
+<button id="insertar" class="hidden">Insertar Tabla</button>
+<div>
+ <!-- plugins inicio-->
+ {{for elem in data["plugins-hooks"]:}}
+    
+    {{if data["action"]==elem[0]:}}
+    {{=do_shortcode(elem[1])}} 
+    {{pass}}
+    {{pass}}
+    
+ <!-- plugins fin-->
+ 
+</div>
+</div>
+<aside class="col-md-3 font-ubuntu">
+ {{=incluir(data,"publicar-box",isglobal=True)}}
+ <br>
+ {{=incluir(data,"atributo-de-pagina",isglobal=True)}}
+ 
+ <br>
+ <div class="bg-white hidden">
+  <a href=""  style="text-decoration: none;color:black">
+  <div class="b-s1 pad-05">
+   <span><b>Imagen destacada</b></span>
+  </div>
+  </a>
+  <div>
+  
+  <div class="pad-1 font-s12  height-3  text-center">
+   <a href="" class="blue" style="text-decoration: none"><b>Asignar imagen destacada</b></a>
+  </div>
+ </div>
+</aside>
+</div>
+</div>
+<div class="hidden bg-white" id="custom" style="width: 80%;height:500px;position: fixed;top:20px;left:10%;z-index: 100 ">
+<style type="text/css">
+  #custom-close{
+  position: absolute;
+  right: -10px;
+  top:-10px;
+  background-color: gray;
+  color:white;
+  border: solid;
+  border-width: 1px;
+  border-radius: 15px;
+  padding: 5px;
+  cursor: pointer;
+
+  }
+  .botonera{
+    position: absolute;
+    padding: 5px;
+    bottom: 0px
+  }
+</style>
+<span id="custom-close">x</span>
+  <div class="tab" style="overflow-y: scroll;height: 470px">
+  {{for i in range(20):}}
+  <div class="custom"></div>
+  {{pass}} 
+  </div>
+  <div class="botonera">
+    <button class="insertar">insertar</button>
+    <button class="borrar">Borrar</button>
+  </div>
+</div>
+<div class="hidden bg-white" id="custom2" style="width: 80%;height:500px;position: fixed;top:20px;left:10%;z-index: 100 ">
+<style type="text/css">
+  #custom-close2{
+  position: absolute;
+  right: -10px;
+  top:-10px;
+  background-color: gray;
+  color:white;
+  border: solid;
+  border-width: 1px;
+  border-radius: 15px;
+  padding: 5px;
+  cursor: pointer;
+
+  }
+  .botonera{
+    position: absolute;
+    padding: 5px;
+    bottom: 0px
+  }
+</style>
+<span id="custom-close2">x</span>
+  <div class="tab" style="overflow-y: scroll;height: 470px">
+  {{=incluir(data,"widget-campo",isglobal=True)}}
+  <div class="botonera">
+    <button class="agregar">insertar</button>
+  </div>
+</div>
+
+<!--<script type="text/python3" src="{{=config.base_url}}static/brython/edit.by"></script>-->
+</section>
+
+
+<script type="text/javascript" src="{{=config.base_url}}static/js/python/__javascript__/edit_box.js"></script>
+
+<!--<script type="text/python3" src="{{=config.base_url}}static/brython/edit-box.by"></script>-->
+

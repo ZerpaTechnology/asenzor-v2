@@ -1,0 +1,45 @@
+
+<div class="content">
+{{c=0#cuenta indece de todos los elementos}}
+{{item=0#cuenta el indice del elemento en la tabla activa}}
+{{pag_current=1#cuenta la pagina actual}}
+{{while c< len(data["listar"]):}}
+  {{elem=data["listar"][c]}}
+  
+  {{if item==0:}}
+  
+    <div class="{{='' if data['pag']==pag_current else 'hidden'}}">
+    <table class="table" >
+    <tr>
+       <th><input type="checkbox" name=""></th>
+       {{for h in data["table-headers"]:}}
+      <th>{{=decode(h)}}</th>
+      {{pass}}
+    </tr>
+
+    {{item=1}}
+  {{elif item<=data['n-pag']:}}
+    <tr>
+      <td><input type="checkbox" name=""></td>
+      {{key=list(elem[2])[0]}}
+      <td><a href="{{=config.base_url+data['app']+'/admin/'+('Plugin/'+data['args'][0]+'/' if data['metodo']=='Plugin' else '')+key+'/'+str(elem[2][key])+'/action=editar' }}">{{=decode(elem[0])}}</a></td>
+      <td>{{=elem[3]}}</td>
+      <td></td>
+      </tr>
+      
+      {{item+=1}}
+      {{c+=1}}
+
+    
+  {{else:}}
+
+    </table>
+    </div>
+      {{item=0}}
+      {{pag_current+=1}}
+  {{pass}}
+  
+{{pass}}
+</table>
+    </div>
+</div>

@@ -1,0 +1,64 @@
+
+var value = "// The bindings defined specifically in the Sublime Text mode\nvar bindings = {\n";
+  var map = CodeMirror.keyMap.sublime;
+  for (var key in map) {
+    var val = map[key];
+    if (key != "fallthrough" && val != "..." && (!/find/.test(val) || /findUnder/.test(val)))
+      value += "  \"" + key + "\": \"" + val + "\",\n";
+  } 
+
+  value += "}\n\n// The implementation of joinLines\n";
+  value += CodeMirror.commands.joinLines.toString().replace(/^function\s*\(/, "function joinLines(").replace(/\n  /g, "\n") + "\n";
+
+var editores=[];
+c=0;
+
+while (c<document.getElementsByClassName("codeEditor").length){
+elem=document.getElementsByClassName("codeEditor")[c];
+alert(elem.getAttribute("ext"))
+if (elem.getAttribute("ext")=="py"){
+
+var mixedMode = {
+        name: "python",
+        scriptTypes: [{matches: /\/x-handlebars-template|\/x-mustache/i,
+                       mode: null},
+                      {matches: /(text|application)\/(x-)?vb(a|script)/i,
+                       mode: "vbscript"}]
+      };  
+}
+else{
+ var mixedMode = {
+        name: "htmlmixed",
+        scriptTypes: [{matches: /\/x-handlebars-template|\/x-mustache/i,
+                       mode: null},
+                      {matches: /(text|application)\/(x-)?vb(a|script)/i,
+                       mode: "vbscript"}]
+      };   
+}
+  
+  editor = CodeMirror.fromTextArea(elem, {
+      lineNumbers: true,
+      mode: mixedMode ,
+      keyMap: "sublime",
+      autoCloseBrackets: true,
+      matchBrackets: true,
+      showCursorWhenSelecting: true,
+      theme: "monokai",
+      tabSize: 4,
+      selectionPointer: true
+    });
+  
+  emmetCodeMirror(editor);
+  editores.push(editor);
+  
+  c+=1;
+  }
+  
+
+/*
+shortcut.add("Ctrl+s",function() {
+  req=ajax.ajax()
+  req.open("POST","ajax.py",True) 
+  req.send({"app":__query__["app"],"action":"write","admin":True,"args":{"path":s("#path")[0].text},"file":window.editor.getDoc().getValue()})
+});
+*/

@@ -1,0 +1,7 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+from browser import alert,window
+config=window.config
+window.compexec(config.base_url+"static/brython/edit.zpy")
+
+

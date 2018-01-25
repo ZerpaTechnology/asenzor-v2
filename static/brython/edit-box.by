@@ -1,0 +1,340 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+from browser import ajax,alert,window,document as doc
+getRest=window.getRest
+normalizar=window.normalizar
+s=window.s
+config=window.config
+var=window.VAR
+Component=window.Component
+opciones=None
+seccion=True
+current_section=None
+tablas=None
+Tabla=None
+rest=getRest()
+
+modelos=var("modelos")
+tablas=var("Tablas")
+opciones=var("opciones")
+decode=window.decode
+def thumbails(cadena,sujifo="_540x540"):
+  return cadena[:cadena.rfind(".")]+sujifo+cadena[cadena.rfind("."):]
+
+
+def cambiar(evt):
+    out=evt.target
+    valor=out.value
+    imagen=""
+
+
+    for k,option  in enumerate(out.get(selector="option")):   
+     if int(valor)==k:
+      imagen=option.text
+
+      break
+    opcion=out.getAttribute("opcion")
+    s(out.parent.get(selector="img")[0]).removeClass("hidden")
+    #if not s("input[type='file']")[0].files[0].name.endswith(".zip"):
+    url=config.base_url+"/apps/"+rest["app"]+"/admin/static/archivos/"+("Imagenes" if out.parent.get(selector="img")[0].getAttribute("archivos").strip()=="" else out.parent.get(selector="img")[0].getAttribute("archivos").strip())+"/"
+    req=ajax.ajax()
+    req.open("GET",url+thumbails(imagen),True)
+    req.send({})
+    def mostrar(evt):
+      
+      if req.status=="404":
+        out.parent.get(selector="img")[0].src=url+imagen
+      else:
+        
+        out.parent.get(selector="img")[0].src=url+thumbails(imagen)
+    req.bind("complete",mostrar)
+
+    
+
+s(".img-admin").bind("change",cambiar)
+
+
+
+componentes={"widget-campo-box":Component("widget-campo-box",{},True,True),
+
+    "widget-campo":Component("widget-campo",{},True,True),
+    "widget-campo-boxes":Component("widget-campo-boxes",{},True,True),
+   }
+
+
+
+def upload_image(evt):
+    from javascript import JSConstructor
+    jq = window.jQuery
+    file = jq(".img-file").prop('files')[0]
+
+    file_reader = JSConstructor(window.FileReader)
+    reader = file_reader()
+    def funcion(evt, img=evt.target.parent.get(selector="img")[0]):
+     img.class_name=img.class_name.replace(" hidden","")
+     img.src=evt.target.result
+    reader.onload = funcion
+    f = reader.readAsDataURL(file)
+   
+#===============================================
+
+
+
+
+def customOpen(evt):
+ if "hidden"  in s("#custom")[0].class_name:
+  global seccion
+  seccion=True if evt.target.id=="#add" else False
+  s("#custom").removeClass("hidden")
+
+
+s("#add").bind("click",customOpen) 
+s("#add2").bind("click",customOpen) 
+
+
+def nuevaSeccion(evt):
+ ultimo=0
+ global componentes
+ global agregar
+ global opciones
+ global tablas
+ data={}
+ data["opciones"]=opciones if opciones!=None else []
+ data["tablas"]=tablas
+ 
+
+
+ for k,elem in enumerate(s(".custom").iterables):
+  if len(elem.children)==0:
+   if ultimo==None:
+    ultimo=k
+  else:
+   ultimo=None
+
+
+ if componentes["widget-campo"]!=None and ultimo!=None:    
+      s("#custom .tab")[0].children[ultimo].innerHTML=componentes["widget-campo"].run(data)
+ agregar=False
+ for elem in s("#custom .tab")[0].children:
+    if len(elem.children)>0:
+      agregar=True
+
+ if agregar==True and len(s(".botonera")[0].get(selector="#agregar"))==0:
+    s(".botonera").widget(-1,"<button id='agregar'>Agregar</button>")
+    
+    def agregar(evt):
+      ultimo=0
+      global componentes
+      global opciones
+      global seccion
+      
+
+      data={"boxes":[]}
+      
+      l=[]
+      for elem in s(".tab")[0].children:
+          if len(elem.children)>0:
+            widget=elem.children[0]
+            tipo=widget.get(selector="select[name=tipo]")[0].value
+            name=widget.get(selector="input[name=name]")[0].value
+            valor=widget.get(selector="input[name=value]")[0].value
+            titulo=widget.get(selector="input[name=titulo]")[0].value
+            opcion=widget.get(selector="select[name=opcion]")[0].value
+            tabla=widget.get(selector="select[name=tabla]")[0].value
+            depende=widget.get(selector="input[name=depende]")[0].value
+            modelo=widget.get(selector="select[name=opciones]")[0].value
+            campo={titulo:tipo,"name":name,"value":valor}
+            if opcion!="":
+              campo["opcion"]=opcion
+            if modelo!="":
+              campo["opciones"]=modelo
+            if tabla!="":
+              campo["tabla"]=tabla
+            if depende!="":
+              campo["depende"]=depende
+            if tipo=="number":
+              campo["max"]=_max
+              campo["min"]=_min
+              campo["step"]=step
+            l.append(campo)
+
+
+
+      data["boxes"].append(l)
+      for k,elem in enumerate(s(".custom-section" if seccion==True else ".custom-subsection").iterables):
+        if len(elem.children)==0:
+         if ultimo==None:
+            ultimo=k
+        else:
+          ultimo=None
+      for elem in s(".tab")[0].children:
+        if len(elem.children)>0:
+            temp=elem.children[0]
+            elem.removeChild(temp)
+      s("#custom").addClass("hidden")
+      if componentes["widget-campo-boxes"]!=None and ultimo!=None:    
+
+          s(".custom-section" if seccion==True else ".custom-subsection")[ultimo].innerHTML=componentes["widget-campo-boxes"].run(data)
+          if len(s(".botoneraCustom")[0].get(selector="#borrarCustom"))==0:
+            def borrarCustom(evt):
+              for k,elem in enumerate(s(".custom-section" if seccion==True else ".custom-subsection").iterables):
+                  if len(elem.children)==0:
+                   if ultimo==None:
+                      ultimo=k
+                  else:
+                    ultimo=None
+              if ultimo!=None and ultimo!=0:
+                for elem in s(".custom-section" if seccion==True else ".custom-subsection")[ultimo-1].children:
+                  s(".custom-section" if seccion==True else ".custom-subsection")[ultimo-1].removeChild(elem)
+                  if ultimo-1==0:
+                    s(".botoneraCustom")[0].removeChild(s(".botoneraCustom")[0].get(selector="#borrarCustom")[0])
+            s(".botoneraCustom").widget(-1,'<a class="pad-05 b-r5 marg-t1 btn bg-ubuntu_red font-ubuntu white" style="text-decoration: none" href="#borrarCustom" id="borrarCustom">Borrar sección personalizada</a>')
+            s("#borrarCustom")[0].bind("click",borrarCustom)
+            
+
+    s("#agregar").bind("click",agregar)
+    
+s(".insertar").bind("click",nuevaSeccion) 
+
+#===============================================
+def customClose(evt):
+ evt.target._ev=customClose
+ if "hidden" in s("#custom")[0].class_name:
+  s("#custom").removeClass("hidden")
+ else:
+  s("#custom").addClass("hidden")
+
+ 
+s("#custom-close").bind("click",customClose)
+
+s(".img-file").bind("change",upload_image)
+
+
+
+
+
+def borrar(evt):
+ evt.target._ev=borrar
+ for elem in s("#custom .tab")[0].children:
+  if len(elem.children[0].children)>0:
+   if elem.children[0].children[0].children[0].checked==True:
+    elem.removeChild(elem.children[0])
+ agregar=False
+ for elem in s("#custom .tab")[0].children:
+    if len(elem.children)>0:
+      agregar=True
+ if agregar==False:
+    el=s(".botonera")[0].get(selector="#agregar")[0]
+    s(".botonera")[0].removeChild(el)
+   
+s(".borrar").bind("click",borrar)
+
+
+
+"""
+def insertar(evt): 
+ global componentes
+
+ if evt.target.parent==s("#custom")[0]:
+   ultimo=0
+   for k,elem in enumerate(s("#custom")[0].children):
+     if len(elem.children)==0:
+
+       if ultimo==None:
+         ultimo=k
+     else:
+       ultimo=None
+   if ultimo!=None:    
+     s(".tab")[1].children[ultimo].innerHTML=widgetCampo.run()
+
+"""
+def customOpen2(evt):
+ if "hidden"  in s("#custom2")[0].class_name:
+  global seccion
+  global current_section
+  seccion=True if evt.target.id=="#add" else False
+  s("#custom2").removeClass("hidden")
+  current_section=evt.target
+
+s(".agregar-custom2").bind("click",customOpen2) 
+def customClose2(evt):
+ if "hidden" in s("#custom2")[0].class_name:
+  s("#custom2").removeClass("hidden")
+ else:
+  s("#custom2").addClass("hidden")
+
+ 
+s("#custom-close2").bind("click",customClose2)
+
+def nuevoCampo(evt):
+  global componentes
+  global current_section
+  campo={}
+  widget=s("#custom2 .tab")[0].children[0]
+  tipo=widget.get(selector="select[name=tipo]")[0].value
+  name=widget.get(selector="input[name=name]")[0].value
+  valor=widget.get(selector="input[name=value]")[0].value
+  titulo=widget.get(selector="input[name=titulo]")[0].value
+  opcion=widget.get(selector="select[name=opcion]")[0].value
+  tabla=widget.get(selector="select[name=tabla]")[0].value
+  depende=widget.get(selector="input[name=depende]")[0].value
+  modelo=widget.get(selector="select[name=opciones]")[0].value
+
+  campo={titulo:tipo,"name":name,"value":valor}
+  if opcion!="":
+    campo["opcion"]=int(opcion)
+  if opcion!="":
+    campo["opciones"]=modelo
+  if tabla!="":
+    campo["tabla"]=tabla
+  if depende!="":
+    campo["depende"]=depende
+  if tipo=="number":
+    campo["max"]=_max
+    campo["min"]=_min
+    campo["step"]=step
+  data={"campo":campo}
+  data["opciones"]=var("opciones")
+  if current_section!=None:
+    i=list(current_section.parent.children).index(current_section)
+    data["indice"]=len(current_section.parent.children[i-1].get(selector="input[name^='custom:']"))+len(current_section.parent.children[i-1].get(selector="select[name^='custom:']"))
+    s(current_section.parent.children[i-1]).widget(-1,componentes["widget-campo-box"].run(data))
+    s(".img-admin").bind("change",cambiar)
+  customClose2(evt)
+"""
+def modifica_atributo(evt):
+  global config
+  
+  s("input[name='control']")[0].value=s("select[name='atributo-control']")[0].value
+  s("input[name='layout']")[0].value=s("select[name='atributo-layout']")[0].value
+  
+  s("a[name='preview-enlace']")[0].href=config.base_url+rest["app"]+"/"+s("select[name='atributo-control']")[0].value+"/"+s("input[name='titulo']")[0].value
+  s("a[name='preview-enlace']")[0].innerHTML=config.base_url+rest["app"]+"/"+s("select[name='atributo-control']")[0].value+"/"+s("input[name='titulo']")[0].value
+
+s("select[name='atributo-control']").bind("change",modifica_atributo)
+s("select[name='atributo-layout']").bind("change",modifica_atributo)
+"""
+def modificar_atributo():
+  #req=ajax.ajax()
+  
+  meta={"control":s("select[name='atributo-control']")[0].value,
+        "layout":s("select[name='atributo-layout']")[0].value}
+  
+  s("#form")[0].action=s("#form")[0].action+"&metadatos="+str(meta)
+  titulos=var("titulos")
+  titulos.remove(var("actual"))
+  if s("input[name='titulo']")[0].value.strip()!="":
+      if s("input[name='titulo']")[0].value in titulos:
+          alert("Este titulo no esta permitido, ya existe")
+          return False
+      else:
+          return True
+          
+  
+          
+      
+        
+    
+  
+window.modificar_atributo=modificar_atributo
+s("#custom2 .agregar").bind("click",nuevoCampo)

@@ -1,0 +1,78 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+from browser import alert,ajax,window
+import threading
+s=window.s
+s("#plantilla").bind("change",lambda evt:
+	req=ajax.ajax()
+	opciones=[]
+	__data__={}
+	global base_url
+	req.open("POST",config.base_url+config.controller_folder+"/ajax.py",True)
+	req.send({"admin":True,"action":"show","args":{"db":"main","tabla":"Opciones"}})
+	plantilla=evt.target.value
+	def seleccionar(evt,req=req,plantilla=plantilla):	
+
+		try:
+			exec("db="+req.text)
+		except Exception as e:
+			alert(e)
+		__data__["opciones"]=db
+		s("#edit-box")[0].innerHTML="Cargando..."
+		req=ajax.ajax()
+		req.open("POST",config.base_url+config.controller_folder+"/ajax.py",True)
+		req.send({"admin":True,"action":"show","args":{"db":"main","tabla":"Plantillas"}})
+
+		req.bind("complete",lambda ev,req=req,plantilla=plantilla:
+			try:
+				exec("db="+req.text)
+			except Exception as e:
+				alert(e)
+			for k,elem in enumerate(db):
+				if plantilla==decode(elem[0]):
+					__data__["titulo"]="Crear nueva configuración de pagina"
+					__data__["layout"]=""
+					__data__["pagina"]="{'pagina':'"+__data__["titulo"]+"'}"
+					l1=db[k][1]
+					__data__["boxes"]=[l1]
+					s("#edit-box").widget(url="edit-box",data=__data__)
+			def change(evt):
+				
+				rest=getRest()
+				req2=ajax.ajax()
+				req2.open("POST",config.base_url+config.controller_folder+"/ajax.py",False)
+				req2.send({"app":rest["app"],"admin":True,"action":"show","args":{"db":"main","tabla":"Opciones"}})
+				if s("#edit-box")[0].innerHTML!="Cargando..." and s("#edit-box")[0].innerHTML!="":
+					s("#edit-box")[0].unbind('DOMSubtreeModified',change)
+					exec("db="+req2.text)
+					def cambiar(evt,db=db):
+						out=evt.target
+						valor=out.value
+						opcion=int(out.getAttribute("opcion"))
+						for k,option  in enumerate(out.get(selector="option")):
+							if valor==option.text:
+								valor=k
+						opcion=out.getAttribute("opcion")
+						out.parent.get(selector="img")[0].class_name=out.parent.get(selector="img")[0].class_name.replace(" hidden","")
+						out.parent.get(selector="img")[0].src="apps/"+rest["app"]+"/admin/static/archivos/Imagenes/"+db[int(opcion)][1][int(valor)]
+					s(".img-admin").bind("change",cambiar)
+			s("#edit-box")[0].bind('DOMSubtreeModified',change)	
+			)
+	req.bind("complete",seleccionar)
+	)
+
+
+#LEE EL EVENTO
+s("#insertar").bind("click",lambda evt:
+	#CAMBIA EL ESTADO DE UN ELEMENTO
+	s("#tablas").widget("""
+		<div class="height-5 b-s1">
+			<select>
+			{{for elem in [1,2,3]:}}
+		 	<option>{{print elem}}</option>
+		 	{{pass}}
+			</select>
+		</div>
+		""")
+	)
+

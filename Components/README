@@ -1,0 +1,8 @@
+Se incorpora el concepto de componentes en Asenzor 
+el cual a diferecia de los widgets no se construye como un codigo html 
+sino que se crea en python como si de un modelos a su base de datos se tratase
+
+dentro de los component se pueden usar widgets asi como el component se puede incluir en el html como si de un
+shortcode se tratase
+
+la idea de los widgets es 

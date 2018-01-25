@@ -1,0 +1,1173 @@
+body {
+  margin: 0px; }
+
+.Components {
+  	/*
+  	@media(min-width: 1200px){
+  		.Builder{
+  			
+  		}
+  
+  	
+  	}
+  	*/ }
+  .Components .ControlDeslizante {
+    display: inline-block;
+    padding: 5px; }
+    .Components .ControlDeslizante > div > span {
+      margin-right: 8px; }
+    .Components .ControlDeslizante > div > .barra {
+      position: relative;
+      border: solid;
+      border-width: 1px; }
+      .Components .ControlDeslizante > div > .barra > .guia {
+        position: absolute; }
+  .Components .BTNS > .titulo {
+    display: block; }
+  .Components .BTNS .Button {
+    display: inline-block; }
+    .Components .BTNS .Button > button {
+      width: 80px;
+      height: 80px;
+      text-align: center; }
+      .Components .BTNS .Button > button > img {
+        width: 50px;
+        height: 50px;
+        display: block;
+        margin: 0 auto; }
+  .Components .ControlDeslizanteStatus {
+    display: inline-block;
+    padding: 5px; }
+    .Components .ControlDeslizanteStatus > div > .frames {
+      display: flex;
+      flex-direction: row;
+      justify-content: stretch;
+      flex-basis: 1;
+      height: 40px; }
+      .Components .ControlDeslizanteStatus > div > .frames > span {
+        height: 100%;
+        border: solid;
+        border-width: 1px;
+        width: 100%;
+        margin: 0px; }
+    .Components .ControlDeslizanteStatus > div > div > span {
+      margin-right: 8px; }
+    .Components .ControlDeslizanteStatus > div > div > .barra {
+      position: relative;
+      border: solid;
+      border-width: 1px; }
+      .Components .ControlDeslizanteStatus > div > div > .barra > .guia {
+        position: absolute; }
+  .Components .BoxText {
+    padding: 5px; }
+    .Components .BoxText > .content > p {
+      text-align: justify; }
+  .Components .HeaderCustomize {
+    text-align: left;
+    margin: 5px; }
+    .Components .HeaderCustomize > div {
+      background-color: white; }
+    .Components .HeaderCustomize .atras {
+      display: inline-block;
+      width: 40px;
+      height: 100px;
+      border: solid;
+      border-width: 1px;
+      border-left-width: 5px;
+      border-left-color: #32c8dc;
+      cursor: pointer; }
+      .Components .HeaderCustomize .atras:hover {
+        background-color: #c8c8c8; }
+    .Components .HeaderCustomize .text {
+      display: inline-block;
+      height: 100px;
+      width: calc(100% - 44px );
+      vertical-align: top; }
+    .Components .HeaderCustomize > p {
+      padding-top: 5px;
+      padding-left: 20px;
+      padding-right: 20px;
+      padding-bottom: 5px; }
+  .Components .BandaTema {
+    background-color: white;
+    text-align: left;
+    display: flex;
+    margin: 5px;
+    justify-content: center; }
+    .Components .BandaTema .text {
+      display: inline-block;
+      padding: 3px; }
+  .Components .ButtonSettings {
+    width: 100%;
+    border: solid;
+    border-right-width: 1px;
+    border-left-width: 5px;
+    border-top-width: 1px;
+    border-bottom-width: 1px;
+    border-right-color: transparent;
+    cursor: pointer;
+    background-color: white; }
+    .Components .ButtonSettings:hover {
+      border-left-color: blue; }
+    .Components .ButtonSettings span {
+      display: block;
+      padding: 2px; }
+    .Components .ButtonSettings p {
+      font-size: 11px;
+      font-weight: bold;
+      color: gray; }
+  .Components .Select {
+    padding: 5px; }
+    .Components .Select select {
+      background-color: white;
+      border: none;
+      width: 100%;
+      padding: 5px; }
+      .Components .Select select option {
+        padding: 5px; }
+  .Components .BasicSlider, .Components .DragSlider {
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    position: relative; }
+    .Components .BasicSlider > div, .Components .DragSlider > div {
+      height: 100%; }
+      .Components .BasicSlider > div > .tab, .Components .DragSlider > div > .tab {
+        display: inline-block;
+        overflow-y: auto;
+        overflow-x: hidden;
+        vertical-align: top;
+        height: 100%;
+        background-color: black;
+        background-size: contain;
+        background-position: center;
+        background-repeat: no-repeat; }
+    .Components .BasicSlider > .controles, .Components .DragSlider > .controles {
+      top: 0px;
+      width: 100%; }
+      .Components .BasicSlider > .controles > .left, .Components .DragSlider > .controles > .left {
+        position: absolute;
+        top: calc(50% - 10px);
+        left: 0px;
+        width: 40px;
+        height: 40px;
+        background-size: contain;
+        cursor: pointer; }
+      .Components .BasicSlider > .controles > .right, .Components .DragSlider > .controles > .right {
+        position: absolute;
+        top: calc(50% - 10px);
+        right: 0px;
+        width: 40px;
+        height: 40px;
+        background-size: contain;
+        cursor: pointer; }
+  .Components .BasicTabs {
+    height: 100%; }
+    .Components .BasicTabs > div {
+      height: 100%; }
+      .Components .BasicTabs > div > .tab {
+        height: 100%;
+        display: block;
+        overflow-y: auto;
+        overflow-x: hidden;
+        vertical-align: top; }
+  .Components .InputAndButton > input {
+    width: calc(100% - 80px); }
+  .Components .InputAndButton > button {
+    width: 76px; }
+  .Components .SidebarAddItems {
+    width: 280px;
+    height: 100vh; }
+  .Components .SidebarCustomize {
+    height: 100vh;
+    width: 280px; }
+    .Components .SidebarCustomize > .header-top {
+      display: flex;
+      justify-content: space-between;
+      height: 5vh; }
+    .Components .SidebarCustomize > .content {
+      height: calc( 90vh - 4px );
+      background-color: lavender; }
+    .Components .SidebarCustomize > .footer-bottom {
+      height: 5vh;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between; }
+      .Components .SidebarCustomize > .footer-bottom > .ocultar {
+        margin: 5px;
+        margin-top: 8px;
+        display: inline;
+        cursor: pointer; }
+      .Components .SidebarCustomize > .footer-bottom > .responsive > span {
+        display: inline-block;
+        height: 5vh;
+        width: 30px;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center; }
+  .Components .HeaderCustomizeMain {
+    background-color: white;
+    margin: 5px;
+    position: relative; }
+    .Components .HeaderCustomizeMain > div {
+      padding: 10px; }
+    .Components .HeaderCustomizeMain .help {
+      border-radius: 12px;
+      background-color: gray;
+      color: #c8c8c8;
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      cursor: pointer;
+      padding: 2px; }
+  .Components .FileUpload > div {
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    text-align: center; }
+    .Components .FileUpload > div input {
+      background-color: white;
+      color: gray;
+      padding: 5px;
+      border: solid;
+      border-width: 1px;
+      display: inline-block; }
+  .Components .MediaButton {
+    width: 100%;
+    margin: 5px; }
+  .Components .ButtonInput > .content {
+    width: 100% !important;
+    overflow: hidden;
+    border: none !important; }
+    .Components .ButtonInput > .content button {
+      background-color: blue;
+      color: white; }
+  .Components .ButtonAddItem > button {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between; }
+    .Components .ButtonAddItem > button > .left > .icon {
+      display: inline-block;
+      width: 20px;
+      height: 20px; }
+    .Components .ButtonAddItem > button > .right {
+      color: gray; }
+  .Components .EnlaceButton button {
+    background-color: transparent;
+    color: blue;
+    border: none;
+    font-weight: bold;
+    text-decoration: underline; }
+  .Components .EnlaceButtonInput > button {
+    background-color: transparent;
+    color: blue;
+    border: none;
+    font-weight: bold;
+    text-decoration: underline; }
+  .Components .EnlaceButtonInput > .content {
+    padding: 5px;
+    width: 100%;
+    display: none; }
+    .Components .EnlaceButtonInput > .content > button {
+      padding: 0px;
+      width: 50px;
+      height: 30px;
+      display: inline-block; }
+    .Components .EnlaceButtonInput > .content > input {
+      width: calc( 100% - 54px);
+      display: inline-block; }
+  .Components .DetalleImagen {
+    display: inline-block;
+    width: 100px;
+    height: 100px;
+    background-color: black;
+    margin: 5px;
+    cursor: pointer;
+    position: relative;
+    border: solid;
+    vertical-align: top; }
+    .Components .DetalleImagen .select {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      right: -5px;
+      top: -5px;
+      border: solid;
+      border-color: gray;
+      background-color: white;
+      overflow: hidden; }
+    .Components .DetalleImagen img {
+      max-height: 100%;
+      max-width: 100%; }
+  .Components .Biblioteca .archivos {
+    width: 75%;
+    height: 100%;
+    display: inline-block; }
+    .Components .Biblioteca .archivos .list {
+      height: 450px;
+      overflow: auto; }
+  .Components .Biblioteca .detalles {
+    width: 24%;
+    display: inline-block;
+    vertical-align: top;
+    height: 500px; }
+    .Components .Biblioteca .detalles img {
+      max-width: 100%; }
+    .Components .Biblioteca .detalles table input {
+      width: 100%; }
+  .Components .Media {
+    width: 90%;
+    background-color: white;
+    height: 90%;
+    position: fixed;
+    top: 5%;
+    left: 5%;
+    border: solid;
+    border-width: 1px;
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch; }
+    .Components .Media .BasicTabs {
+      height: 70vh; }
+    .Components .Media .titulo {
+      font-size: 18px;
+      margin: 3px; }
+    .Components .Media > div {
+      border: solid;
+      border-width: 1px; }
+    .Components .Media > div:nth-child(3) {
+      height: 100%; }
+    .Components .Media button {
+      background-color: blue;
+      color: white; }
+  .Components .MediaManager {
+    padding: 5px; }
+    .Components .MediaManager .visor {
+      border: solid;
+      border-style: dashed;
+      display: flex;
+      justify-content: center;
+      color: gray; }
+      .Components .MediaManager .visor img {
+        max-height: 200px; }
+  .Components .VideoManager {
+    padding: 5px; }
+    .Components .VideoManager .visor {
+      border: solid;
+      border-style: dashed;
+      display: flex;
+      justify-content: center;
+      color: gray; }
+      .Components .VideoManager .visor img {
+        max-height: 200px; }
+  .Components .ImagenRandom {
+    padding: 5px; }
+    .Components .ImagenRandom .visor {
+      border: solid;
+      border-style: dashed;
+      display: flex;
+      justify-content: center;
+      color: gray; }
+      .Components .ImagenRandom .visor img {
+        max-height: 200px; }
+  .Components .Imagen_de_cabecera {
+    padding: 5px; }
+    .Components .Imagen_de_cabecera .visor {
+      border: solid;
+      border-style: dashed;
+      border-color: gray; }
+      .Components .Imagen_de_cabecera .visor img {
+        max-height: 200px; }
+  .Components .CabeceraMultimedia .visor {
+    border: solid;
+    border-style: dashed; }
+    .Components .CabeceraMultimedia .visor img {
+      max-height: 200px; }
+  .Components .SubidoAnteriormente {
+    padding: 5px; }
+    .Components .SubidoAnteriormente .visor {
+      border: solid;
+      border-style: dashed;
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      color: gray; }
+      .Components .SubidoAnteriormente .visor > div {
+        position: relative; }
+      .Components .SubidoAnteriormente .visor .close {
+        position: absolute;
+        top: 0px;
+        right: 10px;
+        color: transparent;
+        padding: 5px; }
+      .Components .SubidoAnteriormente .visor img {
+        max-height: 200px; }
+        .Components .SubidoAnteriormente .visor img:hover + .close {
+          background-color: rgba(0, 0, 0, 0.5);
+          color: white;
+          opacity: 1; }
+  .Components .Input {
+    padding: 5px;
+    width: 100%; }
+    .Components .Input input {
+      width: 100%; }
+  .Components .CheckBox {
+    padding: 5px; }
+  .Components .CheckBoxList {
+    padding: 5px; }
+  .Components .RadioButton {
+    padding: 5px; }
+  .Components .RadioButtonList > p {
+    padding: 5px; }
+  .Components .RadioButtonList > b {
+    padding: 5px; }
+  .Components .RadioButtonList > .content {
+    width: 100% !important;
+    padding: 5px; }
+  .Components .SelectColor label {
+    display: block; }
+  .Components .Textarea {
+    padding: 5px;
+    width: 100%; }
+    .Components .Textarea textarea {
+      width: 100%; }
+  .Components .TabAcordion > span {
+    display: flex;
+    height: auto;
+    background-color: white;
+    border: solid;
+    border-width: 1px;
+    padding: 5px;
+    justify-content: space-between; }
+    .Components .TabAcordion > span > span {
+      display: flex; }
+    .Components .TabAcordion > span .descripcion {
+      display: inline-block;
+      color: gray;
+      font-size: 12px;
+      vertical-align: super; }
+    .Components .TabAcordion > span .switch {
+      display: inline-block;
+      background-size: cover;
+      width: 20px;
+      height: 20px; }
+  .Components .TabAcordion > .content {
+    overflow: hidden;
+    border: solid;
+    border-width: 1px;
+    background-color: white; }
+  .Components .Acordion > .content {
+    width: 100% !important;
+    padding: 5px; }
+  .Components .Acordion > .btns {
+    padding: 5px; }
+    .Components .Acordion > .btns > .reordenar {
+      color: blue; }
+    .Components .Acordion > .btns > .add:before {
+      content: "+"; }
+  .Components .Acordion > .borrar {
+    color: red;
+    padding: 5px; }
+  .Components .FooterCustomize {
+    height: 100px;
+    width: 100%;
+    background-color: white; }
+  .Components .InputSearch {
+    border: solid;
+    border-width: 1px;
+    border-color: gray;
+    height: 10vh;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: lavender; }
+    .Components .InputSearch > div:focus {
+      -webkit-box-shadow: -2px 3px 60px 14px rgba(0, 34, 255, 0.67);
+      -moz-box-shadow: -2px 3px 60px 14px rgba(0, 34, 255, 0.67);
+      box-shadow: -2px 3px 60px 14px rgba(0, 34, 255, 0.67); }
+    .Components .InputSearch > div > span {
+      height: 20px;
+      width: 20px;
+      background-size: contain;
+      display: inline-block;
+      background-repeat: no-repeat;
+      background-color: white; }
+    .Components .InputSearch > div > input {
+      width: calc( 100% - 30px);
+      border: none;
+      vertical-align: top;
+      background-color: white; }
+  .Components .AddItem {
+    display: flex;
+    flex-direction: row;
+    padding: 10px;
+    border: solid;
+    border-width: 1px;
+    border-color: gray;
+    cursor: pointer; }
+    .Components .AddItem > .icon {
+      vertical-align: top;
+      width: 30px;
+      height: 30px;
+      margin-left: 10px;
+      margin-right: 10px;
+      background-size: contain;
+      background-repeat: no-repeat; }
+    .Components .AddItem > div > p {
+      color: gray; }
+  .Components .BoxScroll {
+    height: auto; }
+  .Components .LayoutHorizontal {
+    width: 100%;
+    height: 100vh; }
+    .Components .LayoutHorizontal > div {
+      display: flex;
+      flex-direction: row; }
+      .Components .LayoutHorizontal > div > div {
+        height: 100vh;
+        overflow-y: auto;
+        overflow-x: hidden; }
+  .Components .ButtonImage {
+    display: inline-block;
+    vertical-align: top; }
+    .Components .ButtonImage > button {
+      text-align: center;
+      width: 90px;
+      height: 90px; }
+      .Components .ButtonImage > button > img {
+        display: inline-block;
+        margin: 0 auto;
+        width: 50px;
+        height: 50px; }
+  .Components .Iframe {
+    width: 100%;
+    position: relative;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none; }
+    .Components .Iframe > iframe {
+      width: 100%;
+      border: none;
+      height: 100%;
+      background-position: center;
+      background-repeat: no-repeat; }
+  .Components .DinamicFigure .grid {
+    position: relative;
+    margin: 0 auto;
+    list-style: none;
+    text-align: center;
+    display: inline-block;
+    width: 100%;
+    overflow: hidden;
+    height: 100%; }
+    .Components .DinamicFigure .grid figure {
+      position: relative;
+      float: left;
+      overflow: hidden;
+      margin: 0;
+      /*change here for spacing*/
+      width: 100%;
+      text-align: center;
+      cursor: pointer;
+      height: 100%; }
+      .Components .DinamicFigure .grid figure img {
+        position: relative;
+        display: block;
+        min-width: 100%;
+        min-height: 100%;
+        opacity: 1; }
+      .Components .DinamicFigure .grid figure figcaption {
+        padding: 2em;
+        color: #fff;
+        text-transform: uppercase;
+        font-size: 1.25em;
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%; }
+        .Components .DinamicFigure .grid figure figcaption::before, .Components .DinamicFigure .grid figure figcaption::after {
+          pointer-events: none; }
+        .Components .DinamicFigure .grid figure figcaption > a {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          z-index: 1000;
+          text-indent: 200%;
+          white-space: nowrap;
+          font-size: 0;
+          opacity: 0; }
+      .Components .DinamicFigure .grid figure h2 {
+        word-spacing: -0.15em;
+        font-weight: 700;
+        margin: 0; }
+      .Components .DinamicFigure .grid figure p {
+        margin: 0;
+        letter-spacing: 1px;
+        font-size: 68.5%; }
+  .Components .DinamicFigure figure.effect-oscar {
+    /*	background: -webkit-linear-gradient(45deg, #22682a 0%, #9b4a1b 40%, #3a342a 100%);
+    	background: linear-gradient(45deg, #22682a 0%,#9b4a1b 40%,#3a342a 100%);*/ }
+    .Components .DinamicFigure figure.effect-oscar figcaption {
+      padding: 15%;
+      /*	background-color: rgba(58,52,42,0.7);
+      	-webkit-transition: background-color 0.35s;
+      	transition: background-color 0.35s;*/ }
+      .Components .DinamicFigure figure.effect-oscar figcaption::before {
+        position: absolute;
+        top: 30px;
+        right: 30px;
+        bottom: 30px;
+        left: 30px;
+        border: 1px solid #fff;
+        content: ''; }
+    .Components .DinamicFigure figure.effect-oscar h2 {
+      margin: 0;
+      line-height: 1em;
+      -webkit-transition: -webkit-transform 0.35s;
+      transition: transform 0.35s;
+      -webkit-transform: translate3d(0, 100%, 0);
+      transform: translate3d(0, 100%, 0); }
+    .Components .DinamicFigure figure.effect-oscar figcaption::before, .Components .DinamicFigure figure.effect-oscar p {
+      opacity: 0;
+      -webkit-transition: opacity 0.35s, -webkit-transform 0.35s;
+      transition: opacity 0.35s, transform 0.35s;
+      -webkit-transform: scale(0);
+      transform: scale(0); }
+    .Components .DinamicFigure figure.effect-oscar figcaption a {
+      display: none; }
+    .Components .DinamicFigure figure.effect-oscar:hover h2 {
+      -webkit-transform: translate3d(0, 0, 0);
+      transform: translate3d(0, 0, 0); }
+    .Components .DinamicFigure figure.effect-oscar:hover figcaption::before, .Components .DinamicFigure figure.effect-oscar:hover p {
+      opacity: 1;
+      -webkit-transform: scale(1);
+      transform: scale(1); }
+    .Components .DinamicFigure figure.effect-oscar:hover figcaption {
+      background-color: rgba(0, 0, 0, 0.8); }
+    .Components .DinamicFigure figure.effect-oscar:hover img {
+      opacity: 0.4; }
+    .Components .DinamicFigure figure.effect-oscar:hover a {
+      color: white !important;
+      border: solid;
+      border-width: 1px;
+      margin: 10px;
+      padding: 10px;
+      display: inline-block;
+      text-decoration: none; }
+  .Components .GotoTop .gototop {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 10px;
+    color: #fff; }
+  .Components .GotoTop .gototop i {
+    line-height: 0.5em; }
+  .Components .CyrusNavbar {
+    height: 100px; }
+  .Components .SwiperSlider > div {
+    /*centered
+    .swiper-slide:nth-child(2n) {
+      width: 40%;
+    }
+    .swiper-slide:nth-child(3n) {
+      width: 20%;
+    }
+    */ }
+    .Components .SwiperSlider > div .swiper-container {
+      width: 100%;
+      height: 100%; }
+    .Components .SwiperSlider > div .swiper-slide {
+      text-align: center;
+      font-size: 18px;
+      background: #fff;
+      /* Center slide text vertically */
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: -webkit-flex;
+      display: flex;
+      -webkit-box-pack: center;
+      -ms-flex-pack: center;
+      -webkit-justify-content: center;
+      justify-content: center;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      -webkit-align-items: center;
+      align-items: center; }
+    .Components .SwiperSlider > div .swiper-pagination-bullet {
+      width: 20px;
+      height: 20px;
+      text-align: center;
+      line-height: 20px;
+      font-size: 12px;
+      color: #000;
+      opacity: 1;
+      background: rgba(0, 0, 0, 0.2); }
+    .Components .SwiperSlider > div .swiper-pagination-bullet-active {
+      color: #fff;
+      background: #007aff; }
+    .Components .SwiperSlider > div .swiper-container-v {
+      background: #eee; }
+    .Components .SwiperSlider > div .append-buttons {
+      text-align: center;
+      margin-top: 20px; }
+    .Components .SwiperSlider > div .append-buttons a {
+      display: inline-block;
+      border: 1px solid #007aff;
+      color: #007aff;
+      text-decoration: none;
+      padding: 4px 10px;
+      border-radius: 4px;
+      margin: 0 10px;
+      font-size: 13px; }
+    .Components .SwiperSlider > div .swiper-container-v {
+      background: #eee; }
+  .Components .SwiperSlider > .close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 2000; }
+  .Components .Image {
+    /* Zoom In #2 */
+    /* Zoom Out #1 */
+    /* Zoom Out #2 */
+    /* Slide */
+    /* Rotate */
+    /* Blur */
+    /* Gray Scale */
+    /* Sepia */
+    /* Blur + Gray Scale */
+    /* Opacity #1 */
+    /* Opacity #2 */
+    /* Flashing */
+    /* Shine */
+    /* Circle */ }
+    .Components .Image .hover01 img {
+      -webkit-transform: scale(1);
+      transform: scale(1);
+      -webkit-transition: .3s ease-in-out;
+      transition: .3s ease-in-out; }
+    .Components .Image .hover01:hover img {
+      -webkit-transform: scale(1.3);
+      transform: scale(1.3); }
+    .Components .Image .hover02 img {
+      width: 300px;
+      height: auto;
+      -webkit-transition: .3s ease-in-out;
+      transition: .3s ease-in-out; }
+    .Components .Image .hover02:hover img {
+      width: 350px; }
+    .Components .Image .hover03 img {
+      -webkit-transform: scale(1.5);
+      transform: scale(1.5);
+      -webkit-transition: .3s ease-in-out;
+      transition: .3s ease-in-out; }
+    .Components .Image .hover03:hover img {
+      -webkit-transform: scale(1);
+      transform: scale(1); }
+    .Components .Image .hover04 img {
+      width: 400px;
+      height: auto;
+      -webkit-transition: .3s ease-in-out;
+      transition: .3s ease-in-out; }
+    .Components .Image .hover04 img:hover {
+      width: 300px !important; }
+    .Components .Image .hover05 img {
+      margin-left: 30px;
+      -webkit-transform: scale(1.5);
+      transform: scale(1.5);
+      -webkit-transition: .3s ease-in-out;
+      transition: .3s ease-in-out; }
+    .Components .Image .hover05:hover img {
+      margin-left: 0; }
+    .Components .Image .hover06 img {
+      -webkit-transform: rotate(15deg) scale(1.4);
+      transform: rotate(15deg) scale(1.4);
+      -webkit-transition: .3s ease-in-out;
+      transition: .3s ease-in-out; }
+    .Components .Image .hover06:hover img {
+      -webkit-transform: rotate(0) scale(1);
+      transform: rotate(0) scale(1); }
+    .Components .Image .hover07 img {
+      -webkit-filter: blur(3px);
+      filter: blur(3px);
+      -webkit-transition: .3s ease-in-out;
+      transition: .3s ease-in-out; }
+    .Components .Image .hover07:hover img {
+      -webkit-filter: blur(0);
+      filter: blur(0); }
+    .Components .Image .hover08 img {
+      -webkit-filter: grayscale(100%);
+      filter: grayscale(100%);
+      -webkit-transition: .3s ease-in-out;
+      transition: .3s ease-in-out; }
+    .Components .Image .hover08:hover img {
+      -webkit-filter: grayscale(0) !important;
+      filter: grayscale(0) !important; }
+    .Components .Image .hover09 img {
+      -webkit-filter: sepia(100%);
+      filter: sepia(100%);
+      -webkit-transition: .3s ease-in-out;
+      transition: .3s ease-in-out; }
+    .Components .Image .hover09:hover img {
+      -webkit-filter: sepia(0);
+      filter: sepia(0); }
+    .Components .Image .hover10 img {
+      -webkit-filter: grayscale(0) blur(0);
+      filter: grayscale(0) blur(0);
+      -webkit-transition: .3s ease-in-out;
+      transition: .3s ease-in-out; }
+    .Components .Image .hover10:hover img {
+      -webkit-filter: grayscale(100%) blur(3px);
+      filter: grayscale(100%) blur(3px); }
+    .Components .Image .hover11 img {
+      opacity: 1;
+      -webkit-transition: .3s ease-in-out;
+      transition: .3s ease-in-out; }
+    .Components .Image .hover11:hover img {
+      opacity: .5; }
+    .Components .Image .hover12 {
+      background: #1abc9c; }
+    .Components .Image .hover12 img {
+      opacity: 1;
+      -webkit-transition: .3s ease-in-out;
+      transition: .3s ease-in-out; }
+    .Components .Image .hover12:hover img {
+      opacity: .5; }
+    .Components .Image .hover13:hover img {
+      opacity: 1;
+      -webkit-animation: flash 1.5s;
+      animation: flash 1.5s; }
+@-webkit-keyframes flash {
+  0% {
+    opacity: .4; }
+  100% {
+    opacity: 1; } }
+@keyframes flash {
+  0% {
+    opacity: .4; }
+  100% {
+    opacity: 1; } }
+    .Components .Image .hover14 {
+      position: relative; }
+    .Components .Image .hover14::before {
+      position: absolute;
+      top: 0;
+      left: -75%;
+      z-index: 2;
+      display: block;
+      content: '';
+      width: 50%;
+      height: 100%;
+      background: -webkit-linear-gradient(left, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.3) 100%);
+      background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.3) 100%);
+      -webkit-transform: skewX(-25deg);
+      transform: skewX(-25deg); }
+    .Components .Image .hover14:hover::before {
+      -webkit-animation: shine .75s;
+      animation: shine .75s; }
+@-webkit-keyframes shine {
+  100% {
+    left: 125%; } }
+@keyframes shine {
+  100% {
+    left: 125%; } }
+    .Components .Image .hover15 {
+      position: relative; }
+    .Components .Image .hover15::before {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      z-index: 2;
+      display: block;
+      content: '';
+      width: 0;
+      height: 0;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 100%;
+      -webkit-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%);
+      opacity: 0; }
+    .Components .Image .hover15:hover::before {
+      -webkit-animation: circle .75s;
+      animation: circle .75s; }
+@-webkit-keyframes circle {
+  0% {
+    opacity: 1; }
+  40% {
+    opacity: 1; }
+  100% {
+    width: 200%;
+    height: 200%;
+    opacity: 0; } }
+@keyframes circle {
+  0% {
+    opacity: 1; }
+  40% {
+    opacity: 1; }
+  100% {
+    width: 200%;
+    height: 200%;
+    opacity: 0; } }
+  .Components .Collage > .content {
+    height: 100%; }
+  .Components .ResponsiveViewer .tablet {
+    border-radius: 12px;
+    background-color: #2A2A2A;
+    text-align: center;
+    border-color: gray; }
+    .Components .ResponsiveViewer .tablet .camara {
+      width: 5px;
+      height: 5px;
+      border-radius: 5px; }
+    .Components .ResponsiveViewer .tablet iframe {
+      width: 1024px;
+      height: 768px; }
+  .Components .ResponsiveViewer .phone {
+    border-radius: 12px;
+    background-color: #2A2A2A;
+    text-align: center;
+    border-color: gray; }
+    .Components .ResponsiveViewer .phone .camara {
+      width: 5px;
+      height: 5px;
+      border-radius: 5px; }
+    .Components .ResponsiveViewer .phone .bocina {
+      border-radius: 5px;
+      height: 10px;
+      width: 200px; }
+    .Components .ResponsiveViewer .phone iframe {
+      width: 320px;
+      height: 550px; }
+  .Components .FooterFixedBrand {
+    position: fixed;
+    right: 20px;
+    bottom: 0px;
+    border-radius: 12px 12px 0px 0px;
+    background-color: white;
+    border: solid;
+    border-width: 1px;
+    color: #114CB1;
+    padding: 5px; }
+  .Components .Popup {
+    position: fixed;
+    top: 5%;
+    height: 90%;
+    left: 5%;
+    width: 90%;
+    background-color: white;
+    border: solid;
+    border-width: 1px;
+    -webkit-box-shadow: -2px 3px 60px 14px rgba(0, 34, 255, 0.67);
+    -moz-box-shadow: -2px 3px 60px 14px rgba(0, 34, 255, 0.67);
+    box-shadow: -2px 3px 60px 14px rgba(0, 34, 255, 0.67); }
+    .Components .Popup .close {
+      position: absolute;
+      right: 10px;
+      top: 10px; }
+  .Components .HorizontalScroll {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden; }
+    .Components .HorizontalScroll > div {
+      width: 300%; }
+  .Components .Builder {
+    border: solid;
+    border-width: 1px; }
+    .Components .Builder .add {
+      text-align: center;
+      background-color: #A1A1A1;
+      border-radius: 12px;
+      color: #494949;
+      width: calc(100% - 20px);
+      margin: 10px;
+      display: block;
+      padding: 5px;
+      cursor: pointer; }
+    .Components .Builder > .header {
+      background-color: #8F00DE;
+      height: 100px;
+      color: white;
+      border-radius: 5px 5px 0px 0px; }
+      .Components .Builder > .header > div {
+        height: 50px; }
+        .Components .Builder > .header > div .btns-left span {
+          border: solid;
+          border-width: 1px;
+          background-color: #CF47F5;
+          padding: 10px;
+          vertical-align: bottom;
+          display: inline-block; }
+    .Components .Builder > .content {
+      min-height: 400px;
+      overflow-x: none;
+      overflow-y: auto; }
+      .Components .Builder > .content .Row {
+        height: auto;
+        border: solid;
+        border-width: 1px;
+        margin: 20px;
+        border-radius: 12px;
+        display: flex;
+        flex-direction: row; }
+        .Components .Builder > .content .Row > .controls {
+          width: 50px;
+          display: flex;
+          background-color: #8F00DE;
+          border-radius: 12px 0px 0px 12px;
+          padding-top: 5px;
+          flex-direction: column;
+          padding-left: 10px;
+          justify-content: center; }
+          .Components .Builder > .content .Row > .controls span {
+            height: 30px;
+            width: 30px;
+            border: solid;
+            display: block;
+            border-width: 1px;
+            cursor: pointer; }
+        .Components .Builder > .content .Row > .content {
+          display: inline;
+          min-height: 90px;
+          overflow-x: none;
+          overflow-y: auto;
+          vertical-align: top;
+          background-color: #AFAFAF;
+          border-radius: 0px 12px 12px 0px;
+          padding: 5px;
+          width: 100%; }
+          .Components .Builder > .content .Row > .content .Column {
+            border-radius: 12px 12px  12px 12px;
+            margin: 10px;
+            display: inline-flex;
+            flex-direction: row;
+            border: solid;
+            border-width: 1px;
+            max-width: calc(100% - 20px);
+            min-width: 149px; }
+            .Components .Builder > .content .Row > .content .Column > .controls {
+              width: 50px;
+              display: flex;
+              background-color: #00B89B;
+              border-radius: 12px 0px 0px 12px;
+              flex-direction: column;
+              padding: 10px;
+              justify-content: center; }
+              .Components .Builder > .content .Row > .content .Column > .controls > .titulo {
+                text-align: center; }
+              .Components .Builder > .content .Row > .content .Column > .controls span {
+                height: 30px;
+                width: 30px;
+                display: block;
+                border: solid;
+                border-width: 1px;
+                cursor: pointer; }
+            .Components .Builder > .content .Row > .content .Column .content {
+              display: inline;
+              min-height: 90px;
+              width: 100%;
+              border-radius: 0px 12px 12px 0px;
+              background-color: white;
+              vertical-align: top;
+              padding: 5px; }
+              .Components .Builder > .content .Row > .content .Column .content .ModuloHTML {
+                width: 200px;
+                height: 80px;
+                background-color: #636363;
+                border-radius: 12px;
+                border: solid;
+                border-width: 1px;
+                display: inline-flex;
+                flex-direction: column;
+                justify-content: center;
+                margin: 5px;
+                cursor: pointer; }
+                .Components .Builder > .content .Row > .content .Column .content .ModuloHTML > button {
+                  padding: 10px; }
+                  .Components .Builder > .content .Row > .content .Column .content .ModuloHTML > button > .icon {
+                    display: inline-block;
+                    height: 40px;
+                    width: 40px;
+                    margin: 5px;
+                    vertical-align: middle; }
+                  .Components .Builder > .content .Row > .content .Column .content .ModuloHTML > button > .titulo {
+                    margin: 5px;
+                    vertical-align: middle; }
+    .Components .Builder .Window {
+      position: fixed;
+      top: 10px;
+      left: 10%;
+      width: 80%;
+      height: calc( 100% - 20px);
+      background-color: white;
+      border-radius: 12px;
+      border: solid;
+      border-width: 1px; }
+      .Components .Builder .Window > .header {
+        background-color: #8F00DE;
+        height: 100px;
+        color: white;
+        border-radius: 5px 5px 0px 0px; }
+        .Components .Builder .Window > .header > div {
+          height: 50px; }
+          .Components .Builder .Window > .header > div .titulo {
+            font-size: 30px;
+            margin: 10px; }
+          .Components .Builder .Window > .header > div .btns-left span {
+            border: solid;
+            border-width: 1px;
+            background-color: #CF47F5;
+            padding: 10px;
+            vertical-align: bottom;
+            display: inline-block;
+            margin-top: 10px;
+            cursor: pointer; }
+      .Components .Builder .Window > .content {
+        text-align: center;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-image: url("static/imgs/giphy.gif");
+        height: calc( 100% - 100px); }
+        .Components .Builder .Window > .content .InsertModulo .ModuloHTML {
+          width: 200px;
+          height: 80px;
+          background-color: #636363;
+          border-radius: 12px;
+          border: solid;
+          border-width: 1px;
+          display: inline-flex;
+          flex-direction: column;
+          justify-content: center;
+          margin: 5px;
+          cursor: pointer; }
+          .Components .Builder .Window > .content .InsertModulo .ModuloHTML > button {
+            padding: 10px; }
+            .Components .Builder .Window > .content .InsertModulo .ModuloHTML > button > .icon {
+              display: inline-block;
+              height: 40px;
+              width: 40px;
+              margin: 5px;
+              vertical-align: middle; }
+            .Components .Builder .Window > .content .InsertModulo .ModuloHTML > button > .titulo {
+              margin: 5px;
+              vertical-align: middle; }
+      .Components .Builder .Window > .btnsFooter {
+        width: 100%;
+        height: 100px; }
+  @media (max-width: 785px) {
+    .Components .BasicTabs > div > .tab {
+      max-height: 450px; }
+      .Components .BasicTabs > div > .tab > img {
+        max-width: calc( 100% - 20px ); }
+    .Components .Builder .Row .Column .ModuloHTML {
+      max-width: 100px; } }
+
+/*# sourceMappingURL=Components.css.map */

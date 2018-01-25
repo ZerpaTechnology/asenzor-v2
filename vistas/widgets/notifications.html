@@ -1,0 +1,22 @@
+<div class="notifications text-left" style="background-color: rgba(0,0,0,0.8);width: 200px; border:solid;border-width: 1px; border-color:gray;border-radius: 12px">
+<style type="text/css">
+	.close-notification{
+		border: solid;
+		border-radius: 12px;
+		border-width: 1px;
+		border-color:gray;
+		position: absolute;
+		top: -5px;
+		right: -5px;
+		cursor: pointer;
+	}
+</style>
+<span class="close-notification"> x </span>
+<a href=" {{=data['notification-link']}}">
+<img src="{{=data['notification-img']}}">
+<div class="d-inline-block white pad-1">	
+{{=data["notification"]}}
+
+</div>
+</a>
+</div>

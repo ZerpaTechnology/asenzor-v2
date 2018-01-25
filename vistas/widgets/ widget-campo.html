@@ -1,0 +1,92 @@
+<div class="marg-1 pad-05 bg-ubuntu_purple white">  
+    <div class="d-inline-block width-20">
+    <label for=""> Titulo</label>:<br>
+    <input type="text" name="titulo">  
+    </div>
+    
+    <div class="d-inline-block width-20">
+    <label for=""> Tipo:</label>
+    <select name="tipo">
+      <option>text</option>
+      <option>file</option>
+      <option>select</option>
+      <option>password</option>
+      <option>keygen</option>
+      <option>number</option>
+      <option>textarea</option>
+      <option>email</option>
+      <option>tel</option>
+      <option>date</option>
+      <option>datetime</option>
+      <option>output</option>
+      <option>color</option>
+      <option>range</option>
+      <option>search</option>
+      <option>url</option>
+      <option>datetime-local</option>
+      <option>month</option>
+      <option>week</option>
+      <!-- tipos AsenZor-->
+      <option>img</option><!--campo de imagen estatico osea tiqueta img y label -->
+      <option>text-admin</option><!--Solo visible/escribible al admin-->
+      <option>text-titulo</option><!--Solo escribible al admin en user es un label o h-->
+      <option value="">textarea-admin</option><!--Solo visible/escribible al admin-->
+      <option value="">select-admin</option> <!--select solo visible/seleccionable en admin-->
+      <option value="">img-admin</option><!--select solo seleccionable de admin usa etiquetas img y select usa opcion 0 por defecto-->
+      <option value="">select-img</option><!--select de imagenes usa etiqueas select e img usa opcion 0 por defecto-->
+    </select>
+    </div>
+    <div class="d-inline-block width-20">
+    <label for=""> name</label>:<br>
+    <input type="text" name="name">  
+    </div>
+    <div class="d-inline-block width-20">
+    <label for="" name="placeholder"> placeholder</label>:<br>
+    <input type="text">  
+    </div>
+    <div class="d-inline-block width-20">
+    <label for="" name="step"> step</label>:<br>
+    <input type="number">  
+    </div>
+    <div class="d-inline-block width-20">
+    <label for="" name="max"> max</label>:<br>
+    <input type="number">  
+    </div>
+    <div class="d-inline-block width-20">
+    <label for="" name="min"> min</label>:<br>
+    <input type="number">  
+    </div>
+    <div class="d-inline-block width-20">
+    <label for="" > Valor</label>:<br>
+    <input type="text" name="valor">  
+      
+    </div>
+    <div class="d-inline-block width-20">
+    <label for=""> opcion</label>:<br>
+      <input type="number" name="opcion">
+    
+    </div>
+    <div class="d-inline-block width-20">
+    <label for=""> modelos</label>:<br>
+    <select name="modelos">
+      {{for elem in list(data["opciones"]):}}
+
+      <option>{{=elem}}</option>
+      {{pass}}
+    </select>
+      
+    </div>
+    <div class="d-inline-block width-20">
+    <label for="" > depende</label>:
+    <select name="depende">
+      <option value=""></option>
+    </select>  
+    </div>
+    <div class="d-inline-block width-20"><br>
+    <label for="" name="subtabla"> subtabla</label>:
+    <select>
+      <option value=""></option>
+    </select>  
+    </div>
+    </div>
+  

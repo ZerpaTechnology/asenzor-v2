@@ -1,0 +1,55 @@
+<div class="pad">
+<div>
+<label>Nombre</label>
+<input type="" name="tabla" placeholder="Nombre de la plantilla"> 
+</div>
+<div>
+  <button class="tab-btn">Base de datos</button>
+  <button class="tab-btn">Formulario</button>
+</div>
+<div class="tab">
+<div>
+  {{incluir(data,"campoZDB")}}
+</div>
+<div>
+  {{incluir(data,"campoZDB")}}
+</div>
+<div>
+  {{incluir(data,"campoZDB")}}
+</div>
+<div>
+  {{incluir(data,"campoZDB")}}
+</div>
+
+{{for i in range(20):}}
+<div></div>
+ {{pass}}
+
+  <button class="añadir">Añadir Campo</button>   
+  <button class="quitar">Quitar Campo</button>   
+  </div>
+  <div class="tab hidden">
+    <div>
+    </div>
+{{for i in range(20):}}
+<div></div>
+ {{pass}}
+    <button class="insertar">Insertar</button> 
+    <button id="separador">Agregar separador</button> 
+    <button id="quitar-separador">Quitar separador</button> 
+    
+  </div>
+<div>
+      <label for="">Identificador</label>
+      <input type="text" name="identificador">
+    </div>
+<button id="guardar" class="bg-blue white b-r5">Guardar</button>
+</div>
+<script type="text/python3" src="{{=config.base_url}}static/brython/edit3.by"></script>
+
+
+
+
+
+
+

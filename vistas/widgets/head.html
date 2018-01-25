@@ -1,0 +1,112 @@
+<head>
+ <title>Administrador</title>
+ <meta charset="utf-8">
+   <meta http-equiv="pragma" content="no-cache">
+ <link rel="icon" type="image/png" href="{{=config.base_url}}static/imgs/logos/logoZtec.png" />
+ <link rel="shortcut icon" href="{{=config.base_url}}static/imgs/logos/logoZtec.png" />
+ <script src="{{=config.base_url}}static/js/jquery-3.1.0.js"></script>
+ <link rel="stylesheet" href="{{=config.base_url}}static/css/jquery.mCustomScrollbar.css" />
+ <script type="text/javascript" src="{{=config.base_url}}static/js/jquery.mCustomScrollbar.js"></script>
+ <link rel="stylesheet" type="text/css" href="{{=config.base_url}}static/css/estilos.css">
+ <link rel="stylesheet" type="text/css" href="{{=config.base_url}}static/css/bootstrap.css">
+ <link rel="stylesheet" type="text/css" href="{{=config.base_url}}static/css/flexboxgrid.css">
+ <link rel="stylesheet" type="text/css" href="{{=config.base_url}}static/css/ff.css">
+ 
+ 
+ <link href="{{=config.base_url}}static/css/perfect-scrollbar.min.css" rel="stylesheet">
+ {{if "action" in data and data["action"]=="menus":}}
+<script type="text/javascript" src="{{=config.base_url}}static/js/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
+{{pass}}
+  <script type="text/javascript" src="{{=config.base_url}}static/script/file=Config.js&manager=True"></script>
+  
+  <script type="text/javascript" src="{{=config.base_url}}static/js/python/__javascript__/Codificador.js"></script>
+  
+  <!--<script type="text/python3" src="{{=config.base_url}}static/brython/nuclear.by"></script>-->
+  <script type="text/javascript" src="{{=config.base_url}}static/js/python/__javascript__/py_datos.js"></script>
+  <script type="text/javascript" src="{{=config.base_url}}static/js/python/__javascript__/nuclear.js"></script>
+  {{if data["login"]:}}
+  
+  <!--<script type="text/javascript" src="{{=config.base_url}}static/js/python/__javascript__/login.js"></script>-->
+  {{pass}}
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+ 
+    <style type="text/css">
+      @media(max-width:380px){
+        .sin-pad-xs{
+          padding:0px !important;
+        }
+      }
+      input,select,button{
+        font-size:13px;
+      }
+      
+.mCSB_container{
+ margin-right:15px !important ;
+} 
+
+ </style>
+
+
+ <script src="{{=config.base_url}}static/js/tinymce/js/tinymce/tinymce.min.js"></script>
+ <script type="text/javascript">
+        tinymce.init({
+   language : 'es',
+   selector: "textarea.editor",
+    theme: "modern",
+    plugins: [
+         "advlist autolink link image lists charmap print preview hr anchor pagebreak table",
+         "searchreplace wordcount visualblocks visualchars fullscreen insertdatetime media nonbreaking emoticons textcolor",
+         "save table contextmenu directionality emoticons template paste textcolor",
+         "code codesample"
+   ],
+   codesample_languages: [
+        {text: 'HTML/XML', value: 'markup'},
+        {text: 'JavaScript', value: 'javascript'},
+        {text: 'CSS', value: 'css'},
+        {text: 'PHP', value: 'php'},
+        {text: 'Ruby', value: 'ruby'},
+        {text: 'Python', value: 'python'},
+        {text: 'Java', value: 'java'},
+        {text: 'C', value: 'c'},
+        {text: 'C#', value: 'csharp'},
+        {text: 'C++', value: 'cpp'}
+    ],
+   content_css: "{{=config.base_url}}static/js/tinymce/js/tinymce/skins/lightgray/content.min.css",
+   toolbar: "insertfile undo redo preview | fontselect | fontsizeselect | forecolor backcolor emoticons | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | media fullpage code codesample", 
+    fontsize_formats: "9pt 10pt 11pt 12pt 13pt 14pt 15pt 16pt 18pt 20pt 22pt 24pt",
+    
+
+ font_formats: "Andale Mono=andale mono,times;"+
+        "Arial=arial,helvetica,sans-serif;"+
+        "Arial Black=arial black,avant garde;"+
+        "Book Antiqua=book antiqua,palatino;"+
+        "Comic Sans MS=comic sans ms,sans-serif;"+
+        "Courier New=courier new,courier;"+
+        "Georgia=georgia,palatino;"+
+        "Helvetica=helvetica;"+
+        "Impact=impact,chicago;"+
+        "Symbol=symbol;"+
+        "Tahoma=tahoma,arial,helvetica,sans-serif;"+
+        "Terminal=terminal,monaco;"+
+        "Times New Roman=times new roman,times;"+
+        "Trebuchet MS=trebuchet ms,geneva;"+
+        "Verdana=verdana,geneva;"+
+        "Webdings=webdings;"+
+        "Wingdings=wingdings,zapf dingbats",
+ });   
+</script>
+
+
+ 
+{{if "vars" in data:}}
+
+{{for elem in data["vars"]:}}
+<var name='{{=elem}}' style="display: none">{{=decode(str(data["vars"][elem]))}}</var>
+{{pass}}
+{{pass}}
+</head>
+
+
+
+
+

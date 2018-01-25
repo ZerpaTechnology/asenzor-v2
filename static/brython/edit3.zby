@@ -1,0 +1,288 @@
+#!/usr/bin/python
+from browser import document,ajax,alert
+from browser.html import*
+componentes={"campoFormulario":None,"campoZDB":None}
+s=window.s
+alert("xxxxx")
+def change(evt):
+ caja=evt.target.parent.parent.children[1].children[0]
+ for elem in caja.children:
+  caja.removeChild(elem) 
+ if evt.target.value!="str" and evt.target.value!="int" and evt.target.value!="float" and evt.target.value!="doctstring":
+   
+   for i in range(20):
+    caja<=DIV()
+s(".tipo").bind("change",change)
+
+def borrar(evt):
+  borrar=evt.target.parent.parent.children[2].children[1]
+  
+  tipo=evt.target.parent.parent.children[0].children[1]
+  caja=evt.target.parent.parent.children[1].children[0]
+  
+  if tipo.value=="str" or tipo.value=="int" or tipo.value=="float" or tipo.value=="doctstring":
+    caja.removeChild(caja.children[0])
+
+    evt.target.parent.parent.children[2].removeChild(borrar)
+  else:
+    for elem in caja.children:
+      
+      if tipo.value=="dict" and len(elem.children)>0 and elem.children[2].children[0].checked==True:    
+        for dic in elem.children:
+          elem.removeChild(dic)
+      elif tipo.value=="list" and len(elem.children)>0 and elem.children[0].children[0].checked==True:
+        for lis in elem.children:
+          elem.removeChild(lis)
+        
+
+    vacio=False
+    for elem in caja.children:
+      if len(elem.children)!=0:
+        value=True
+        break
+
+    if vacio==True:
+     evt.target.parent.parent.children[2].removeChild(borrar)
+
+def quitar(evt):
+  for elem in s(".tab")[0].children:
+    if len(elem.children)>0 and elem.children[0].children[0].checked==True:
+      elem.removeChild(elem.children[0])
+
+
+
+def insertar(evt):
+ global componentes
+ global change
+ if evt.target.parent==s(".tab")[1]:
+  ultimo=0
+  for k,elem in enumerate(s(".tab")[1].children):
+    if len(elem.children)==0:
+
+      if ultimo==None:
+        ultimo=k
+    else:
+      ultimo=None
+  if componentes["campoFormulario"]!=None and ultimo!=None:    
+
+    s(".tab")[1].children[ultimo].innerHTML=componentes["campoFormulario"].run()
+
+    
+ else:
+  
+   tipo=evt.target.parent.parent.children[0].children[1]
+   caja=evt.target.parent.parent.children[1].children[0]
+   
+   if evt.target.parent.get(selector=".borrar")==[]:
+    evt.target.parent<=BUTTON("Borrar",Class="borrar")
+    for elem in evt.target.parent.get(selector=".borrar"):
+     elem.bind("click",borrar)
+
+   if tipo.value=="int":
+
+    s(caja).widget("<input type='number' step='1' value='0' class='d-block width-100p'>")
+
+   elif tipo.value=="float":
+    s(caja).widget("<input type='number' step='0.0001' value='0' class='d-block width-100p'>")
+   elif tipo.value=="bool":
+    s(caja).widget("<select><option>False</option><option>True</option></select>")
+   elif tipo.value=="str":
+    s(caja).widget("<input type='text' class='d-block width-100p'>")
+   elif tipo.value=="docstring":
+    s(caja).widget("<textarea class='d-block width-100p'></textarea>")
+   elif tipo.value=="list":
+    for hijo in caja.children:
+      if len(hijo.children)==0:
+        hijo.innerHTML=componentes["campoZDB"].run()
+        break
+    for elem in caja.get(selector=".insertar"):
+     elem.bind("click",insertar)
+
+   elif tipo.value=="dict":
+    
+    for hijo in caja.children:
+      if len(hijo.children)==0:
+        hijo.innerHTML='''<input type="" name="" class="width-9 alg-top"><b class="alg-top"> :</b>'''+componentes["campoZDB"].run()
+        break
+    for elem in caja.get(selector=".insertar"):
+     elem.bind("click",insertar)
+   s(".tipo").bind("change",change)
+
+
+  
+
+s(".insertar").bind("click",insertar)
+
+def zdb(estructura,auto=False):
+ l=[]
+ 
+ tipo=estructura.children[3].children[0].children[1].value
+ 
+ valor=estructura.children[3].children[1].children[0]
+ 
+ if tipo=="int":
+
+  if len(valor.children)>0 and valor.children[0].value!="":
+   return int(valor.children[0].value)
+  else:
+   return None
+ elif tipo=="float":
+  if len(valor.children)>0 and valor.children[0].value!="":
+   return float(valor.children[0].value)
+  else:
+   return None
+ elif tipo=="str":
+  if len(valor.children)>0:
+   
+   return valor.children[0].value
+  else:
+   return None
+ elif tipo=="doctstring":
+  if len(valor.children)>0:
+   return valor.children[0].value
+  else:
+   return None
+ elif tipo=="bool":
+  if len(valor.children)>0:
+   exec("a="+valor.children[0].value)
+   return a
+  else:
+   return None
+ elif tipo=="dict":
+  if len(valor.children)>0:
+   d={}
+   
+   for elem in valor.children:
+    if len(elem.children)>0:
+
+      clave=elem.children[0].value
+      d[clave]=zdb(elem.children[2])
+   return d
+
+  else:
+   return None
+
+ elif tipo=="list":
+  l=[]
+  if len(valor.children)>0:
+
+   for elem in valor.children:
+      if len(elem.children)>0:
+        
+        l.append(zdb(elem.children[0]))
+   return l
+  else:
+   return None
+
+s("#guardar").bind("click",lambda evt:
+  l=[]
+  if "hidden" not in s(".tab")[0].class_name:
+     for fila in s(".tab")[0].children:
+      if len(fila.children)>0:    
+        l.append(zdb(fila.children[0])) 
+     req=ajax.ajax()
+     req.open("POST",base_url+"controles/ajax.py",True)
+     alert(document.get(name="tabla")[0].value)
+     req.send({"admin":True,"action":"db","args":{"admin":"True","action":"db","args":["Plantillas",l,document.get(name="tabla")[0].value]}})
+     req.bind("complete",lambda evt:
+      alert(req.text)
+      )
+  else:
+    l=[]
+    for fila in s(".tab")[1].children:
+      tipo=fila.children[0].get(selector="[name=tipo]")[0].value
+      nombre=fila.children[0].get(selector="[name=name]")[0].value
+      titulo=fila.children[0].get(selector="[name=titulo]")[0].value
+      opcion=fila.children[0].get(selector="[name=opcion]")[0].value
+      tabla=fila.children[0].get(selector="[name=tabla]")[0].value
+      depende=fila.children[0].get(selector="[name=depende]")[0].value
+      _max=fila.children[0].get(selector="[name=max]")[0].value
+      _min=fila.children[0].get(selector="[name=min]")[0].value
+      step=fila.children[0].get(selector="[name=step]")[0].value
+      d={titulo:tipo,"name":nombre}
+      if opcion!="":
+        d["opcion"]=opcion
+      if tabla!="":
+        d["tabla"]=tabla
+      if depende!="":
+        d["depende"]=depende
+      if _max!="":
+        d["max"]=_max
+      if _min!="":
+        d["min"]=_min
+      if step!="":
+        d["step"]=step
+      l.append(d)
+
+    req=ajax.ajax()
+    req.open("POST",base_url+"controles/ajax.py",True)
+    req.send({"admin":True,"action":"db","args":{"admin":"True","action":"db","args":["Formulario",l,document.get(name="tabla")[0].value,document.get(name="identificador")[0].value]}})
+    req.bind("complete",lambda evt:
+      alert(req.text)
+      )
+
+  )
+
+s(".tab-btn").bind("click",lambda evt:
+    for k,elem in enumerate(s(".tab-btn").iterables):
+        if elem == evt.target:
+           if k!=0:
+                s(".añadir").addClass("hidden")
+           else:
+                s(".añadir").removeClass("hidden")
+           if "hidden" in s(".tab")[k].class_name:            
+              clases=s(".tab")[k].class_name.split(" ")
+              clases.remove("hidden")
+              s(".tab")[k].class_name=" ".join(clases)
+           
+
+        else:
+            
+            if "hidden" not in s(".tab")[k].class_name:
+              s(".tab")[k].class_name+=" hidden"           
+    )
+
+s(".añadir").bind("click",lambda evt:
+  global componentes
+  ultimo=0
+  for k,elem in enumerate(s(".tab")[0].children):
+    if len(elem.children)==0:
+      if ultimo==None:
+        ultimo=k
+    else:
+      ultimo=None
+  if componentes["campoZDB"]!=None and ultimo!=None:
+    
+    s(".tab")[0].children[ultimo].innerHTML=componentes["campoZDB"].run()
+                 
+  )
+s(".quitar").bind("click",quitar)
+componentes["campoZDB"]=Component(url="campoZDB",admin=True)
+componentes["campoFormulario"]=Component(url="widget-campo",admin=True)
+
+
+
+
+
+
+
+
+
+
+s("#separador").bind("click",lambda evt:
+  if "hidden" not in s(".tab")[1].class_name:
+    ultimo=0
+    for k,elem in enumerate(s(".tab")[1].children):
+      if len(elem.get(selector=".campoForm"))==0:
+        ultimo=k
+    s(".tab")[1].children[ultimo].children[0].innerHTML="<div class='bg-gray separador'><input type='checkbox'></div>"    
+  )
+s("#quitar-separador").bind("click",lambda evt:
+  if "hidden" not in s(".tab")[1].class_name:
+    ultimo=0
+    for k,elem in enumerate(s(".tab")[1].children):
+      if len(elem.get(selector=".separador"))>0:
+        if elem.children[0].children[0].checked==True:
+          elem.removeChild(elem.children[0])
+    s(".tab")[1].children[ultimo].children[0].innerHTML="<div class='bg-gray separador'><input type='checkbox'></div>"    
+  )
